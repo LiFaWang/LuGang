@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" >
+<LinearLayout
+    android:baselineAligned="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="lugang.app.huansi.net.lugang.activity.MainActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#FF45C4FF"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <RadioGroup
+            android:id="@+id/rgBase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RadioButton
+                android:button="@null"
+                android:background="@drawable/btn_check_selector"
+                android:id="@+id/taskShow"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="任务看板"
+                android:textColor="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <RadioButton
+                android:button="@null"
+                android:background="@drawable/btn_check_selector"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:id="@+id/measureCustom"
+                android:text="量体定制"
+                android:textColor="#ffffff"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <RadioButton
+                android:button="@null"
+                android:background="@drawable/btn_check_selector"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:id="@+id/repairRegister"
+                android:text="返修登记"
+                android:textColor="#ffffff"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <RadioButton
+                android:button="@null"
+                android:background="@drawable/btn_check_selector"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:id="@+id/materialsChose"
+                android:text="面料选置"
+                android:textColor="#ffffff"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <RadioButton
+                android:button="@null"
+                android:id="@+id/partMake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:background="@drawable/btn_check_selector"
+
+                android:text="部位做法"
+                android:textColor="#ffffff"/>
+
+            <RadioButton
+                android:button="@null"
+                android:background="@drawable/btn_check_selector"
+                android:layout_marginTop="5dp"
+                android:id="@+id/customerConfirm"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="客户确认"
+                android:textColor="#ffffff"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flContent"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5">
+    </FrameLayout>
+</LinearLayout>
+</layout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="lugang.app.huansi.net.lugang"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".activity.MainActivity"
+                  android:configChanges="orientation|screenSize">
+
+        </activity>
+        <activity
+            android:name=".activity.MeasureCustomActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="stateVisible|adjustPan">
+        </activity>
+        <activity android:name=".activity.RemarkDetailActivity"
+                  android:configChanges="orientation|screenSize">
+        </activity>
+        <activity android:name="com.androidyuan.lib.screenshot.ScreenShotActivity"
+                  android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="huansi.net.qianjingapp.base.PermissionsActivity"
+                  android:configChanges="orientation|screenSize"/>
+    </application>
+
+</manifest>

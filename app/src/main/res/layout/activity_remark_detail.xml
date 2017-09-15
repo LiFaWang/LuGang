@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:background="#FF45C4FF"
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="备注详情"
+            android:textSize="20sp"/>
+
+        <LinearLayout
+            android:background="#FF45C4FF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textColor="#fff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:text="备注大类"/>
+
+            <TextView
+                android:textColor="#fff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="备注详情"/>
+
+            <TextView
+                android:textColor="#fff"
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="选取"/>
+
+            <TextView
+                android:textColor="#fff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="已选内容"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ScrollView
+                android:background="@drawable/bader"
+                android:layout_width="0dp"
+                android:padding="5dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                    <RadioGroup
+                        android:id="@+id/gadiogroup"
+                        android:gravity="center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    </RadioGroup>
+
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/llRemarkDetailItem"
+                android:padding="5dp"
+                android:background="@drawable/bader"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@drawable/bader"
+                android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:background="@drawable/btn_buy_selector"
+                    android:textColor="#fff"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="25sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/insert"/>
+
+                <Button
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/btn_buy_selector"
+                    android:textColor="#fff"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:id="@+id/button"
+                    android:textSize="25sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@drawable/bader"
+                android:padding="5dp"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:text="前衣加长"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

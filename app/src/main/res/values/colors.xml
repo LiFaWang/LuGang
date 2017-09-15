@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorUnderline">#A0B4BB</color>
+    <color name="colorTitle">#000</color>
+    <color name="button_focus_color">#6CB8E6</color>
+    <color name="button_default_color">#4799DD</color>
+    <color name="btn_bg_pressed">#7030A0</color>
+    <color name="btn_bg_normal">#1e90ff</color>
+
+    <color name="whitecolor">#ffffff</color>
+    <color name="buttom_tv">#484747</color>
+    <color name="toubu">#f4692a</color>
+    <color name="gray">#d3d3d3</color>
+
+    <color name="colorPrimary">#203043</color>
+
+    <color name="colorPrimaryDark">#1c2837</color>
+
+    <color name="colorAccent">#35B0ff</color>
+
+    <color name="colorBackground">#F5F5F5</color>
+
+    <color name="colorWhite">#ffffff</color>
+
+    <color name="colorLightGray">#999999</color>
+
+    <color name="colorGray">#666666</color>
+
+    <color name="colorDarkGray">#333333</color>
+
+    <color name="colorRed">#FF0000</color>
+
+    <color name="colorDivideLine">#DDDDDD</color>
+</resources>

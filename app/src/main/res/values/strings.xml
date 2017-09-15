@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">LuGang</string>
+    <string name="insert">&#62;</string>
+    <string name="delete">&#60;</string>
+</resources>

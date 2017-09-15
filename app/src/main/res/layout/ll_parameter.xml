@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:padding="5dp"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tvParameter"
+        android:gravity="center"
+        android:background="#FF45C4FF"
+        android:textSize="18sp"
+        android:text="衣长"
+        android:textColor="#fff"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"/>
+
+    <EditText
+        android:id="@+id/etParameter"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:textColor="#fff"
+        android:background="#FF45C4FF"
+        android:gravity="center"
+        android:textSize="18sp"/>
+
+</LinearLayout>
