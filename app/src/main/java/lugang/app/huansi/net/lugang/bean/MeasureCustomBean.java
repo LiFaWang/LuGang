@@ -61,4 +61,8 @@ public class MeasureCustomBean extends WsData {
     public String SMETERCODE="";
     public String SMETERNAME="";
     public String ISEQ="";
+
+    public int SIZE=0;//测量的数据
+
+
 }

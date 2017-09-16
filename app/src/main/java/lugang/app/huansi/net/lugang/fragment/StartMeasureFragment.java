@@ -107,6 +107,7 @@ public class StartMeasureFragment extends BaseFragment {
                 Intent intent = new Intent(getActivity(), MeasureCustomActivity.class);
                 intent.putExtra("SPERSON", startMeasureBean.SPERSON);
                 intent.putExtra("SDEPARTMENTNAME", startMeasureBean.SDEPARTMENTNAME);
+                intent.putExtra("IID",startMeasureBean.IID);
                 startActivity(intent);
             }
         });

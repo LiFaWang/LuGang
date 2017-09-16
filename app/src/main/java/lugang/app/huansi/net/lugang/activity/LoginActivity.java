@@ -98,6 +98,7 @@ public class LoginActivity extends NotWebBaseActivity {
     private void jumpToMain(String mSuserid) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("SUSERID", mSuserid);
+
         startActivity(intent);
         finish();
     }
