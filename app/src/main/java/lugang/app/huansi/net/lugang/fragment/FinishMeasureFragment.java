@@ -59,7 +59,7 @@ public class FinishMeasureFragment extends BaseFragment{
                                 //已量体
                                 return NewRxjavaWebUtils.getJsonData(getContext(), CUS_SERVICE,
                                         "spappMeasureOrderList"
-                                        , "iIndex=0" + ",sUserNo=" + userNo,
+                                        , "iIndex=1" + ",sUserNo=" + userNo,
                                         FinishMeasureBean.class.getName(),
                                         true, "");
                             }

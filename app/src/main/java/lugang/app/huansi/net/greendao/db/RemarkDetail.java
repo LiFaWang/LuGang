@@ -1,8 +1,8 @@
 package lugang.app.huansi.net.greendao.db;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Created by Tony on 2017/9/16.
@@ -13,7 +13,7 @@ public class RemarkDetail {
     @Id
     private Long id;
     private String smetermarkname;//备注详情的内容
-    private String isdstyletypemstid;//款式的id
+    private String isdstyletypemstid;//备注详情的id
     public String getIsdstyletypemstid() {
         return this.isdstyletypemstid;
     }

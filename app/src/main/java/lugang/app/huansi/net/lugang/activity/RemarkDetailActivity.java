@@ -25,7 +25,6 @@ import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.bean.RemarkCategoryBean;
 import lugang.app.huansi.net.lugang.bean.RemarkDetailBean;
 import lugang.app.huansi.net.lugang.databinding.ActivityRemarkDetailBinding;
-import lugang.app.huansi.net.lugang.manager.DBManager;
 import rx.functions.Func1;
 
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
@@ -36,8 +35,9 @@ import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVIC
 public class RemarkDetailActivity extends NotWebBaseActivity {
 
     private ActivityRemarkDetailBinding mActivityRemarkDetailBinding;
-    private List<RemarkDetailBean> mRemarkDetailBeanList;//备注详情选中集合
-    DBManager dbManager = DBManager.getInstance(this);
+    private List<RemarkDetailBean> mRemarkDetailListFromServer;//备注详情选中集合
+    private List<RemarkDetail> mRemarkDetailListFromDB;//本地备注详情数据库的集合
+//    DBManager dbManager = DBManager.getInstance(this);
 
     @Override
     protected int getLayoutId() {
@@ -47,7 +47,8 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
     @Override
     public void init() {
         mActivityRemarkDetailBinding = (ActivityRemarkDetailBinding) viewDataBinding;
-        mRemarkDetailBeanList = new ArrayList<>();
+        mRemarkDetailListFromServer = new ArrayList<>();
+        mRemarkDetailListFromDB = new ArrayList<>();
 
         Intent intent = getIntent();
         final String isdstyletypemstid = intent.getStringExtra("ISDSTYLETYPEMSTID");
@@ -58,35 +59,34 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
             @Override
             public void onClick(View v) {
                 mActivityRemarkDetailBinding.llSelectorRemark.removeAllViews();
-                showSelectorRemark(mRemarkDetailBeanList);
-
+                showSelectorRemark(mRemarkDetailListFromServer);
             }
         });
         ///点击按钮删除
         mActivityRemarkDetailBinding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteSelectorRemark(mRemarkDetailBeanList);
+                deleteSelectorRemark(mRemarkDetailListFromServer);
             }
         });
         ///点击保存的到本地db
         mActivityRemarkDetailBinding.btnSaveRemark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < mRemarkDetailBeanList.size(); i++) {
-                    String smetermarkname = mRemarkDetailBeanList.get(i).SMETERMARKNAME;
-                    RemarkDetail remarkDetail=new RemarkDetail(null,smetermarkname,isdstyletypemstid);
-                    dbManager.insertRemarkDetail(remarkDetail);
+                for (int i = 0; i < mRemarkDetailListFromServer.size(); i++) {
+                    String smetermarkname = mRemarkDetailListFromServer.get(i).SMETERMARKNAME;
+                    String smeteriid = mRemarkDetailListFromServer.get(i).IID;
+//                    RemarkDetail remarkDetail=new RemarkDetail(null,smetermarkname,smeteriid);
+//                    dbManager.insertRemarkDetail(remarkDetail);
                     OthersUtil.ToastMsg(RemarkDetailActivity.this,"保存");
-
-
                 }
-
             }
         });
+        //取本地已经存在数据
         mActivityRemarkDetailBinding.llSelectorRemark.removeAllViews();
-        List<RemarkDetail> remarkDetails = dbManager.queryRemarkDetailList();
-        for (RemarkDetail detail : remarkDetails) {
+//        mRemarkDetailListFromDB = dbManager.queryRemarkDetailList();
+
+        for (RemarkDetail detail : mRemarkDetailListFromDB) {
             String smetermarkname1 = detail.getSmetermarkname();
             CheckBox checkBox=new CheckBox(RemarkDetailActivity.this);
             checkBox.setText(smetermarkname1);
@@ -114,19 +114,13 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
 
 
         }
-        List<RemarkDetail> remarkDetails = dbManager.queryRemarkDetailList();
-            for (int i = 0; i <remarkDetails.size() ; i++) {
-                remarkDetails.remove(i);
-
-                CheckBox box = (CheckBox) mActivityRemarkDetailBinding.llSelectorRemark.getChildAt(i);
-                mActivityRemarkDetailBinding.llSelectorRemark.removeView(box);
-
-
-            }
-
-
-
-
+////        List<RemarkDetail> remarkDetails = dbManager.queryRemarkDetailList();
+//            for (int i = 0; i <remarkDetails.size() ; i++) {
+//                remarkDetails.remove(i);
+//
+//                CheckBox box = (CheckBox) mActivityRemarkDetailBinding.llSelectorRemark.getChildAt(i);
+//                mActivityRemarkDetailBinding.llSelectorRemark.removeView(box);
+//            }
     }
 
     /**
@@ -136,7 +130,7 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
      */
     private void showSelectorRemark(List<RemarkDetailBean> remarkDetailBeanList) {
 
-        for (int i = 0; i < mRemarkDetailBeanList.size(); i++) {
+        for (int i = 0; i < mRemarkDetailListFromServer.size(); i++) {
                             CheckBox box=new CheckBox(this);
             box.setText(remarkDetailBeanList.get(i).SMETERMARKNAME);
             mActivityRemarkDetailBinding.llSelectorRemark.addView(box);
@@ -169,8 +163,6 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
                 for (RemarkDetailBean remarkDetailBean : remarkDetailBeanList) {
                     setRemarkDetailItem(remarkDetailBean);//添加备注详情的列表数据
                 }
-
-
             }
 
 
@@ -191,10 +183,9 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
                 String text = checkBox.getText().toString();
                 OthersUtil.ToastMsg(getApplicationContext(),text);
                 if(isChecked){
-                    mRemarkDetailBeanList.add(remarkDetailBean);
+                    mRemarkDetailListFromServer.add(remarkDetailBean);
                 }
 //                buttonView.setChecked(false);
-
 
             }
         });

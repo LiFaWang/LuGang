@@ -30,12 +30,24 @@
             card_view:cardElevation="5dp"
             card_view:contentPadding="8dp">
 
-            <ListView
-                android:id="@+id/lvClothTypeList"
+            <!--<ListView-->
+                <!--android:id="@+id/lvClothTypeList"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="320dp"-->
+                <!--android:divider="@null">-->
+            <!--</ListView>-->
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:divider="@null">
-            </ListView>
+                android:layout_height="320dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llClothTypeList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+            </ScrollView>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -46,6 +58,7 @@
                 android:paddingRight="5dp">
 
                 <TextView
+                    android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"

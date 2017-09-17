@@ -9,7 +9,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
 import huansi.net.qianjingapp.utils.OthersUtil;
 import lugang.app.huansi.net.greendao.db.RemarkDetail;
 import lugang.app.huansi.net.lugang.R;
-import lugang.app.huansi.net.lugang.adapter.ClothTypeAdapter;
 import lugang.app.huansi.net.lugang.bean.MeasureCustomBean;
 import lugang.app.huansi.net.lugang.databinding.ActivityMeasureCustomBinding;
 import lugang.app.huansi.net.lugang.manager.DBManager;
@@ -42,7 +42,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
     private ActivityMeasureCustomBinding mActivityMeasureCustomBinding;
 //    private MeasureCustomViewPagerAdapter measureCustomViewPagerAdapter;
-    private ClothTypeAdapter lvClothTypeAdapter;
+//    private ClothTypeAdapter lvClothTypeAdapter;
     private List<List<MeasureCustomBean>> mMeasureCustomLists;
     DBManager dbManager = DBManager.getInstance(this);
 
@@ -62,17 +62,16 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         final String iid = intent.getStringExtra("IID");
         mActivityMeasureCustomBinding.customName.setText(sdepartmentname+sperson);
         getClothStyle();
-        List<RemarkDetail> remarkDetails = dbManager.queryRemarkDetailList();
-        final String isdstyletypemstid = remarkDetails.get(0).getIsdstyletypemstid();
+
         mActivityMeasureCustomBinding.btnSaveMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveMeasure(ugu_id,iid,isdstyletypemstid);//保存录入信息
+                saveMeasure(ugu_id,iid);//保存录入信息
             }
         });
     }
     //保存录入信息
-    private void saveMeasure(final String uHrEmployeeGUID, final String isdOrderMeterDtlid, final String isdstyletypemstid) {
+    private void saveMeasure(final String uHrEmployeeGUID, final String isdOrderMeterDtlid) {
        OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
@@ -92,11 +91,17 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                               .append(";");
                                     }
                                 }
-                                sbStr.append("EXEC spappMeasureSaveData ")
-                                     .append("@iIndex=0,@uHrEmployeeGUID='").append(uHrEmployeeGUID+"'")
-                                     .append(",@isdOrderMeterDtlid=").append(isdOrderMeterDtlid)
-                                     .append(",@isdMeterMarkDtlid=").append(isdstyletypemstid)
-                                     .append("; ");
+                                List<RemarkDetail> remarkDetails = dbManager.queryRemarkDetailList();
+                                for (int i = 0; i <remarkDetails.size() ; i++) {
+                                    String isdstyletypemstid = remarkDetails.get(i).getIsdstyletypemstid();
+                                    sbStr.append("EXEC spappMeasureSaveData ")
+                                            .append("@iIndex=1,@uHrEmployeeGUID='").append(uHrEmployeeGUID+"'")
+                                            .append(",@isdOrderMeterDtlid=").append(isdOrderMeterDtlid)
+                                            .append(",@isdMeterMarkDtlid=").append(isdstyletypemstid)
+                                            .append("; ");
+
+                                }
+
                                 return NewRxjavaWebUtils.getJsonData(getApplicationContext(),CUS_SERVICE,
                                         sbStr.toString(),"", MeasureCustomBean.class.getName(),true,
                                         "保存出错");
@@ -108,7 +113,6 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     public void success(HsWebInfo hsWebInfo) {
                         finish();
                         OthersUtil.ToastMsg(MeasureCustomActivity.this,"上传服务器成功");
-
                     }
                 });
 
@@ -154,7 +158,6 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                             mMeasureCustomLists.add( subList);
                         }
                         setMeasureCustomItemDate(mMeasureCustomLists);//每个款式要测量的数据
-                        lvClothTypeAdapter.notifyDataSetChanged();
 
 
 
@@ -167,17 +170,32 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
     /**
      * 每个款式要测量的数据
-     * @param measureCustomBean
+     * @param measureCustomBeanList
      */
-    private void setMeasureCustomItemDate(final List<List<MeasureCustomBean>> measureCustomBean) {
+    private void setMeasureCustomItemDate(final List<List<MeasureCustomBean>> measureCustomBeanList) {
 
         LayoutInflater layoutInflater = getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.activity_measure_detial, null);
         TextView tvClothStyle = (TextView) view.findViewById(R.id.tvClothStyle);
-       ListView lvClothTypeList = (ListView) view.findViewById(R.id.lvClothTypeList);
-        tvClothStyle.setText(measureCustomBean.get(0).get(0).SVALUEGROUP);
-        lvClothTypeAdapter=new ClothTypeAdapter(measureCustomBean,this);
-        lvClothTypeList.setAdapter(lvClothTypeAdapter);
+//       ListView lvClothTypeList = (ListView) view.findViewById(R.id.lvClothTypeList);
+        tvClothStyle.setText(measureCustomBeanList.get(0).get(0).SVALUEGROUP);
+        for (int i = 0; i <measureCustomBeanList.size() ; i++) {
+            List<MeasureCustomBean> measureBeanList = measureCustomBeanList.get(i);
+            for (int j = 0; j < measureBeanList.size(); j++) {
+                LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.llClothTypeList);
+                View convertView = LinearLayout.inflate(this, R.layout.ll_parameter, null);
+                for (MeasureCustomBean measureCustom : measureBeanList) {
+                    TextView tvParameter = (TextView) convertView.findViewById(R.id.tvParameter);
+                    String smetername = measureCustom.SMETERNAME;
+                    tvParameter.setText(smetername);
+                    EditText editText = (EditText) convertView.findViewById(R.id.etParameter);
+
+                }
+                linearLayout.addView(convertView);
+            }
+
+        }
+
 
         mActivityMeasureCustomBinding.llCloth.setGravity(Gravity.CENTER_HORIZONTAL);
         WindowManager wm = this.getWindowManager();
@@ -190,13 +208,10 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Intent intent=new Intent(MeasureCustomActivity.this,RemarkDetailActivity.class);
-                intent.putExtra("ISDSTYLETYPEMSTID", measureCustomBean.get(0).get(0).ISDSTYLETYPEMSTID);
+                intent.putExtra("ISDSTYLETYPEMSTID", measureCustomBeanList.get(0).get(0).ISDSTYLETYPEMSTID);
                 startActivity(intent);
-
             }
         });
-
-
 
     }
 
