@@ -31,19 +31,20 @@
             card_view:contentPadding="8dp">
 
             <!--<ListView-->
-                <!--android:id="@+id/lvClothTypeList"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="320dp"-->
-                <!--android:divider="@null">-->
+            <!--android:id="@+id/lvClothTypeList"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="320dp"-->
+            <!--android:divider="@null">-->
             <!--</ListView>-->
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="320dp">
+
                 <LinearLayout
-                    android:orientation="vertical"
                     android:id="@+id/llClothTypeList"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                 </LinearLayout>
             </ScrollView>

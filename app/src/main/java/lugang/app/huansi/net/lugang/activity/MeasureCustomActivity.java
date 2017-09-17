@@ -25,7 +25,7 @@ import huansi.net.qianjingapp.entity.WsEntity;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
 import huansi.net.qianjingapp.utils.OthersUtil;
-import lugang.app.huansi.net.greendao.db.RemarkDetail;
+import lugang.app.huansi.net.greendao.db.RemarkDetailBeanDB;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.bean.MeasureCustomBean;
 import lugang.app.huansi.net.lugang.databinding.ActivityMeasureCustomBinding;
@@ -91,9 +91,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                               .append(";");
                                     }
                                 }
-                                List<RemarkDetail> remarkDetails = dbManager.queryRemarkDetailList();
-                                for (int i = 0; i <remarkDetails.size() ; i++) {
-                                    String isdstyletypemstid = remarkDetails.get(i).getIsdstyletypemstid();
+                                List<RemarkDetailBeanDB> remarkDetailFromDBs = dbManager.queryRemarkDetailList();
+                                for (int i = 0; i < remarkDetailFromDBs.size() ; i++) {
+                                    String isdstyletypemstid = remarkDetailFromDBs.get(i).getIsdstyletypemstid();
                                     sbStr.append("EXEC spappMeasureSaveData ")
                                             .append("@iIndex=1,@uHrEmployeeGUID='").append(uHrEmployeeGUID+"'")
                                             .append(",@isdOrderMeterDtlid=").append(isdOrderMeterDtlid)

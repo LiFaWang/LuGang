@@ -146,7 +146,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llSelectorRemark"
+                android:id="@+id/llSelectedRemark"
                 android:background="@drawable/bader"
                 android:padding="5dp"
                 android:gravity="center_horizontal"

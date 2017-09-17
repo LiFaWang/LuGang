@@ -9,8 +9,8 @@ import java.util.List;
 
 import lugang.app.huansi.net.greendao.db.DaoMaster;
 import lugang.app.huansi.net.greendao.db.DaoSession;
-import lugang.app.huansi.net.greendao.db.RemarkDetail;
-import lugang.app.huansi.net.greendao.db.RemarkDetailDao;
+import lugang.app.huansi.net.greendao.db.RemarkDetailBeanDB;
+import lugang.app.huansi.net.greendao.db.RemarkDetailBeanDBDao;
 
 /**
  * Created by Tony on 2017/8/3.
@@ -67,73 +67,72 @@ public class DBManager {
     /**
      * 插入一条记录
      *
-     * @param remarkDetail
+     * @param remarkDetailFromDB
      */
-    public void insertRemarkDetail(RemarkDetail remarkDetail) {
+    public void insertRemarkDetail(RemarkDetailBeanDB remarkDetailFromDB) {
         DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
         DaoSession daoSession = daoMaster.newSession();
-        RemarkDetailDao remarkDetailDao = daoSession.getRemarkDetailDao();
-        remarkDetailDao.insert(remarkDetail);
+        RemarkDetailBeanDBDao remarkDetailDao = daoSession.getRemarkDetailBeanDBDao();
+        remarkDetailDao.insert(remarkDetailFromDB);
     }
 
     /**
      * 插入用户集合
      *
-     * @param remarkDetails
+     * @param remarkDetailFromDBs
      */
-    public void insertRemarkDetailList(List<RemarkDetail> remarkDetails) {
-        if (remarkDetails == null || remarkDetails.isEmpty()) {
+    public void insertRemarkDetailList(List<RemarkDetailBeanDB> remarkDetailFromDBs) {
+        if (remarkDetailFromDBs == null || remarkDetailFromDBs.isEmpty()) {
             return;
         }
         DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
         DaoSession daoSession = daoMaster.newSession();
-        RemarkDetailDao remarkDetailDao = daoSession.getRemarkDetailDao();
-        remarkDetailDao.insertInTx(remarkDetails);
+        RemarkDetailBeanDBDao remarkDetailDao = daoSession.getRemarkDetailBeanDBDao();
+        remarkDetailDao.insertInTx(remarkDetailFromDBs);
     }
     /**
      * 删除一条记录
      *
-     * @param remarkDetail
+     * @param remarkDetailFromDB
      */
-    public void deleteRemarkDetail(RemarkDetail remarkDetail) {
+    public void deleteRemarkDetail(RemarkDetailBeanDB remarkDetailFromDB) {
         DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
         DaoSession daoSession = daoMaster.newSession();
-        RemarkDetailDao remarkDetailDao = daoSession.getRemarkDetailDao();
-        remarkDetailDao.delete(remarkDetail);
+        RemarkDetailBeanDBDao remarkDetailDao = daoSession.getRemarkDetailBeanDBDao();
+        remarkDetailDao.delete(remarkDetailFromDB);
     }
     /**
      * 更新一条记录
      *
-     * @param remarkDetail
+     * @param remarkDetailFromDB
      */
-    public void updateRemarkDetail(RemarkDetail remarkDetail) {
+    public void updateRemarkDetail(RemarkDetailBeanDB remarkDetailFromDB) {
         DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
         DaoSession daoSession = daoMaster.newSession();
-        RemarkDetailDao remarkDetailDao = daoSession.getRemarkDetailDao();
-        remarkDetailDao.delete(remarkDetail);
+        RemarkDetailBeanDBDao remarkDetailDao = daoSession.getRemarkDetailBeanDBDao();
+        remarkDetailDao.delete(remarkDetailFromDB);
     }
     /**
      * 查询用户列表
      */
-    public List<RemarkDetail> queryRemarkDetailList() {
+    public List<RemarkDetailBeanDB> queryRemarkDetailList() {
         DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
         DaoSession daoSession = daoMaster.newSession();
-        RemarkDetailDao remarkDetailDao = daoSession.getRemarkDetailDao();
-        QueryBuilder<RemarkDetail> qb = remarkDetailDao.queryBuilder();
-        List<RemarkDetail> list = qb.list();
-        return list;
+        RemarkDetailBeanDBDao remarkDetailDao = daoSession.getRemarkDetailBeanDBDao();
+        QueryBuilder<RemarkDetailBeanDB> qb = remarkDetailDao.queryBuilder();
+        return qb.list();
     }
 
     /**
      * 查询用户列表
      */
-    public List<RemarkDetail> queryRemarkDetailList(int age) {
+    public List<RemarkDetailBeanDB> queryRemarkDetailList(int age) {
         DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
         DaoSession daoSession = daoMaster.newSession();
-        RemarkDetailDao remarkDetailDao = daoSession.getRemarkDetailDao();
-        QueryBuilder<RemarkDetail> qb = remarkDetailDao.queryBuilder();
-//        qb.where(RemarkDetail.Properties.Name.gt(name)).orderAsc(RemarkDetail.Properties.Name);
-        List<RemarkDetail> list = qb.list();
+        RemarkDetailBeanDBDao remarkDetailDao = daoSession.getRemarkDetailBeanDBDao();
+        QueryBuilder<RemarkDetailBeanDB> qb = remarkDetailDao.queryBuilder();
+//        qb.where(RemarkDetailFromDB.Properties.Name.gt(name)).orderAsc(RemarkDetailFromDB.Properties.Name);
+        List<RemarkDetailBeanDB> list = qb.list();
         return list;
     }
 
