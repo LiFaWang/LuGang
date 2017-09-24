@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.github.gcacace.signaturepad.views.SignaturePad;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,25 +61,6 @@ public class CustomConfirmFragment extends BaseFragment {
             }
         });
 
-        mConfirmFragmentBinding.signaturePad.setMinWidth((float) 0.5);
-        mConfirmFragmentBinding.signaturePad.setMaxWidth(3);
-        mConfirmFragmentBinding.signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
-            @Override
-            public void onStartSigning() {
-
-            }
-
-            @Override
-            public void onSigned() {
-
-            }
-
-            @Override
-            public void onClear() {
-
-
-            }
-        });
 
 
     }
@@ -99,6 +78,7 @@ public class CustomConfirmFragment extends BaseFragment {
      */
     private void reqeustConfirmPicture(final String userGUID) {
         OthersUtil.showLoadDialog(mDialog);
+        mConfirmPictureBeanList.clear();
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
