@@ -29,10 +29,10 @@ import huansi.net.qianjingapp.entity.WsData;
  "ISEQ": "2"
  },
  {
- "ISDSTYLETYPEMSTID": "1006",//分组
+ "ISDSTYLETYPEMSTID": "1007",//分组
  "SBILLNO": "001",
  "SVALUECODE": "",
- "SVALUEGROUP": "西服",
+ "SVALUEGROUP": "chenyi",
  "SDSTYLETYPEITEMDTLID": "1003",
  "SMETERCODE": "00103",
  "SMETERNAME": "袖长",
@@ -53,16 +53,16 @@ import huansi.net.qianjingapp.entity.WsData;
  */
 
 public class MeasureCustomBean extends WsData {
-    public String ISDSTYLETYPEMSTID="";
+    public String ISDSTYLETYPEMSTID="";//款式ID
     public String SBILLNO="";
     public String SVALUECODE="";
-    public String SVALUEGROUP="";
-    public String SDSTYLETYPEITEMDTLID="";
+    public String SVALUEGROUP="";//衣服名字
+    public String SDSTYLETYPEITEMDTLID="";//款式明细ID
     public String SMETERCODE="";
     public String SMETERNAME="";
-    public String ISEQ="";
+    public String ISEQ="0";
 
-    public String SIZE="";//测量的数据
+    public String ISMETERSIZE="0";//测量的数据
 
 
 }

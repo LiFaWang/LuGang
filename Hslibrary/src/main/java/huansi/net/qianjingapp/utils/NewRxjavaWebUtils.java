@@ -164,7 +164,7 @@ public class NewRxjavaWebUtils {
         if(!NetUtil.isNetworkAvailable(context)) {
             json=context.getResources().getString(R.string.net_no_active);
         }else {
-            WebServices webServices = new WebServices(webServiceType);
+            WebServices webServices = new WebServices(webServiceType,context);
             json = webServices.getData(functionName, paramMap);
         }
         if (errorBySearch == null) errorBySearch = "";

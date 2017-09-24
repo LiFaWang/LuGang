@@ -1,5 +1,7 @@
 package huansi.net.qianjingapp.utils;
 
+import android.content.Context;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -9,8 +11,9 @@ import java.util.Map;
 
 
 public class WebServices {
-    public static final String CUSTOMER_SERVICE_IP="http://192.168.23.6/RLFP/APPWS.asmx";
+//    public static final String CUSTOMER_SERVICE_IP="http://192.168.23.6/RLFP/APPWS.asmx";
 //    public static final String CUSTOMER_SERVICE_IP="http://192.168.0.54/RLFP/APPWS.asmx";
+    public static final String CUSTOMER_SERVICE_IP="http://192.168.0.54/RLFP/APPWS.asmx";
     public static final String CUS_SERVICE_CHECK_CODE="4A8D54D1-C7A1-48DC-AD7E-8CA1686FBF85";
     //环思的服务器ip
 
@@ -33,11 +36,13 @@ public class WebServices {
 	 *
 	 * @param serviceTpe
      */
-	public WebServices(WebServiceType serviceTpe) {
+	public WebServices(WebServiceType serviceTpe,Context context) {
 		switch (serviceTpe){
 			//环思服务器
 			case CUS_SERVICE:
-				FEndPoint  = CUSTOMER_SERVICE_IP;
+				String ip = SPUtils.readMacIp(context);
+				FEndPoint  = "http://"+ip+"/RLFP/APPWS.asmx";
+//				FEndPoint  = CUSTOMER_SERVICE_IP;
 				FCheckCode = CUS_SERVICE_CHECK_CODE;
 				break;
 			case HS_SERVICE_LATER:

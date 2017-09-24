@@ -14,13 +14,16 @@ import huansi.net.qianjingapp.fragment.BaseFragment;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
 import huansi.net.qianjingapp.utils.OthersUtil;
+import huansi.net.qianjingapp.utils.SPHelper;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.activity.MeasureCustomActivity;
 import lugang.app.huansi.net.lugang.bean.FinishMeasureBean;
+import lugang.app.huansi.net.lugang.constant.Constant;
 import lugang.app.huansi.net.lugang.databinding.FinishMeasureFragmentBinding;
 import rx.functions.Func1;
 
+import static huansi.net.qianjingapp.utils.SPHelper.USER_GUID;
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
 
 /**
@@ -42,16 +45,25 @@ public class FinishMeasureFragment extends BaseFragment{
         mFinishMeasureFragmentBinding= (FinishMeasureFragmentBinding) viewDataBinding;
 //
         mDialog = new LoadProgressDialog(getActivity());
-        Intent intent = getActivity().getIntent();
-        String suserid = intent.getStringExtra("SUSERID");
-        setFinishMeasure(suserid);
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent intent = getActivity().getIntent();
+        String suserid = intent.getStringExtra(Constant.SUSERID);
+        final String userGUID= SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
+
+        setFinishMeasure(userGUID);
+    }
+
     /**
-     * 联网获取待量体人数据
+     * 联网获取已量体人数据
      */
-    private void setFinishMeasure(final String userNo) {
+    private void setFinishMeasure(final String userGUID) {
         OthersUtil.showLoadDialog(mDialog);
+        mFinishMeasureFragmentBinding.llCustomer.removeAllViews();
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
@@ -59,7 +71,7 @@ public class FinishMeasureFragment extends BaseFragment{
                                 //已量体
                                 return NewRxjavaWebUtils.getJsonData(getContext(), CUS_SERVICE,
                                         "spappMeasureOrderList"
-                                        , "iIndex=1" + ",sUserNo=" + userNo,
+                                        , "iIndex=1" + ",uUserGUID=" + userGUID,
                                         FinishMeasureBean.class.getName(),
                                         true, "");
                             }
@@ -78,11 +90,9 @@ public class FinishMeasureFragment extends BaseFragment{
                         }
                     }
                 });
-
-
     }
     private void setMeasureData(final FinishMeasureBean finishMeasureBean) {
-        View view = View.inflate(getActivity(), R.layout.start_measure_item, null);
+        View view = View.inflate(getActivity(), R.layout.finish_measure_item, null);
         TextView customerName = (TextView) view.findViewById(R.id.customerName);
         TextView areaName = (TextView) view.findViewById(R.id.areaName);
         TextView cityName = (TextView) view.findViewById(R.id.cityName);
@@ -100,12 +110,14 @@ public class FinishMeasureFragment extends BaseFragment{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MeasureCustomActivity.class);
-                intent.putExtra("SPERSON", finishMeasureBean.SPERSON);
-                intent.putExtra("SDEPARTMENTNAME", finishMeasureBean.SDEPARTMENTNAME);
+                intent.putExtra(Constant.SPERSON, finishMeasureBean.SPERSON);
+                intent.putExtra(Constant.SDEPARTMENTNAME, finishMeasureBean.SDEPARTMENTNAME);
+                intent.putExtra(Constant.IID,finishMeasureBean.IID);
+                intent.putExtra(Constant.SVALUENAME,finishMeasureBean.SVALUENAME);
+                intent.putExtra(Constant.STATUS,finishMeasureBean.STATUS);
                 startActivity(intent);
             }
         });
         mFinishMeasureFragmentBinding.llCustomer.addView(view);
-
     }
 }

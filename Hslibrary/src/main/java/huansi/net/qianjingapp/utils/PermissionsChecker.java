@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
  */
 public class PermissionsChecker {
     private final Context mContext;
-
     public PermissionsChecker(Context context) {
         mContext = context.getApplicationContext();
     }

@@ -59,7 +59,9 @@ public class ScreenShotActivity extends Activity {
             case REQUEST_MEDIA_PROJECTION: {
                 finish(); // don't forget finish activity
                 if (resultCode == -1 && data != null) {
-                    Shotter shotter=new Shotter(ScreenShotActivity.this,data);
+                    Intent intent = getIntent();
+                    String orderId = intent.getStringExtra("orderId");
+                    Shotter shotter=new Shotter(ScreenShotActivity.this,data,orderId);
                     shotter.startScreenShot(new Shotter.OnShotListener() {
 
                         @Override

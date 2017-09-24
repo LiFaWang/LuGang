@@ -6,15 +6,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 public class SPHelper {
-
-	public static final String POPULAR="流行趋势";
-	public static final String JOB="行业信息";
-	public static final String TRAIN="培训资料";
-	public static final String SPREAD="推广引导";
+	public static final String USER_GUID="ugu_id";//用户的GUID
 
 
 	public static void saveLocalData(Context context, String key, Object value,String  className) {
-		SharedPreferences preferences = context.getSharedPreferences("CCApp", Activity.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences("user_info", Activity.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 
 		if (className.equalsIgnoreCase(Integer.class.getName())) {
@@ -28,11 +24,11 @@ public class SPHelper {
 		} else if (className.equalsIgnoreCase(Long.class.getName())) {
 			editor.putLong(key, (Long) value);
 		}
-		editor.commit();
+		editor.apply();
 	}
 
 	public static Object getLocalData(Context context, String key,String  className,Object defaultValue) {
-		SharedPreferences preferences = context.getSharedPreferences("CCApp", Activity.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences("user_info", Activity.MODE_PRIVATE);
 		if(className.equalsIgnoreCase(Integer.class.getName())) return preferences.getInt(key, (Integer) defaultValue);
 		if(className.equalsIgnoreCase(String.class.getName())) return preferences.getString(key, defaultValue.toString());
 		if(className.equalsIgnoreCase(Boolean.class.getName())) return preferences.getBoolean(key, (Boolean) defaultValue);

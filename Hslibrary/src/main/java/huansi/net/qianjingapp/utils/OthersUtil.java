@@ -10,6 +10,8 @@ import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.ByteArrayOutputStream;
 
 import huansi.net.qianjingapp.R;
@@ -152,29 +154,29 @@ public class OthersUtil {
             return false;
         }
     }
-//
-//    /**
-//     *  注册Event
-//     * @param o
-//     */
-//    public static void registerEvent(Object o){
-//        Log.i("shanzn","registerEvent====>"+ EventBus.getDefault().isRegistered(o)+"===>"+o.toString());
-//        if(!EventBus.getDefault().isRegistered(o)){
-//            EventBus.getDefault().register(o);
-//        }
-//    }
-//
-//
-//    /**
-//     *  取消注册Event
-//     * @param o
-//     */
-//    public static void unregisterEvent(Object o){
-//        Log.i("shanzn","unregisterEvent====>"+EventBus.getDefault().isRegistered(o)+"===>"+o.toString());
-//        if(EventBus.getDefault().isRegistered(o)){
-//            EventBus.getDefault().unregister(o);
-//        }
-//    }
+
+    /**
+     *  注册Event
+     * @param o
+     */
+    public static void registerEvent(Object o){
+        Log.i("shanzn","registerEvent====>"+ EventBus.getDefault().isRegistered(o)+"===>"+o.toString());
+        if(!EventBus.getDefault().isRegistered(o)){
+            EventBus.getDefault().register(o);
+        }
+    }
+
+
+    /**
+     *  取消注册Event
+     * @param o
+     */
+    public static void unregisterEvent(Object o){
+        Log.i("shanzn","unregisterEvent====>"+EventBus.getDefault().isRegistered(o)+"===>"+o.toString());
+        if(EventBus.getDefault().isRegistered(o)){
+            EventBus.getDefault().unregister(o);
+        }
+    }
     /**
      * 初始化下拉刷新
      * @param ptrFrameLayout

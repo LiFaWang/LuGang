@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/tvParameter"
         android:gravity="center"
-        android:background="#FF45C4FF"
+        android:background="#3C4F76"
         android:textSize="18sp"
         android:text="衣长"
         android:textColor="#fff"
@@ -22,10 +22,11 @@
         android:id="@+id/etParameter"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:inputType="number"
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
         android:textColor="#fff"
-        android:background="#FF45C4FF"
+        android:background="#3C4F76"
         android:gravity="center"
         android:textSize="18sp"/>
 

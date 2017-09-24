@@ -15,7 +15,9 @@ import huansi.net.qianjingapp.utils.OthersUtil;
 import huansi.net.qianjingapp.utils.PermissionsChecker;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.bean.LoginBean;
+import lugang.app.huansi.net.lugang.constant.Constant;
 import lugang.app.huansi.net.lugang.databinding.ActivityLoginBinding;
+import lugang.app.huansi.net.util.SPUtils;
 import rx.functions.Func1;
 
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
@@ -36,22 +38,19 @@ public class LoginActivity extends NotWebBaseActivity {
 
         mActivityLoginBinding = (ActivityLoginBinding) viewDataBinding;
         mChecker = new PermissionsChecker(this);
-        LoginBean loginBean = readUser();
-        if (!TextUtils.isEmpty(loginBean.SUSERID)) jumpToMain(loginBean.SUSERID);
         mActivityLoginBinding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String ip = mActivityLoginBinding.etIpNumber.getText().toString().trim();
                 String number = mActivityLoginBinding.etLoginNumber.getText().toString().trim();
                 String pwd = mActivityLoginBinding.etLoginPwd.getText().toString().trim();
-                if (TextUtils.isEmpty(number) && TextUtils.isEmpty(pwd)) {
+                SPUtils.saveMacIp(LoginActivity.this,ip);
+                if (TextUtils.isEmpty(number) || TextUtils.isEmpty(pwd)) {
                     OthersUtil.ToastMsg(LoginActivity.this, "工号或密码不能为空");
                 }
-                setLoginInfo(number, pwd);
-
+                login(number, pwd);
             }
         });
-
-
     }
 
     @Override
@@ -60,13 +59,12 @@ public class LoginActivity extends NotWebBaseActivity {
         if (!mChecker.lacksPermissions(PERMISSIONS)) {
             PermissionsActivity.startActivityForResult(this, 0, PERMISSIONS);
         }
-
     }
 
     /**
      * 登录
      */
-    private void setLoginInfo(final String sUserID, final String sPassword) {
+    private void login(final String sUserID, final String sPassword) {
         OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
@@ -77,28 +75,23 @@ public class LoginActivity extends NotWebBaseActivity {
                                         "spappMeasureUserLogin",
                                         "sUserID=" + sUserID + ",sPassword=" + sPassword,
                                         LoginBean.class.getName(),
-                                        true, "没有找到");
+                                        true, "请检查IP输入是否正确或者没有返回数据");
                             }
                         })
                 , this, mDialog, new SimpleHsWeb() {
-
-
                     @Override
                     public void success(HsWebInfo hsWebInfo) {
                         LoginBean loginBean = (LoginBean) hsWebInfo.wsData.LISTWSDATA.get(0);
                         String mSuserid = loginBean.SUSERID;
                         saveUser(loginBean);
                         jumpToMain(mSuserid);
-
                     }
                 });
-
     }
 
     private void jumpToMain(String mSuserid) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra("SUSERID", mSuserid);
-
+        intent.putExtra(Constant.SUSERID, mSuserid);
         startActivity(intent);
         finish();
     }
@@ -113,7 +106,6 @@ public class LoginActivity extends NotWebBaseActivity {
         editor.putString("user_id", user.SUSERID);
         editor.apply();//必须提交，否则保存不成功
     }
-
     //读取用户信息
     public LoginBean readUser() {
         SharedPreferences sp = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
@@ -123,5 +115,4 @@ public class LoginActivity extends NotWebBaseActivity {
         loginBean.UGUID=sp.getString("ugu_id", "");
         return loginBean;
     }
-
 }

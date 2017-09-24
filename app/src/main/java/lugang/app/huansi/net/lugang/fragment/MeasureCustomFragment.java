@@ -30,6 +30,7 @@ public class MeasureCustomFragment extends BaseFragment {
         mMeasureCustomFragmentBinding = (MeasureCustomFragmentBinding) viewDataBinding;
         //切换测量和未测量数据
         mMeasureCustomFragmentBinding.vpMeasureCustom.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
+
             @Override
             public Fragment getItem(int position) {
                 if (position==0) return  new StartMeasureFragment ();
@@ -40,6 +41,7 @@ public class MeasureCustomFragment extends BaseFragment {
             public int getCount() {
                 return 2;
             }
+
         });
         mMeasureCustomFragmentBinding.startMeasure.setChecked(true);
         mMeasureCustomFragmentBinding.vpMeasureCustom.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
@@ -59,14 +61,8 @@ public class MeasureCustomFragment extends BaseFragment {
         mMeasureCustomFragmentBinding.finishMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMeasureCustomFragmentBinding.vpMeasureCustom.setCurrentItem(1);
+            mMeasureCustomFragmentBinding.vpMeasureCustom.setCurrentItem(1);
             }
         });
-
     }
-
-
-
-
-
 }

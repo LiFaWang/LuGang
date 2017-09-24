@@ -7,7 +7,7 @@
     >
     <TextView
         android:id="@+id/customerName"
-        android:background="#FF45C4FF"
+        android:background="#AB9F9D"
         android:gravity="center"
         android:text="**银行"
         android:textSize="16sp"
@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         android:layout_margin="5dp"
         android:layout_weight="1"
-        android:background="#FF45C4FF"
+        android:background="#AB9F9D"
         android:gravity="center"
         android:text="江苏省"
         android:textColor="#fff"
@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/cityName"
-        android:background="#FF45C4FF"
+        android:background="#AB9F9D"
         android:gravity="center"
         android:layout_margin="5dp"
         android:text="苏州市"
@@ -43,7 +43,7 @@
     <TextView
         android:id="@+id/countyName"
         android:layout_margin="5dp"
-        android:background="#FF45C4FF"
+        android:background="#AB9F9D"
         android:gravity="center"
         android:text="张家界市"
         android:textSize="16sp"
@@ -54,7 +54,7 @@
     <TextView
         android:id="@+id/departmentName"
         android:layout_margin="5dp"
-        android:background="#FF45C4FF"
+        android:background="#AB9F9D"
         android:gravity="center"
         android:text="业务部"
         android:textColor="#fff"
@@ -65,7 +65,7 @@
     <TextView
         android:id="@+id/person"
         android:layout_margin="5dp"
-        android:background="#FF45C4FF"
+        android:background="#AB9F9D"
         android:gravity="center"
         android:text="张三"
         android:textSize="16sp"

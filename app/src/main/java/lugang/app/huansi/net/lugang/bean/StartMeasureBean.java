@@ -19,6 +19,7 @@ public class StartMeasureBean extends WsData {
  "SCUSTOMERNAME": "A银行",
  "SDEPARTMENTNAME": "业务部",
  "SPERSON": "张三"
+ "SVALUENAME":""
  */
     public String IID="";
     public String ILISTNO="";
@@ -28,4 +29,5 @@ public class StartMeasureBean extends WsData {
     public String SCUSTOMERNAME="";
     public String SDEPARTMENTNAME="";
     public String SPERSON="";
+    public String SVALUENAME="";//款式的ID
 }

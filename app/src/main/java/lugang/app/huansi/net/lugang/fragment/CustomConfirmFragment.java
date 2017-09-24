@@ -2,13 +2,30 @@ package lugang.app.huansi.net.lugang.fragment;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.AdapterView;
 
-import com.androidyuan.lib.screenshot.ScreenShotActivity;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import huansi.net.qianjingapp.entity.HsWebInfo;
+import huansi.net.qianjingapp.entity.WsEntity;
 import huansi.net.qianjingapp.fragment.BaseFragment;
+import huansi.net.qianjingapp.imp.SimpleHsWeb;
+import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
+import huansi.net.qianjingapp.utils.OthersUtil;
+import huansi.net.qianjingapp.utils.SPHelper;
+import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
-import lugang.app.huansi.net.lugang.databinding.CustomConfirmFragmentBinding;
+import lugang.app.huansi.net.lugang.activity.ConfirmPictureActivity;
+import lugang.app.huansi.net.lugang.adapter.ConfirmListAdapter;
+import lugang.app.huansi.net.lugang.bean.ConfirmPictureBean;
+import lugang.app.huansi.net.lugang.databinding.ConfirmFragmentBinding;
+import rx.functions.Func1;
+
+import static huansi.net.qianjingapp.utils.SPHelper.USER_GUID;
+import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
 
 /**
  * Created by Tony on 2017/9/9.
@@ -17,15 +34,35 @@ import lugang.app.huansi.net.lugang.databinding.CustomConfirmFragmentBinding;
 
 public class CustomConfirmFragment extends BaseFragment {
 
-    private CustomConfirmFragmentBinding mConfirmFragmentBinding;
+    private ConfirmFragmentBinding mConfirmFragmentBinding;
+    protected LoadProgressDialog mDialog;
+    private List<ConfirmPictureBean> mConfirmPictureBeanList;//确认表单列表数据集合
+    private ConfirmListAdapter mConfirmListAdapter;//确认表单列表数据集合的adapter
 
     @Override
     public int getLayout() {
-        return R.layout.custom_confirm_fragment;
+        return R.layout.confirm_fragment;
     }
     @Override
     public void init() {
-        mConfirmFragmentBinding = (CustomConfirmFragmentBinding) viewDataBinding;
+        mConfirmFragmentBinding = (ConfirmFragmentBinding) viewDataBinding;
+        mDialog = new LoadProgressDialog(getActivity());
+        mConfirmPictureBeanList=new ArrayList<>();
+
+        mConfirmListAdapter = new ConfirmListAdapter(mConfirmPictureBeanList,getContext());
+        mConfirmFragmentBinding.lvConfirm.setAdapter(mConfirmListAdapter);
+        mConfirmFragmentBinding.lvConfirm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent =new Intent(getActivity(),ConfirmPictureActivity.class);
+                String iordermetermstid = mConfirmPictureBeanList.get(position).IORDERMETERMSTID;
+                String gpicture = mConfirmPictureBeanList.get(position).SPICTURE;
+                intent.putExtra("iordermetermstid",iordermetermstid);
+                intent.putExtra("gpicture",gpicture);
+                startActivity(intent);
+            }
+        });
+
         mConfirmFragmentBinding.signaturePad.setMinWidth((float) 0.5);
         mConfirmFragmentBinding.signaturePad.setMaxWidth(3);
         mConfirmFragmentBinding.signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
@@ -45,27 +82,46 @@ public class CustomConfirmFragment extends BaseFragment {
 
             }
         });
-        //清除手写
-        mConfirmFragmentBinding.tvReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mConfirmFragmentBinding.signaturePad.clear();
-            }
-        });
-        //截屏并保存为PDF
-        mConfirmFragmentBinding.btnSavePDF.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //截屏
-                startActivity(new Intent(getActivity(), ScreenShotActivity.class));
-                //保存pdf
-
-
-            }
-        });
 
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        final String userGUID= SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
+        reqeustConfirmPicture(userGUID);
+    }
 
+    /**
+     * 联网请求图片
+     * @param userGUID
+     */
+    private void reqeustConfirmPicture(final String userGUID) {
+        OthersUtil.showLoadDialog(mDialog);
+        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
+                        .map(new Func1<String, HsWebInfo>() {
+                            @Override
+                            public HsWebInfo call(String s) {
+                                return NewRxjavaWebUtils.getJsonData(getContext(), CUS_SERVICE,
+                                        "spappMeasureConfirmationList"
+                                        ,  "uUserGUID=" + userGUID,
+                                        ConfirmPictureBean.class.getName(),
+                                        true, "没有取得客户确认函");
+                            }
+                        })
+                , getContext(), mDialog, new SimpleHsWeb() {
+                    @Override
+                    public void success(HsWebInfo hsWebInfo) {
+                        List<WsEntity> listWsdata = hsWebInfo.wsData.LISTWSDATA;
+                        for (int i = 0; i < listWsdata.size(); i++) {
+                            ConfirmPictureBean pictureBean = (ConfirmPictureBean) listWsdata.get(i);
+                            mConfirmPictureBeanList.add(pictureBean);
+                        }
+                        mConfirmListAdapter.notifyDataSetChanged();
+
+                    }
+                });
+
+    }
 }

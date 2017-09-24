@@ -14,13 +14,16 @@ import huansi.net.qianjingapp.fragment.BaseFragment;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
 import huansi.net.qianjingapp.utils.OthersUtil;
+import huansi.net.qianjingapp.utils.SPHelper;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.activity.MeasureCustomActivity;
 import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
+import lugang.app.huansi.net.lugang.constant.Constant;
 import lugang.app.huansi.net.lugang.databinding.StartMeasureFragmentBinding;
 import rx.functions.Func1;
 
+import static huansi.net.qianjingapp.utils.SPHelper.USER_GUID;
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
 
 /**
@@ -44,15 +47,23 @@ public class StartMeasureFragment extends BaseFragment {
         mDialog = new LoadProgressDialog(getActivity());
         mStartMeasureFragmentBinding = (StartMeasureFragmentBinding) viewDataBinding;
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         Intent intent = getActivity().getIntent();
-        String suserid = intent.getStringExtra("SUSERID");
-        setStartMeasure(suserid);
+        String suserid = intent.getStringExtra(Constant.SUSERID);
+        final String userGUID= SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
+
+        setStartMeasure(userGUID);
     }
 
     /**
      * 联网获取待量体人数据
      */
-    private void setStartMeasure(final String userNo) {
+    private void setStartMeasure(final String userGUID) {
         OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
@@ -61,7 +72,7 @@ public class StartMeasureFragment extends BaseFragment {
                                 //待量体
                                 return NewRxjavaWebUtils.getJsonData(getContext(), CUS_SERVICE,
                                         "spappMeasureOrderList"
-                                        , "iIndex=0" + ",sUserNo=" + userNo,
+                                        , "iIndex=0" + ",uUserGUID=" + userGUID,
                                         StartMeasureBean.class.getName(),
                                         true, "");
                             }
@@ -76,11 +87,10 @@ public class StartMeasureFragment extends BaseFragment {
                             startMeasureBeanList.add(startMeasureBean);
 
                         }
+                        mStartMeasureFragmentBinding.llCustomer.removeAllViews();
                         for (StartMeasureBean bean : startMeasureBeanList) {
                             setMeasureData(bean);
                         }
-
-
                     }
                 });
 
@@ -101,18 +111,17 @@ public class StartMeasureFragment extends BaseFragment {
         countyName.setText(startMeasureBean.SCOUNTYNAME);
         departmentName.setText(startMeasureBean.SDEPARTMENTNAME);
         person.setText(startMeasureBean.SPERSON);
-       btnMeasure.setOnClickListener(new View.OnClickListener() {
+        btnMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MeasureCustomActivity.class);
-                intent.putExtra("SPERSON", startMeasureBean.SPERSON);
-                intent.putExtra("SDEPARTMENTNAME", startMeasureBean.SDEPARTMENTNAME);
-                intent.putExtra("IID",startMeasureBean.IID);
+                intent.putExtra(Constant.SPERSON, startMeasureBean.SPERSON);
+                intent.putExtra(Constant.SDEPARTMENTNAME, startMeasureBean.SDEPARTMENTNAME);
+                intent.putExtra(Constant.IID,startMeasureBean.IID);
+                intent.putExtra(Constant.SVALUENAME,startMeasureBean.SVALUENAME);
                 startActivity(intent);
             }
         });
         mStartMeasureFragmentBinding.llCustomer.addView(view);
-
     }
-
 }

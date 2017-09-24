@@ -16,7 +16,6 @@ import android.media.projection.MediaProjectionManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.os.AsyncTaskCompat;
 import android.text.TextUtils;
 
@@ -33,19 +32,15 @@ import java.nio.ByteBuffer;
 public class Shotter {
 
     private final SoftReference<Context> mRefContext;
+    private String mFileName;
     private ImageReader mImageReader;
-
     private MediaProjection mMediaProjection;
     private VirtualDisplay mVirtualDisplay;
-
     private String mLocalUrl = "";
-
     private OnShotListener mOnShotListener;
-
-
-    public Shotter(Context context, Intent data) {
+    public Shotter(Context context, Intent data,String fileName) {
         this.mRefContext = new SoftReference<>(context);
-
+        this.mFileName=fileName;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 
@@ -142,7 +137,8 @@ public class Shotter {
                                 +
                                 "/"
                                 +
-                                SystemClock.currentThreadTimeMillis() + ".png";
+//                                SystemClock.currentThreadTimeMillis() + ".png";
+                                mFileName+ ".png";
                     }
                     fileImage = new File(mLocalUrl);
 

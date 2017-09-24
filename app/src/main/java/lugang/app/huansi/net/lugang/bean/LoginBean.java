@@ -19,7 +19,7 @@ import huansi.net.qianjingapp.entity.WsData;
 
 public class LoginBean extends WsData {
     public String UGUID="";
-    public String SUSERID="";
-    public String SUSERNAME="";
+    public String SUSERID="";//员工的id
+    public String SUSERNAME="";//员工的名字
 
 }

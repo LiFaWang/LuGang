@@ -9,21 +9,41 @@
         android:orientation="vertical">
         <LinearLayout
             android:orientation="horizontal"
+            android:background="@color/colorMainBackground"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:gravity="center"
-                android:textSize="24sp"
-                android:text="江苏鹿港文化股份有限公司量体制作确认函"
+            android:layout_height="80dp">
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:textColor="@color/bt_color"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:text="江苏鹿港文化股份有限公司"
+                    android:textColor="@color/colorMainBackgroundText"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:textSize="30sp"
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:text="    量体制作确认函"
+                    android:textColor="@color/colorMainBackgroundText"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
             <Button
                 android:id="@+id/btnSavePDF"
                 android:textColor="#fff"
+                android:layout_marginRight="20dp"
+                android:textSize="22sp"
+                android:layout_gravity="center"
                 android:background="@drawable/btn_buy_selector"
-                android:text="保存"
+                android:text="保 存"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -33,11 +53,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/table_frame_gray"
             >
-
             <TableRow
                 android:background="@drawable/table_frame_gray"
                 >
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -49,7 +67,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
                     style="@style/customConfirm"
                     android:gravity="center_horizontal"
                     android:text="**银行"/>
@@ -71,28 +89,9 @@
                     android:gravity="center_horizontal"
                     android:text="客户部"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/customConfirm"
-                    android:gravity="center_horizontal"
-                    android:text="量体师"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/customConfirm"
-                    android:gravity="center_horizontal"
-                    android:text="张三"/>
             </TableRow>
-
-
         </TableLayout>
-
         <TableLayout
-
             android:background="@drawable/table_frame_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,38 +115,36 @@
                     android:layout_weight="1"
                     style="@style/customConfirm"
                     android:text="60"/>
+                <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/customConfirm"
+                android:gravity="center_horizontal"
+                android:text="量体师"/>
+
+                <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/customConfirm"
+                android:gravity="center_horizontal"
+                android:text="张三"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/customConfirm"
-
-                    android:text="量体时间"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/customConfirm"
-
-                    android:text="2017年"/>
+                    android:text="时间"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/customConfirm"
+                    android:text="2017年9月16日"/>
 
-                    android:text="5月"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/customConfirm"
-
-                    android:text="5日"/>
             </TableRow>
 
 
@@ -282,7 +279,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/customConfirm"
-                android:text="30"/>
+                android:text="300"/>
         </LinearLayout>
         <TableLayout
             android:layout_width="match_parent"
@@ -299,7 +296,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
+                    android:layout_weight="1"
                     style="@style/customConfirm"
                     android:text="现金结算"/>
             </TableRow>
@@ -317,7 +314,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
+                    android:layout_weight="1"
                     style="@style/customConfirm"
                     android:text="明天继续"/>
             </TableRow>
@@ -328,16 +325,19 @@
                 >
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/customConfirm"
                     android:text="客户对量体师的评价"/>
 
                 <TextView
+                    android:paddingRight="3dp"
+                    android:paddingLeft="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/customConfirm"
-                    android:text="佩戴胸牌："/>
+                    android:text="佩戴胸牌"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -348,23 +348,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="否"/>
-            </TableRow>
-
-            <TableRow
-                android:background="@drawable/table_frame_gray"
-                >
-
                 <TextView
+                    android:paddingRight="3dp"
+                    android:paddingLeft="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/customConfirm"
-                    android:text="客户对量体师的评价"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    style="@style/customConfirm"
-                    android:text="服务态度："/>
+                    android:text="服务态度"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -388,6 +378,7 @@
             </TableRow>
 
 
+
         </TableLayout>
         <TableLayout
             android:background="@drawable/table_frame_gray"
@@ -400,7 +391,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     style="@style/customConfirm"
-                    android:text="备注："/>
+                    android:text="备注"/>
 
                 <EditText
                     style="@style/customConfirm"
@@ -422,17 +413,19 @@
                     android:layout_height="match_parent"
                     style="@style/customConfirm"
                     android:text="客户同意按照以上量体数量制作签字盖章确认："/>
-                <com.github.gcacace.signaturepad.views.SignaturePad
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/signature_pad"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="50dp"
-                    app:penColor="@android:color/black"
-                    />
+                <!--<com.github.gcacace.signaturepad.views.SignaturePad-->
+                    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+                    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                    <!--android:id="@+id/signature_pad"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--app:penColor="@android:color/black"-->
+                    <!--/>-->
                 <TextView
                     android:id="@+id/tvReset"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/customConfirm"
@@ -455,7 +448,7 @@
                     android:layout_height="match_parent"
                     style="@style/customConfirm"
                     android:gravity="center"
-                    android:text="客户联系方式："/>
+                    android:text="客户联系方式"/>
 
                 <EditText
                     style="@style/customConfirm"
@@ -472,7 +465,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     style="@style/customConfirm"
-                    android:text="发货地址："/>
+                    android:text="发货地址"/>
 
                 <TextView
                     style="@style/customConfirm"
@@ -513,6 +506,23 @@
                     android:text="邮箱：347448715@qq.com"/>
             </TableRow>
         </TableLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/ivConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/signature_pad"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                app:penColor="@android:color/black"
+                />
+
+        </FrameLayout>
 
     </LinearLayout>
 

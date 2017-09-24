@@ -26,4 +26,7 @@ public class RemarkDetailBean extends WsData {
     public String IID="";
     public String SMETERMARKCODE="";
     public String SMETERMARKNAME="";
+
+    public boolean isChoose=false;
+    public boolean isAdd=false;//是否添加到已选内容
 }

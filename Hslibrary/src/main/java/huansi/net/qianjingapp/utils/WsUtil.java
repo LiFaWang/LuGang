@@ -25,7 +25,7 @@ public class WsUtil {
                 return context.getResources().getString(R.string.net_no_active);
             }
         }
-        WebServices webServices = new WebServices(webServiceType);
+        WebServices webServices = new WebServices(webServiceType,context);
         Map<String, String> map = new HashMap<>();
         map.put("str", str);
         map.put("sParaStr", sParaStr);

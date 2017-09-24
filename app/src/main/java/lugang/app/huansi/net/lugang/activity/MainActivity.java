@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioGroup;
 
 import huansi.net.qianjingapp.base.NotWebBaseActivity;
-import huansi.net.qianjingapp.utils.OthersUtil;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.databinding.ActivityMainBinding;
 import lugang.app.huansi.net.lugang.fragment.CustomConfirmFragment;
@@ -33,25 +32,21 @@ public class MainActivity  extends NotWebBaseActivity  {
                     case R.id.measureCustom://量体定制
                         hideFragment();
                         fs.show(mMeasureCustomFragment);
-                        OthersUtil.ToastMsg(MainActivity.this,"mMeasureCustomFragment");
                         fs.commitAllowingStateLoss();
                         break;
                     case R.id.taskShow://任务看板
                         hideFragment();
                         fs.show(mTaskShowFragment);
-                        OthersUtil.ToastMsg(MainActivity.this,"mTaskShowFragment");
                         fs.commitAllowingStateLoss();
                         break;
                     case R.id.repairRegister://返修登记
                         hideFragment();
                         fs.show(mRepairRegisterFragment);
-                        OthersUtil.ToastMsg(MainActivity.this,"mRepairRegisterFragment");
                         fs.commitAllowingStateLoss();
                         break;
                     case R.id.customerConfirm://用户确认
                         hideFragment();
                         fs.show(mCustomConfirmFragment);
-                        OthersUtil.ToastMsg(MainActivity.this,"mCustomConfirmFragment");
                         fs.commitAllowingStateLoss();
                         break;
                     default:
@@ -64,6 +59,7 @@ public class MainActivity  extends NotWebBaseActivity  {
         mActivityMainBinding.rgBase.check(R.id.taskShow);
 
     }
+
     private void initFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mMeasureCustomFragment = new MeasureCustomFragment();
