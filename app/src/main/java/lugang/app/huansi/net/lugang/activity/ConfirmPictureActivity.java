@@ -1,6 +1,5 @@
 package lugang.app.huansi.net.lugang.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,11 +11,9 @@ import android.view.View;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 
 import java.io.File;
-import java.util.List;
 
 import huansi.net.qianjingapp.base.NotWebBaseActivity;
 import huansi.net.qianjingapp.entity.HsWebInfo;
-import huansi.net.qianjingapp.entity.WsEntity;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
 import huansi.net.qianjingapp.utils.OthersUtil;
@@ -64,7 +61,7 @@ public class ConfirmPictureActivity extends NotWebBaseActivity {
         final Intent intent = getIntent();
         final String orderId = intent.getStringExtra("iordermetermstid");
         final String gpicture = intent.getStringExtra("gpicture");
-        System.out.println("gpicture:"+gpicture);
+        System.out.println("gpicture:" + gpicture);
         Bitmap bitmap = Base64BitmapUtils.base64ToBitmap(gpicture);
         //加载保存的图片
         mActivityConfirmPictureBinding.ivConfirm.setImageBitmap(bitmap);
@@ -76,26 +73,26 @@ public class ConfirmPictureActivity extends NotWebBaseActivity {
 //                .into(mActivityConfirmPictureBinding.ivConfirm);
 
 
-     mActivityConfirmPictureBinding.signaturePad.setMinWidth((float) 0.5);
+        mActivityConfirmPictureBinding.signaturePad.setMinWidth((float) 0.5);
 
         mActivityConfirmPictureBinding.signaturePad.setMaxWidth(3);
         mActivityConfirmPictureBinding.signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
-        @Override
-        public void onStartSigning() {
+            @Override
+            public void onStartSigning() {
 
-        }
+            }
 
-        @Override
-        public void onSigned() {
+            @Override
+            public void onSigned() {
 
-        }
+            }
 
-        @Override
-        public void onClear() {
+            @Override
+            public void onClear() {
 
 
-        }
-    });
+            }
+        });
         //清除手写
         mActivityConfirmPictureBinding.tvReset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,28 +100,27 @@ public class ConfirmPictureActivity extends NotWebBaseActivity {
                 mActivityConfirmPictureBinding.signaturePad.clear();
             }
         });
-    //截屏并保存为png
+        //截屏并保存为png
         mActivityConfirmPictureBinding.btnSavePDF.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 //            //截屏
 //            Intent intent=new Intent(ConfirmPictureActivity.this, ScreenShotActivity.class);
 //            intent.putExtra("orderId",orderId);
 //            startActivity(intent);
-            Bitmap signatureBitmap = mActivityConfirmPictureBinding.signaturePad.getSignatureBitmap();
-            String pictureData = Base64BitmapUtils.bitmapToBase64(signatureBitmap);
+                Bitmap signatureBitmap = mActivityConfirmPictureBinding.signaturePad.getSignatureBitmap();
+                String pictureData = Base64BitmapUtils.bitmapToBase64(signatureBitmap);
 
-            //上传数据库
-            upConfirmPicture(pictureData,orderId);
-        }
-    });
+                //上传数据库
+                upConfirmPicture(pictureData, orderId);
+            }
+        });
     }
-
 
 
     private void showImage(String orderId) {
         File screenshot = getExternalFilesDir("screenshot").getAbsoluteFile();
-        String absolutePath = screenshot.getAbsolutePath()+"/"+orderId+".png";
+        String absolutePath = screenshot.getAbsolutePath() + "/" + orderId + ".png";
         Log.e("TAG", "getFilesDir() : " + absolutePath);
         Bitmap diskBitmap = getDiskBitmap(absolutePath);
         String pictureData = Base64BitmapUtils.bitmapToBase64(diskBitmap);
@@ -133,24 +129,21 @@ public class ConfirmPictureActivity extends NotWebBaseActivity {
 //            upConfirmPicture(pictureData,orderId);
     }
 
-    private Bitmap getDiskBitmap(String pathString)
-    {
+    private Bitmap getDiskBitmap(String pathString) {
         Bitmap bitmap = null;
-        try
-        {
+        try {
             File file = new File(pathString);
-            if(file.exists())
-            {
+            if (file.exists()) {
                 bitmap = BitmapFactory.decodeFile(pathString);
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             // TODO: handle exception
         }
 
 
         return bitmap;
     }
+
     /**
      * 上传图片
      */
@@ -162,8 +155,8 @@ public class ConfirmPictureActivity extends NotWebBaseActivity {
                             public HsWebInfo call(String s) {
                                 return NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
                                         "spappMeasureSaveConfirmation"
-                                        ,  "sPictureData=" + pictureData
-                                                +",iOrderMeterMstId="+orderId,
+                                        , "sPictureData=" + pictureData
+                                                + ",iOrderMeterMstId=" + orderId,
                                         UpPictureBean.class.getName(),
                                         true, "上传确认函失败");
                             }
@@ -171,20 +164,10 @@ public class ConfirmPictureActivity extends NotWebBaseActivity {
                 , getApplicationContext(), mDialog, new SimpleHsWeb() {
                     @Override
                     public void success(HsWebInfo hsWebInfo) {
-                        List<WsEntity> listWsdata = hsWebInfo.wsData.LISTWSDATA;
-                        for (int i = 0; i < listWsdata.size(); i++) {
-                            UpPictureBean upPictureBean = (UpPictureBean) listWsdata.get(i);
-                            String gpicture = upPictureBean.SMESSAGE;
-                            OthersUtil.ToastMsg(ConfirmPictureActivity.this,gpicture);
-                        }
-
+                        OthersUtil.ToastMsg(ConfirmPictureActivity.this, "上传成功");
+                        finish();
                     }
 
-                    @Override
-                    public void error(HsWebInfo hsWebInfo, Context context) {
-                        super.error(hsWebInfo, context);
-//                        OthersUtil.ToastMsg(ConfirmPictureActivity.this,"errorrrrrrrrrrrrrrrrrr");
-                    }
                 });
     }
 }

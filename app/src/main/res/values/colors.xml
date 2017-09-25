@@ -31,7 +31,7 @@
     <color name="colorRed">#FF0000</color>
 
     <color name="colorDivideLine">#DDDDDD</color>
-    //鹿港颜色
+    <!--鹿港颜色-->
     <color name="colorMainBackground">#383F51</color>
     <color name="colorMainBackgroundText">#D1BEB0</color>
     <color name="colorCheck">#7A7D91</color>

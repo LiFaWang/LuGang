@@ -38,6 +38,14 @@ public class LoginActivity extends NotWebBaseActivity {
 
         mActivityLoginBinding = (ActivityLoginBinding) viewDataBinding;
         mChecker = new PermissionsChecker(this);
+        LoginBean loginBean = readUser();
+        if (!TextUtils.isEmpty(loginBean.toString())){
+            mActivityLoginBinding.etIpNumber.setText(loginBean.SUSERIP);
+            mActivityLoginBinding.etLoginNumber.setText(loginBean.SUSERID);
+            mActivityLoginBinding.etLoginPwd.setText(loginBean.SUSERPSW);
+        }
+
+
         mActivityLoginBinding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,7 +56,7 @@ public class LoginActivity extends NotWebBaseActivity {
                 if (TextUtils.isEmpty(number) || TextUtils.isEmpty(pwd)) {
                     OthersUtil.ToastMsg(LoginActivity.this, "工号或密码不能为空");
                 }
-                login(number, pwd);
+                login(number, pwd,ip);
             }
         });
     }
@@ -64,7 +72,7 @@ public class LoginActivity extends NotWebBaseActivity {
     /**
      * 登录
      */
-    private void login(final String sUserID, final String sPassword) {
+    private void login(final String sUserID, final String sPassword, final String ip) {
         OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
@@ -83,6 +91,8 @@ public class LoginActivity extends NotWebBaseActivity {
                     public void success(HsWebInfo hsWebInfo) {
                         LoginBean loginBean = (LoginBean) hsWebInfo.wsData.LISTWSDATA.get(0);
                         String mSuserid = loginBean.SUSERID;
+                        loginBean.SUSERIP=ip;
+                        loginBean.SUSERPSW=sPassword;
                         saveUser(loginBean);
                         jumpToMain(mSuserid);
                     }
@@ -104,6 +114,8 @@ public class LoginActivity extends NotWebBaseActivity {
         editor.putString("name", user.SUSERNAME);
         editor.putString("ugu_id", user.UGUID);
         editor.putString("user_id", user.SUSERID);
+        editor.putString("user_ip", user.SUSERIP);
+        editor.putString("user_psw", user.SUSERPSW);
         editor.apply();//必须提交，否则保存不成功
     }
     //读取用户信息
@@ -113,6 +125,8 @@ public class LoginActivity extends NotWebBaseActivity {
         loginBean.SUSERID=sp.getString("user_id","");
         loginBean.SUSERNAME=sp.getString("name", "");
         loginBean.UGUID=sp.getString("ugu_id", "");
+        loginBean.SUSERIP=sp.getString("user_ip", "");
+        loginBean.SUSERPSW=sp.getString("user_psw", "");
         return loginBean;
     }
 }

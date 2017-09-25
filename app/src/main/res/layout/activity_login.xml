@@ -48,7 +48,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="请输入本地的IP"
-                    android:text="192.168.23.7"
+                    android:text="192.168.0.54"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="#fff"
@@ -133,9 +133,9 @@
                     android:singleLine="true"
                     android:textColor="#fff"
                     android:textSize="20sp"
+                    android:layout_toRightOf="@id/tv_login_pwd"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"/>
+                    />
             </RelativeLayout>
 
             <View

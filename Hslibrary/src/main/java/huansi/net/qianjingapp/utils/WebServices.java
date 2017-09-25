@@ -41,7 +41,7 @@ public class WebServices {
 			//环思服务器
 			case CUS_SERVICE:
 				String ip = SPUtils.readMacIp(context);
-				FEndPoint  = "http://"+ip+"/RLFP/APPWS.asmx";
+				FEndPoint  = "http://"+ip+"/LGMeasureAppWS/APPWS.asmx";
 //				FEndPoint  = CUSTOMER_SERVICE_IP;
 				FCheckCode = CUS_SERVICE_CHECK_CODE;
 				break;
