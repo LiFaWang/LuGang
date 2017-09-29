@@ -85,11 +85,6 @@ public class MainActivity  extends NotWebBaseActivity  {
         transaction.hide(mCustomConfirmFragment);
         transaction.commitAllowingStateLoss();
     }
-
-
-
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;

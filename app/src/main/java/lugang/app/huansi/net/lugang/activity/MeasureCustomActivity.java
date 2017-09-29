@@ -59,12 +59,10 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     private ActivityMeasureCustomBinding mActivityMeasureCustomBinding;
     private List<List<MeasureCustomBean>> mMeasureCustomLists;
     private List<List<RemarkDetailBean>> remarkAllList;//备注列表
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_measure_custom;
     }
-
     @Override
     public void init() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);//默认自动跳出软键盘
@@ -151,11 +149,11 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                     for (int j = 0; j < subList.size(); j++) {
                                         MeasureCustomBean bean = subList.get(j);
                                         sbStr.append("EXEC spappMeasureSaveMeasureData ")
-                                                .append("@uHrEmployeeGUID='").append(userGUID ).append("'")
-                                                .append(",@isdOrderMeterDtlid=").append(orderDtlId)
-                                                .append(",@isMeterSize=").append(bean.ISMETERSIZE)
-                                                .append(",@isdStyleTypeItemDtlid=").append(bean.SDSTYLETYPEITEMDTLID)
-                                                .append(";");
+                                             .append("@uHrEmployeeGUID='").append(userGUID ).append("'")
+                                             .append(",@isdOrderMeterDtlid=").append(orderDtlId)
+                                             .append(",@isMeterSize=").append(bean.ISMETERSIZE)
+                                             .append(",@isdStyleTypeItemDtlid=").append(bean.SDSTYLETYPEITEMDTLID)
+                                             .append(";");
                                     }
                                 }
                                 StringBuilder sbRemarkId=new StringBuilder();
@@ -169,9 +167,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                     }
                                 }
                                 sbStr.append("EXEC spappMeasureSaveMeasureRemark ")
-                                        .append("@sSdMeterMarkDtlid='").append(sbRemarkId.toString()).append("'")
-                                        .append(",@isdOrderMeterDtlid=").append(orderDtlId)
-                                        .append("; ");
+                                     .append("@sSdMeterMarkDtlid='").append(sbRemarkId.toString()).append("'")
+                                     .append(",@isdOrderMeterDtlid=").append(orderDtlId)
+                                     .append("; ");
                                 return getJsonData(getApplicationContext(), CUS_SERVICE,
                                         sbStr.toString(), "", MeasureCustomBean.class.getName(), true,
                                         "上传失败！！");
@@ -257,8 +255,8 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 HsWebInfo info = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
                                         "spappMeasureStyleTypeList",
                                         "iIndex=2" +
-                                                ",isdordermeterDtlId=" + orderDtlId +
-                                                ",isdStyleTypeMstId=" + measureCustomBean.ISDSTYLETYPEMSTID,
+                                        ",isdordermeterDtlId=" + orderDtlId +
+                                        ",isdStyleTypeMstId=" + measureCustomBean.ISDSTYLETYPEMSTID,
                                         RemarkSavedBean.class.getName(),
                                         true,
                                         "");
@@ -387,7 +385,6 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         switch (requestCode) {
             //备注界面
             case REMARK_INTENT_KEY:
-
         }
     }
 

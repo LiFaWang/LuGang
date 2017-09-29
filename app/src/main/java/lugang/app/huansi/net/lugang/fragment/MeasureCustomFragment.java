@@ -1,13 +1,21 @@
 package lugang.app.huansi.net.lugang.fragment;
 
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import huansi.net.qianjingapp.fragment.BaseFragment;
+import lugang.app.huansi.net.factory.FragmentFactory;
 import lugang.app.huansi.net.lugang.R;
+import lugang.app.huansi.net.lugang.activity.NewMeasureCustomActivity;
+import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
 import lugang.app.huansi.net.lugang.databinding.MeasureCustomFragmentBinding;
 
 /**
@@ -20,6 +28,7 @@ public class MeasureCustomFragment extends BaseFragment {
 
 
     private MeasureCustomFragmentBinding mMeasureCustomFragmentBinding;
+    private List<StartMeasureBean> mBeanList;
 
     @Override
     public int getLayout() {
@@ -33,8 +42,7 @@ public class MeasureCustomFragment extends BaseFragment {
 
             @Override
             public Fragment getItem(int position) {
-                if (position==0) return  new StartMeasureFragment ();
-                return  new FinishMeasureFragment();
+                return FragmentFactory.createFragment(position);
             }
 
             @Override
@@ -64,5 +72,41 @@ public class MeasureCustomFragment extends BaseFragment {
             mMeasureCustomFragmentBinding.vpMeasureCustom.setCurrentItem(1);
             }
         });
+        mMeasureCustomFragmentBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), NewMeasureCustomActivity.class);
+                startActivity(intent);
+            }
+        });
+        mMeasureCustomFragmentBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String orderNO = mMeasureCustomFragmentBinding.orderSearch.getText().toString();
+                if (TextUtils.isEmpty(orderNO))return;
+                searchMeasureOrder(orderNO);
+            }
+        });
+    }
+
+    /**
+     * 根据量体清单单号查询
+     * @param orderNO
+     */
+    private void searchMeasureOrder(String orderNO) {
+        StartMeasureFragment item = ((StartMeasureFragment) ((FragmentPagerAdapter) mMeasureCustomFragmentBinding.vpMeasureCustom.getAdapter()).getItem(0));
+        List<StartMeasureBean> mStartMeasureBeanList =item.getStartMeasureBeanList();
+        mBeanList = new ArrayList<>();
+        for (int i = 0; i < mStartMeasureBeanList.size(); i++) {
+            StartMeasureBean sbillno = mStartMeasureBeanList.get(i);
+            if (sbillno.SBILLNO.equals(orderNO)) {
+                mBeanList.add(sbillno);
+            }
+
+        }
+
+        item.setStartMeasureBeanList(mBeanList);
+
+
     }
 }

@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp">
+
+        <LinearLayout
+            android:id="@+id/llConfirmHead"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/colorMainBackground"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="江苏鹿港文化股份有限公司"
+                    android:textColor="@color/colorMainBackgroundText"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="    量体制作确认函"
+                    android:textColor="@color/colorMainBackgroundText"
+                    android:textSize="30sp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSavePng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/btn_buy_selector"
+                android:text="保 存"
+                android:textColor="#fff"
+                android:textSize="22sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llConfimBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_frame_gray"
+                >
+
+                <TableRow
+                    android:background="@drawable/table_frame_gray"
+                    >
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="量体单位"/>
+
+                    <TextView
+                        android:id="@+id/tvMeasureCompany"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text="**银行"/>
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="部门"/>
+
+                    <TextView
+                        android:id="@+id/tvDepartment"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="客户部"/>
+
+                </TableRow>
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_frame_gray"
+                >
+
+                <TableRow
+                    android:background="@drawable/table_frame_gray"
+                    >
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="原总人数"/>
+
+                    <EditText
+                        android:id="@+id/etOriginalToatal"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""/>
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="量体师"/>
+
+                    <TextView
+                        android:id="@+id/tvMeasurePerson"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="张三"/>
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="时间"/>
+
+                    <TextView
+                        android:id="@+id/tvTime"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2017年9月16日"/>
+
+                </TableRow>
+            </TableLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/table_frame_gray"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="男已量体人数"/>
+
+                        <TextView
+                            android:id="@+id/maleMeasuredCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                            android:text="20"/>
+
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="男未量体人数"/>
+
+                        <TextView
+                            android:id="@+id/maleWaitMeasureCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                            android:text="10"/>
+
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="男添加人数"/>
+
+                        <EditText
+                            android:id="@+id/etMaleAddCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                           />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffcc99"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="女已量体人数"/>
+
+                        <TextView
+                            android:id="@+id/femaleMeasuredCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                            android:text="20"/>
+
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="女未量体人数"/>
+
+                        <TextView
+                            android:id="@+id/femaleWaitMeasureCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                            android:text="10"/>
+
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="女添加人数"/>
+
+                        <EditText
+                            android:id="@+id/etFemaleAddCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                           />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffcc99"
+                        android:orientation="horizontal">
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="已量体人数"/>
+
+                        <TextView
+                            android:id="@+id/measuredCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                            android:text="20"/>
+
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="未量体人数"/>
+
+                        <TextView
+                            android:id="@+id/waitMeasureCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                            android:text="10"/>
+
+                        <TextView
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:text="添加人数"/>
+
+                        <EditText
+                            android:id="@+id/etAddCount"
+                            style="@style/customConfirm"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    style="@style/customConfirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="总人数合计"/>
+
+                <EditText
+                    android:id="@+id/etToatalCount"
+                    style="@style/customConfirm"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    />
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:background="#ffffcc99">
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="添加人数结算方式"/>
+
+                    <EditText
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""/>
+                </TableRow>
+
+                <TableRow
+                    android:background="@drawable/table_frame_gray"
+                    >
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="未量人员处理方式"/>
+
+                    <EditText
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""/>
+                </TableRow>
+
+
+                <TableRow
+                    android:background="@drawable/table_frame_gray"
+                    >
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="客户对量体师的评价"/>
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="佩戴胸牌"/>
+                    <RadioGroup
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:text="是"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <RadioButton
+                            android:text="否"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </RadioGroup>
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="是"/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="否"/>-->
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="服务态度"/>
+                    <RadioGroup
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:text="非常满意"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <RadioButton
+                            android:text="满意"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <RadioButton
+                            android:text="不太满意"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <RadioButton
+                            android:text="不满意"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </RadioGroup>
+
+                    <!--<CheckBox-->
+
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="非常满意"/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="满意"/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="不太满意"/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="不满意"/>-->
+                </TableRow>
+
+
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_frame_gray">
+
+                <TableRow
+                    android:background="@drawable/table_frame_gray"
+                    >
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="备注"/>
+
+                    <EditText
+                        android:id="@+id/etRemark"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""/>
+                </TableRow>
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_frame_gray">
+
+                <TableRow
+                    android:background="@drawable/table_frame_gray"
+                    >
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="客户同意按照以上量体数量制作签字盖章确认："/>
+
+                    <com.github.gcacace.signaturepad.views.SignaturePad
+                        android:id="@+id/signature_pad"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="0dp"
+                        android:layout_height="65dp"
+                        android:layout_weight="1"
+                        app:penColor="@android:color/black"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvReset"
+                        style="@style/customConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="重写"/>
+
+                </TableRow>
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TableRow
+                    android:background="@drawable/table_frame_gray"
+                    >
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:gravity="center"
+                        android:text="客户联系方式"/>
+
+                    <EditText
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text=""/>
+                </TableRow>
+
+                <TableRow
+                    android:background="#ffffcc99">
+
+                    <TextView
+                        style="@style/customConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="发货地址"/>
+
+                    <EditText
+                        android:id="@+id/etAddress"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text=""/>
+                </TableRow>
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_frame_gray">
+
+                <TableRow
+                    android:background="@drawable/table_frame_gray"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvContact"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="量体服务联系人：陆艳红"/>
+
+                    <TextView
+                        android:id="@+id/tvPhone"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="电话：0512-58357551"/>
+
+                    <TextView
+                        android:id="@+id/tvEmail"
+                        style="@style/customConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="邮箱：347448715@qq.com"/>
+                </TableRow>
+            </TableLayout>
+            <!--<FrameLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+            <!--android:id="@+id/ivConfirm"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"/>-->
+            <!--<com.github.gcacace.signaturepad.views.SignaturePad-->
+            <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/signature_pad"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--app:penColor="@android:color/black"-->
+            <!--/>-->
+
+            <!--</FrameLayout>-->
+        </LinearLayout>
+        <!--<com.github.gcacace.signaturepad.views.SignaturePad-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/signature_pad"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:penColor="@android:color/black"-->
+        <!--/>-->
+        <!--<ImageView-->
+            <!--android:id="@+id/ivConfirm"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:src="@drawable/ic_launcher"/>-->
+
+    </LinearLayout>
+
+
+</layout>

@@ -16,7 +16,7 @@ import huansi.net.qianjingapp.utils.OthersUtil;
 import huansi.net.qianjingapp.utils.SPHelper;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
-import lugang.app.huansi.net.lugang.activity.ConfirmPictureActivity;
+import lugang.app.huansi.net.lugang.activity.CustomConfirmActivity;
 import lugang.app.huansi.net.lugang.adapter.ConfirmListAdapter;
 import lugang.app.huansi.net.lugang.bean.ConfirmPictureBean;
 import lugang.app.huansi.net.lugang.databinding.ConfirmFragmentBinding;
@@ -52,7 +52,7 @@ public class CustomConfirmFragment extends BaseFragment {
         mConfirmFragmentBinding.lvConfirm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent =new Intent(getActivity(),ConfirmPictureActivity.class);
+                Intent intent =new Intent(getActivity(),CustomConfirmActivity.class);
                 String iordermetermstid = mConfirmPictureBeanList.get(position).IORDERMETERMSTID;
                 String gpicture = mConfirmPictureBeanList.get(position).SPICTURE;
                 intent.putExtra("iordermetermstid",iordermetermstid);

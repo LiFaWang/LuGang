@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".LuGangApplication"
@@ -15,21 +17,27 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".activity.MainActivity"
+            android:screenOrientation="landscape"
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".activity.MeasureCustomActivity"
+            android:screenOrientation="landscape"
             android:configChanges="orientation|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="stateVisible|adjustPan">
         </activity>
         <activity
+            android:screenOrientation="landscape"
             android:name=".activity.RemarkDetailActivity"
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
+            android:screenOrientation="landscape"
             android:name="com.androidyuan.lib.screenshot.ScreenShotActivity"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".activity.LoginActivity">
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -37,9 +45,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="landscape"
             android:name="huansi.net.qianjingapp.base.PermissionsActivity"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".activity.ConfirmPictureActivity">
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".activity.CustomConfirmActivity">
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".activity.NewMeasureCustomActivity">
         </activity>
     </application>
 

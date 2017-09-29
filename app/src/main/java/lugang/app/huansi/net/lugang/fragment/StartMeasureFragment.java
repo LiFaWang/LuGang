@@ -37,6 +37,19 @@ public class StartMeasureFragment extends BaseFragment {
 
     private StartMeasureFragmentBinding mStartMeasureFragmentBinding;
 
+    private List<StartMeasureBean> mStartMeasureBeanList;
+
+    public void setStartMeasureBeanList(List<StartMeasureBean> startMeasureBeanList) {
+        mStartMeasureFragmentBinding.llCustomer.removeAllViews();
+        for (StartMeasureBean startMeasureBean : startMeasureBeanList) {
+            setMeasureData(startMeasureBean);
+        }
+    }
+
+    public List<StartMeasureBean> getStartMeasureBeanList() {
+        return mStartMeasureBeanList;
+    }
+
     @Override
     public int getLayout() {
         return R.layout.start_measure_fragment;
@@ -65,6 +78,7 @@ public class StartMeasureFragment extends BaseFragment {
      */
     private void setStartMeasure(final String userGUID) {
         OthersUtil.showLoadDialog(mDialog);
+        mStartMeasureFragmentBinding.llCustomer.removeAllViews();
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
@@ -81,15 +95,11 @@ public class StartMeasureFragment extends BaseFragment {
                     @Override
                     public void success(HsWebInfo hsWebInfo) {
                         List<WsEntity> listWsdata = hsWebInfo.wsData.LISTWSDATA;
-                        List<StartMeasureBean> startMeasureBeanList = new ArrayList<>();
+                        mStartMeasureBeanList = new ArrayList<StartMeasureBean>();
                         for (int i = 0; i < listWsdata.size(); i++) {
                             final StartMeasureBean startMeasureBean = (StartMeasureBean) listWsdata.get(i);
-                            startMeasureBeanList.add(startMeasureBean);
-
-                        }
-                        mStartMeasureFragmentBinding.llCustomer.removeAllViews();
-                        for (StartMeasureBean bean : startMeasureBeanList) {
-                            setMeasureData(bean);
+                            mStartMeasureBeanList.add(startMeasureBean);
+                            setMeasureData(startMeasureBean);
                         }
                     }
                 });
@@ -97,6 +107,7 @@ public class StartMeasureFragment extends BaseFragment {
     }
 
     private void setMeasureData(final StartMeasureBean startMeasureBean) {
+        if (getStartMeasureBeanList().isEmpty()) return;
         View view = View.inflate(getActivity(), R.layout.start_measure_item, null);
         TextView customerName = (TextView) view.findViewById(R.id.customerName);
         TextView areaName = (TextView) view.findViewById(R.id.areaName);

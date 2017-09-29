@@ -11,15 +11,18 @@ import huansi.net.qianjingapp.entity.WsData;
 
 public class StartMeasureBean extends WsData {
 /*
-"IID": "1001",
- "ILISTNO": "1",
- "SAREANAME": "江苏省",
- "SCITYNAME": "苏州市",
- "SCOUNTYNAME": "吴中区",
- "SCUSTOMERNAME": "A银行",
- "SDEPARTMENTNAME": "业务部",
- "SPERSON": "张三"
- "SVALUENAME":""
+ {
+            "IID": "1026",
+            "ILISTNO": "0",
+            "SAREANAME": "a",
+            "SCITYNAME": "d",
+            "SCOUNTYNAME": "f",
+            "SCUSTOMERNAME": "A银行",
+            "SDEPARTMENTNAME": "gb",
+            "SPERSON": "j",
+            "SVALUENAME": "1006",
+            "SBILLNO": "A0001"
+        }
  */
     public String IID="";
     public String ILISTNO="";
@@ -30,4 +33,5 @@ public class StartMeasureBean extends WsData {
     public String SDEPARTMENTNAME="";
     public String SPERSON="";
     public String SVALUENAME="";//款式的ID
+    public String SBILLNO="";//清单的ID
 }
