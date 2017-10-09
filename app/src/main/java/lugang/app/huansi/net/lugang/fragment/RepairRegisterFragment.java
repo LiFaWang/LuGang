@@ -45,7 +45,6 @@ public class RepairRegisterFragment extends BaseFragment {
         Intent intent = getActivity().getIntent();
         String suserid = intent.getStringExtra(Constant.SUSERID);
         final String userGUID= SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
-
         setRepairMeasure(userGUID);
     }
     /**

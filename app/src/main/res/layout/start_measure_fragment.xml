@@ -72,14 +72,19 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/llCustomer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:id="@+id/llCustomer"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
+<ListView
+    android:id="@+id/lvCustomer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+</ListView>
 
 </LinearLayout>
 </layout>

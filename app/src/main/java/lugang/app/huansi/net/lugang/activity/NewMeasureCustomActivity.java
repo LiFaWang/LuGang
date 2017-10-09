@@ -1,5 +1,6 @@
 package lugang.app.huansi.net.lugang.activity;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,10 +30,7 @@ import static huansi.net.qianjingapp.utils.SPHelper.USER_GUID;
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
 
 public class NewMeasureCustomActivity extends NotWebBaseActivity {
-
-
     private ActivityNewMeasureCustomBinding mActivityNewMeasureCustomBinding;
-    private List<NewMeasureBean> mNewMeasureBeangList;//单位名称集合
     private List<String> mClothStyleStringList;//衣服款式集合
     private List<String> mClothStyleidStringList;//衣服款式id集合
     private Map<String, String> mClothStyleMap;//衣服款式集合
@@ -44,8 +42,8 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
     private EditText mEtPerson;
     private EditText mEtSex;
     private EditText mEtCount;
-    private NewMeasureBean mBean;
     private List<WsEntity> mCustomerNameList;
+    private List<NewMeasureBean> mNewMeasureBeanItemList;//新增的列表条目数据
 
     @Override
     protected int getLayoutId() {
@@ -55,7 +53,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
     @Override
     public void init() {
         mActivityNewMeasureCustomBinding = (ActivityNewMeasureCustomBinding) viewDataBinding;
-        mNewMeasureBeangList = new ArrayList<>();
+        mNewMeasureBeanItemList = new ArrayList<>();
         mClothStyleStringList = new ArrayList<>();
         mClothStyleidStringList = new ArrayList<>();
         mClothStyleMap = new HashMap<>();
@@ -66,9 +64,12 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
             public void onClick(View v) {
 
                 String sOrderBillNo = mActivityNewMeasureCustomBinding.etOrderSearch.getText().toString();
-                if (TextUtils.isEmpty(sOrderBillNo)){
-                    OthersUtil.ToastMsg(NewMeasureCustomActivity.this,"请先填写量体清单单号");
-                }else {
+                if (TextUtils.isEmpty(sOrderBillNo)) {
+                    OthersUtil.ToastMsg(NewMeasureCustomActivity.this, "请先填写量体清单单号");
+                } else if (mNewMeasureBeanItemList!=null&&mNewMeasureBeanItemList.size()>0){
+                    OthersUtil.ToastMsg(NewMeasureCustomActivity.this, "请先将已经填写的清单上传服务器");
+
+                } else{
                     addBaseData(sOrderBillNo);
 
                 }
@@ -79,17 +80,16 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
         mActivityNewMeasureCustomBinding.btnSaveMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCustomerNameList==null||mCustomerNameList.size()==0)return;
-                for (int i = 0; i < mCustomerNameList.size(); i++) {
-                    mBean.ETAREANAME = mEtAreaName.getText().toString();
-                    mBean.ETCITYNAME = mEtCityName.getText().toString();
-                    mBean.ETCOUNTYNAME = mEtCountyName.getText().toString();
-                    mBean.ETDEPARTMENTNAME = mEtDepartmentName.getText().toString();
-                    mBean.ETJOBNAME = mEtJobName.getText().toString();
-                    mBean.ETPERSON = mEtPerson.getText().toString();
-                    mBean.ETSEX = mEtSex.getText().toString();
-                    mBean.ETCOUNT = mEtCount.getText().toString();
-                    mNewMeasureBeangList.add(mBean);
+                if (mNewMeasureBeanItemList == null || mNewMeasureBeanItemList.size() == 0) return;
+                for (int i = 0; i < mNewMeasureBeanItemList.size(); i++) {
+                    mNewMeasureBeanItemList.get(i).ETAREANAME = mEtAreaName.getText().toString();
+                    mNewMeasureBeanItemList.get(i).ETCITYNAME = mEtCityName.getText().toString();
+                    mNewMeasureBeanItemList.get(i).ETCOUNTYNAME = mEtCountyName.getText().toString();
+                    mNewMeasureBeanItemList.get(i).ETDEPARTMENTNAME = mEtDepartmentName.getText().toString();
+                    mNewMeasureBeanItemList.get(i).ETJOBNAME = mEtJobName.getText().toString();
+                    mNewMeasureBeanItemList.get(i).ETPERSON = mEtPerson.getText().toString();
+                    mNewMeasureBeanItemList.get(i).ETSEX = mEtSex.getText().toString();
+                    mNewMeasureBeanItemList.get(i).ETCOUNT = mEtCount.getText().toString();
                 }
 
                 upDateNewBaseData(userGUID);
@@ -107,41 +107,34 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                             @Override
                             public HsWebInfo call(String s) {
                                 StringBuilder sbStr = new StringBuilder();
-                                for (int i = 0; i < mNewMeasureBeangList.size(); i++) {
-                                    NewMeasureBean bean = mNewMeasureBeangList.get(i);
+                                for (int i = 0; i < mNewMeasureBeanItemList.size(); i++) {
+                                    NewMeasureBean bean = mNewMeasureBeanItemList.get(i);
                                     sbStr.append("EXEC spappAddOneMeasureDtl ")
-                                         .append("@isdOrderMeterMstid=").append(bean.ISDORDERMETERMSTID)
-                                         .append(",@sAreaName=").append(bean.ETAREANAME)
-                                         .append(",@sCustomerName=").append(bean.SCUSTOMERNAME)
-                                         .append(",@sCityName=").append(bean.ETCITYNAME)
-                                         .append(",@sCountyName=").append(bean.ETCOUNTYNAME)
-                                         .append(",@sDepartmentName=").append(bean.ETDEPARTMENTNAME)
-                                         .append(",@sJobName=").append(bean.ETJOBNAME)
-                                         .append(",@sName=").append(bean.ETPERSON)
-                                         .append(",@sSex=").append(bean.ETSEX)
-                                         .append(",@sQty=").append(bean.ETCOUNT)
-                                         .append(",@sUserGUID='").append(sUserGUID).append("'")
-                                         .append(",@isdStyleTypeMstId=").append(bean.ISDSTYLETYPEMSTID)
-                                         .append(";");
+                                            .append("@isdOrderMeterMstid=").append(bean.ISDORDERMETERMSTID)
+                                            .append(",@sAreaName=").append(bean.ETAREANAME)
+                                            .append(",@sCustomerName=").append(bean.SCUSTOMERNAME)
+                                            .append(",@sCityName=").append(bean.ETCITYNAME)
+                                            .append(",@sCountyName=").append(bean.ETCOUNTYNAME)
+                                            .append(",@sDepartmentName=").append(bean.ETDEPARTMENTNAME)
+                                            .append(",@sJobName=").append(bean.ETJOBNAME)
+                                            .append(",@sName=").append(bean.ETPERSON)
+                                            .append(",@sSex=").append(bean.ETSEX)
+                                            .append(",@sQty=").append(bean.ETCOUNT)
+                                            .append(",@sUserGUID='").append(sUserGUID).append("'")
+                                            .append(",@isdStyleTypeMstId=").append(bean.ISDSTYLETYPEMSTID)
+                                            .append(";");
 
                                 }
                                 return NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE
                                         , sbStr.toString(), "",
                                         NewMeasureBean.class.getName(),
                                         true, "");
-//                                return NewRxjavaWebUtils.getJsonData(getApplicationContext(),CUS_SERVICE
-//                                ,"spappAddOneMeasureDtl","isdOrderMeterMstid="+isdOrderMeterMstid
-//                                +",sAreaName="+sAreaName+",sCityName="+sCityName
-//                                +",sCountyName="+sCountyName+",sDepartmentName="+sDepartmentName
-//                                +",sJobName="+sJobName+",sName="+sName+",sSex="+sSex+",sQty="+sQty
-//                                +",sUserGUID="+sUserGUID+",isdStyleTypeMstId="+isdStyleTypeMstId,
-//                                NewMeasureBean.class.getName(),
-//                                true, "");
                             }
                         }), this, mDialog, new SimpleHsWeb() {
                     @Override
                     public void success(HsWebInfo hsWebInfo) {
                         OthersUtil.ToastMsg(NewMeasureCustomActivity.this, "上传成功！！");
+                        mNewMeasureBeanItemList.clear();
                         finish();
 
                     }
@@ -156,7 +149,6 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
 
     @SuppressWarnings("unchecked")
     private void addBaseData(final String sOrderBillNo) {
-        mNewMeasureBeangList.clear();
         mClothStyleStringList.clear();
         mClothStyleMap.clear();
         OthersUtil.showLoadDialog(mDialog);
@@ -169,7 +161,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                                 "spappMeasureAddBaseData"
                                 , "iIndex=0" + ",sOrderBillNo=" + sOrderBillNo,
                                 NewMeasureBean.class.getName(),
-                                true, "");
+                                true, "没有该清单的单号，请核实后再查找");
                         if (!hsWebInfo.success) return hsWebInfo;
                         Map<String, Object> map = new HashMap<>();
                         map.put("customerName", hsWebInfo.wsData.LISTWSDATA);
@@ -186,7 +178,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                                 "spappMeasureAddBaseData"
                                 , "iIndex=1" + ",sOrderBillNo=" + sOrderBillNo,
                                 NewMeasureBean.class.getName(),
-                                true, ""
+                                true, "服装类型有错误"
                         );
                         map.put("clothStyle", hsWebInfo.wsData.LISTWSDATA);
                         hsWebInfo.object = map;
@@ -208,8 +200,12 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
 
             }
 
-
+            @Override
+            public void error(HsWebInfo hsWebInfo, Context context) {
+                OthersUtil.ToastMsg(NewMeasureCustomActivity.this, "输入的清单号不存在");
+            }
         });
+
     }
 
     /**
@@ -220,38 +216,37 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
      */
     private void addMeasurItem(List<WsEntity> customerNameList, final List<WsEntity> clothStyleStringList) {
 
+        final NewMeasureBean mBean = (NewMeasureBean) customerNameList.get(0);
+        addClothStyle(clothStyleStringList);
+        final View view = View.inflate(this, R.layout.new_measure_item, null);
+        TextView tvCustomerName = (TextView) view.findViewById(R.id.tvCustomerName);
+        tvCustomerName.setText(mBean.SCUSTOMERNAME);
+        Spinner spClothStyle = (Spinner) view.findViewById(R.id.spClothStyle);
+        final ArrayAdapter<String> spAdapter = new ArrayAdapter<>(this, R.layout.string_item,
+                R.id.tvString, mClothStyleStringList);
+        spClothStyle.setAdapter(spAdapter);
+        spClothStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mBean.ISDSTYLETYPEMSTID = mClothStyleidStringList.get(position);
+            }
 
-        for (int i = 0; i < customerNameList.size(); i++) {
-            mBean = (NewMeasureBean) customerNameList.get(0);
-            addClothStyle(clothStyleStringList);
-            View view = View.inflate(this, R.layout.new_measure_item, null);
-            TextView tvCustomerName = (TextView) view.findViewById(R.id.tvCustomerName);
-            tvCustomerName.setText(mBean.SCUSTOMERNAME);
-            Spinner spClothStyle = (Spinner) view.findViewById(R.id.spClothStyle);
-            final ArrayAdapter<String> spAdapter = new ArrayAdapter<>(this, R.layout.string_item,
-                    R.id.tvString, mClothStyleStringList);
-            spClothStyle.setAdapter(spAdapter);
-            spClothStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    mBean.ISDSTYLETYPEMSTID = mClothStyleidStringList.get(position);
-                }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        mEtAreaName = (EditText) view.findViewById(R.id.etAreaName);
+        mEtCityName = (EditText) view.findViewById(R.id.etCityName);
+        mEtCountyName = (EditText) view.findViewById(R.id.etCountyName);
+        mEtDepartmentName = (EditText) view.findViewById(R.id.etDepartmentName);
+        mEtJobName = (EditText) view.findViewById(R.id.etJobName);
+        mEtPerson = (EditText) view.findViewById(R.id.etPerson);
+        mEtSex = (EditText) view.findViewById(R.id.etSex);
+        mEtCount = (EditText) view.findViewById(R.id.etCount);
+        mActivityNewMeasureCustomBinding.llNewCustom.addView(view);
+        mNewMeasureBeanItemList.add(mBean);
 
-                }
-            });
-            mEtAreaName = (EditText) view.findViewById(R.id.etAreaName);
-            mEtCityName = (EditText) view.findViewById(R.id.etCityName);
-            mEtCountyName = (EditText) view.findViewById(R.id.etCountyName);
-            mEtDepartmentName = (EditText) view.findViewById(R.id.etDepartmentName);
-            mEtJobName = (EditText) view.findViewById(R.id.etJobName);
-            mEtPerson = (EditText) view.findViewById(R.id.etPerson);
-            mEtSex = (EditText) view.findViewById(R.id.etSex);
-            mEtCount = (EditText) view.findViewById(R.id.etCount);
-            mActivityNewMeasureCustomBinding.llNewCustom.addView(view);
-        }
 
     }
 
@@ -267,12 +262,10 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
 
             String isdstyletypemstid = bean.ISDSTYLETYPEMSTID;
             String svaluegroup = bean.SVALUEGROUP;
-
             mClothStyleMap.put("isdstyletypemstid", isdstyletypemstid);
             mClothStyleMap.put("svaluegroup", svaluegroup);
             mClothStyleStringList.add(mClothStyleMap.get("svaluegroup"));
             mClothStyleidStringList.add(mClothStyleMap.get("isdstyletypemstid"));
-
         }
 
 

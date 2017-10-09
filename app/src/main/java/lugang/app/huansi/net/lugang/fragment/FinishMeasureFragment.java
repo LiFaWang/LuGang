@@ -18,6 +18,7 @@ import huansi.net.qianjingapp.utils.SPHelper;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.activity.MeasureCustomActivity;
+import lugang.app.huansi.net.lugang.adapter.FininshAdapter;
 import lugang.app.huansi.net.lugang.bean.FinishMeasureBean;
 import lugang.app.huansi.net.lugang.constant.Constant;
 import lugang.app.huansi.net.lugang.databinding.FinishMeasureFragmentBinding;
@@ -35,6 +36,7 @@ import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVIC
 public class FinishMeasureFragment extends BaseFragment{
     protected LoadProgressDialog mDialog;
     private FinishMeasureFragmentBinding mFinishMeasureFragmentBinding;
+    private FininshAdapter mFininshAdapter;
 
     @Override
     public int getLayout() {
@@ -63,7 +65,6 @@ public class FinishMeasureFragment extends BaseFragment{
      */
     private void setFinishMeasure(final String userGUID) {
         OthersUtil.showLoadDialog(mDialog);
-        mFinishMeasureFragmentBinding.llCustomer.removeAllViews();
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
@@ -84,10 +85,11 @@ public class FinishMeasureFragment extends BaseFragment{
                         for (int i = 0; i < listwsdata.size(); i++) {
                             FinishMeasureBean finishMeasureBean = (FinishMeasureBean) listwsdata.get(i);
                             finishMeasureBeanList.add(finishMeasureBean);
+//                          setMeasureData(finishMeasureBean);
                         }
-                        for ( FinishMeasureBean bean : finishMeasureBeanList) {
-                            setMeasureData(bean);
-                        }
+                       if (mFininshAdapter==null)mFininshAdapter = new FininshAdapter(finishMeasureBeanList,getActivity());
+                        mFinishMeasureFragmentBinding.lvCustomer.setAdapter(mFininshAdapter);
+
                     }
                 });
     }
@@ -118,6 +120,6 @@ public class FinishMeasureFragment extends BaseFragment{
                 startActivity(intent);
             }
         });
-        mFinishMeasureFragmentBinding.llCustomer.addView(view);
+//        mFinishMeasureFragmentBinding.llCustomer.addView(view);
     }
 }

@@ -18,6 +18,7 @@ import huansi.net.qianjingapp.utils.SPHelper;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.activity.MeasureCustomActivity;
+import lugang.app.huansi.net.lugang.adapter.StartAdapter;
 import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
 import lugang.app.huansi.net.lugang.constant.Constant;
 import lugang.app.huansi.net.lugang.databinding.StartMeasureFragmentBinding;
@@ -38,12 +39,19 @@ public class StartMeasureFragment extends BaseFragment {
     private StartMeasureFragmentBinding mStartMeasureFragmentBinding;
 
     private List<StartMeasureBean> mStartMeasureBeanList;
+    private StartAdapter mAdapter;
 
     public void setStartMeasureBeanList(List<StartMeasureBean> startMeasureBeanList) {
-        mStartMeasureFragmentBinding.llCustomer.removeAllViews();
-        for (StartMeasureBean startMeasureBean : startMeasureBeanList) {
-            setMeasureData(startMeasureBean);
-        }
+//        mStartMeasureFragmentBinding.lvCustomer.removeAllViews();
+//        mStartMeasureBeanList.clear();
+//        mStartMeasureBeanList.addAll(startMeasureBeanList);
+
+        mAdapter.setList(startMeasureBeanList);
+//        for (StartMeasureBean startMeasureBean : startMeasureBeanList) {
+////            setMeasureData(startMeasureBean);
+//            mStartMeasureBeanList.add(startMeasureBean);
+//        }
+        mAdapter.notifyDataSetChanged();
     }
 
     public List<StartMeasureBean> getStartMeasureBeanList() {
@@ -58,9 +66,8 @@ public class StartMeasureFragment extends BaseFragment {
     @Override
     public void init() {
         mDialog = new LoadProgressDialog(getActivity());
+        mStartMeasureBeanList = new ArrayList<>();
         mStartMeasureFragmentBinding = (StartMeasureFragmentBinding) viewDataBinding;
-
-
     }
 
     @Override
@@ -78,7 +85,8 @@ public class StartMeasureFragment extends BaseFragment {
      */
     private void setStartMeasure(final String userGUID) {
         OthersUtil.showLoadDialog(mDialog);
-        mStartMeasureFragmentBinding.llCustomer.removeAllViews();
+        mStartMeasureBeanList.clear();
+//        mStartMeasureFragmentBinding.llCustomer.removeAllViews();
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
@@ -95,12 +103,14 @@ public class StartMeasureFragment extends BaseFragment {
                     @Override
                     public void success(HsWebInfo hsWebInfo) {
                         List<WsEntity> listWsdata = hsWebInfo.wsData.LISTWSDATA;
-                        mStartMeasureBeanList = new ArrayList<StartMeasureBean>();
+
                         for (int i = 0; i < listWsdata.size(); i++) {
                             final StartMeasureBean startMeasureBean = (StartMeasureBean) listWsdata.get(i);
                             mStartMeasureBeanList.add(startMeasureBean);
-                            setMeasureData(startMeasureBean);
+//                            setMeasureData(startMeasureBean);
                         }
+                        mAdapter = new StartAdapter( mStartMeasureBeanList,getActivity());
+                        mStartMeasureFragmentBinding.lvCustomer.setAdapter(mAdapter);
                     }
                 });
 
@@ -133,6 +143,8 @@ public class StartMeasureFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
-        mStartMeasureFragmentBinding.llCustomer.addView(view);
+
+//        mStartMeasureFragmentBinding.llCustomer.addView(view);
+
     }
 }
