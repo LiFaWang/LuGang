@@ -49,8 +49,9 @@ public class StartAdapter extends HsBaseAdapter<StartMeasureBean> {
                 Intent intent = new Intent(mContext, MeasureCustomActivity.class);
                 intent.putExtra(Constant.SPERSON, startMeasureBean.SPERSON);
                 intent.putExtra(Constant.SDEPARTMENTNAME, startMeasureBean.SDEPARTMENTNAME);
-                intent.putExtra(Constant.IID,startMeasureBean.IID);
+                intent.putExtra(Constant.ISDORDERMETERMSTID,startMeasureBean.ISDORDERMETERMSTID);
                 intent.putExtra(Constant.SVALUENAME,startMeasureBean.SVALUENAME);
+                intent.putExtra(Constant.IORDERTYPE,startMeasureBean.IORDERTYPE);
                mContext.startActivity(intent);
             }
         });

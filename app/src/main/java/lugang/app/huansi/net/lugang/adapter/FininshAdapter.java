@@ -49,8 +49,9 @@ public class FininshAdapter extends HsBaseAdapter<FinishMeasureBean> {
                 Intent intent = new Intent(mContext, MeasureCustomActivity.class);
                 intent.putExtra(Constant.SPERSON, finishMeasureBean.SPERSON);
                 intent.putExtra(Constant.SDEPARTMENTNAME, finishMeasureBean.SDEPARTMENTNAME);
-                intent.putExtra(Constant.IID,finishMeasureBean.IID);
+                intent.putExtra(Constant.ISDORDERMETERMSTID,finishMeasureBean.ISDORDERMETERMSTID);
                 intent.putExtra(Constant.SVALUENAME,finishMeasureBean.SVALUENAME);
+                intent.putExtra(Constant.IORDERTYPE,finishMeasureBean.IORDERTYPE);
                mContext.startActivity(intent);
             }
         });

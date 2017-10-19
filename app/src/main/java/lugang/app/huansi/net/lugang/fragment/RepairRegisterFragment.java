@@ -97,9 +97,11 @@ public class RepairRegisterFragment extends BaseFragment {
                 Intent intent = new Intent(getActivity(), MeasureCustomActivity.class);
                 intent.putExtra(Constant.SPERSON, repairRegisterBean.SPERSON);
                 intent.putExtra(Constant.SDEPARTMENTNAME, repairRegisterBean.SDEPARTMENTNAME);
-                intent.putExtra(Constant.IID,repairRegisterBean.IID);
+                intent.putExtra(Constant.ISDORDERMETERMSTID,repairRegisterBean.ISDORDERMETERMSTID);
                 intent.putExtra(Constant.SVALUENAME,repairRegisterBean.SVALUENAME);
                 intent.putExtra(Constant.STATUS,repairRegisterBean.STATUS);
+                intent.putExtra(Constant.IORDERTYPE,repairRegisterBean.IORDERTYPE);
+                intent.putExtra(Constant.IORDERTYPE,repairRegisterBean.IORDERTYPE);
                 startActivity(intent);
             }
         });

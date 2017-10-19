@@ -1,10 +1,13 @@
 package lugang.app.huansi.net.lugang.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -13,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import huansi.net.qianjingapp.base.NotWebBaseActivity;
@@ -22,6 +26,7 @@ import huansi.net.qianjingapp.imp.SimpleHsWeb;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
 import huansi.net.qianjingapp.utils.OthersUtil;
 import lugang.app.huansi.net.lugang.R;
+import lugang.app.huansi.net.lugang.bean.ConfirmDepartBean;
 import lugang.app.huansi.net.lugang.bean.ConfirmTableBean;
 import lugang.app.huansi.net.lugang.bean.UpPictureBean;
 import lugang.app.huansi.net.lugang.databinding.CustomConfirmActivityBinding;
@@ -65,11 +70,18 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         final Intent intent = getIntent();
         final String orderId = intent.getStringExtra("iordermetermstid");
         final String gpicture = intent.getStringExtra("gpicture");
-        requestConfirmTable(orderId);
-//        String a = gpicture.replace("@", "=");
-//        Bitmap bitmap = Base64BitmapUtils.base64ToBitmap(a);
-        //加载保存的图片
-//        mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(bitmap);
+        mCustomConfirmActivityBinding.tvDepartment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                requestDepartName(orderId);
+            }
+        });
+        requestConfirmTable(orderId, "");
+        String a = gpicture.replace("@", "=");
+        Bitmap bitmap = Base64BitmapUtils.base64ToBitmap(a);
+//        加载保存的图片
+        mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(bitmap);
 
         mCustomConfirmActivityBinding.signaturePad.setMinWidth((float) 0.5);
 
@@ -78,19 +90,25 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         mCustomConfirmActivityBinding.tvReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-        mCustomConfirmActivityBinding.signaturePad.clear();
+                mCustomConfirmActivityBinding.signaturePad.clear();
             }
         });
         //截屏并保存为png
         mCustomConfirmActivityBinding.btnSavePng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mCustomConfirmActivityBinding.etMaleAddCount.setText("");
-//                mCustomConfirmActivityBinding.etFemaleAddCount.setText("");
+                String string = mCustomConfirmActivityBinding.etMaleAddCount.getText().toString();
+                String string1 = mCustomConfirmActivityBinding.etFemaleAddCount.getText().toString();
                 String originalToatalMeasure = mCustomConfirmActivityBinding.etOriginalToatal.getText().toString();
                 String addMeasure = mCustomConfirmActivityBinding.etAddCount.getText().toString();
                 int toatal = Integer.parseInt(originalToatalMeasure) + Integer.parseInt(addMeasure);
-                mCustomConfirmActivityBinding.etToatalCount.setText(String.valueOf(toatal));
+                if (TextUtils.isEmpty(toatal+"")) {
+                    OthersUtil.ToastMsg(CustomConfirmActivity.this, "原总人数或者添加人数不能为空");
+                }else {
+                    mCustomConfirmActivityBinding.etToatalCount.setText(String.valueOf(toatal));
+                }
+
+
 
 
 //            //截屏
@@ -107,12 +125,105 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         });
     }
 
+
+    /**
+     * 获取部门的信息
+     *
+     * @param orderId
+     */
+    private void requestDepartName(final String orderId) {
+        OthersUtil.showLoadDialog(mDialog);
+        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
+                .map(new Func1<String, HsWebInfo>() {
+                    @Override
+                    public HsWebInfo call(String s) {
+                        return NewRxjavaWebUtils.getJsonData(CustomConfirmActivity.this,
+                                CUS_SERVICE, "spappQueryBaseInfo",
+                                "iIndexx=0", ConfirmDepartBean.class.getName(), true,
+                                "没有取得确认函表单");
+
+                    }
+                }), this, mDialog, new SimpleHsWeb() {
+            @Override
+            public void success(HsWebInfo hsWebInfo) {
+                List<String> confirmDepartBeanList = new ArrayList<>();
+                List<WsEntity> listwsdata = hsWebInfo.wsData.LISTWSDATA;
+                for (int i = 0; i < listwsdata.size(); i++) {
+                    ConfirmDepartBean confirmDepartBean = (ConfirmDepartBean) listwsdata.get(i);
+                    String sdepartmentname = confirmDepartBean.SDEPARTMENTNAME;
+                    confirmDepartBeanList.add(sdepartmentname);
+                }
+                //显示复选框
+                showMultiDialog(orderId,confirmDepartBeanList);
+//              ConfirmDepartBean confirmDepartBean = (ConfirmDepartBean) hsWebInfo.wsData.LISTWSDATA.get(6);
+//              mCustomConfirmActivityBinding.tvDepartment.setText(confirmDepartBean.SDEPARTMENTNAME);
+
+            }
+        });
+
+
+    }
+
+    /**
+     * 显示复选框
+     *  @param orderId
+     * @param confirmDepartBeanList
+     */
+    private void showMultiDialog(final String orderId, List<String> confirmDepartBeanList) {
+        //定义复选框选项
+        final String[] multiChoiceItems =  confirmDepartBeanList.toArray(new String[0]);
+
+        //复选框默认值：false=未选;true=选中 ,各自对应items[i]
+        //根据
+        final boolean[] defaultSelectedStatus=new boolean[confirmDepartBeanList.size()];
+        for (int i = 0; i < confirmDepartBeanList.size(); i++) {
+            defaultSelectedStatus[i]=false;
+        }
+
+        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb1 = new StringBuilder();
+        //创建对话框
+        new AlertDialog.Builder(this)
+                .setTitle("请选择参与量体的部门")//设置对话框标题
+                .setMultiChoiceItems(multiChoiceItems, defaultSelectedStatus, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which,
+                                        boolean isChecked) {
+                        //来回重复选择取消，得相应去改变item对应的bool值，点击确定时，根据这个bool[],得到选择的内容
+                        defaultSelectedStatus[which] = isChecked;
+                    }
+                })  //设置对话框[肯定]按钮
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < defaultSelectedStatus.length; i++) {
+                            if (defaultSelectedStatus[i]) {
+                                sb.append(multiChoiceItems[i]+"@");
+                                sb1.append(multiChoiceItems[i]+" ");
+                            }
+                        }
+                        // TODO Auto-generated method stub
+//                        Toast.makeText(CustomConfirmActivity.this, sb.toString(), Toast.LENGTH_LONG).show();
+                        requestConfirmTable(orderId, sb.toString());
+                        mCustomConfirmActivityBinding.tvDepartment.setText(sb1.toString());
+
+                    }
+                })
+                .setNegativeButton("取消", null)//设置对话框[否定]按钮
+                .show();
+    }
+
+
+
+
+
     /**
      * 获取确认函的数据
      *
      * @param orderId
      */
-    private void requestConfirmTable(final String orderId) {
+    private void requestConfirmTable(final String orderId, final String sDepartmentName ) {
         OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
@@ -120,7 +231,7 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                             public HsWebInfo call(String s) {
                                 return NewRxjavaWebUtils.getJsonData(CustomConfirmActivity.this,
                                         CUS_SERVICE, "spappMeasureConfirmationInfo",
-                                        "iOrderId=" + orderId, ConfirmTableBean.class.getName(), true,
+                                        "iOrderId=" + orderId+",sDepartmentName="+sDepartmentName, ConfirmTableBean.class.getName(), true,
                                         "没有取得确认函表单");
 
                             }
@@ -130,7 +241,8 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                         List<WsEntity> listwsdata = hsWebInfo.wsData.LISTWSDATA;
                         ConfirmTableBean confirmTableBean = (ConfirmTableBean) listwsdata.get(0);
                         mCustomConfirmActivityBinding.tvMeasureCompany.setText(confirmTableBean.SCUSTOMERNAME);
-                        mCustomConfirmActivityBinding.tvDepartment.setText(confirmTableBean.SDEPARTMENTNAME);
+                        SharedPreferences sp = CustomConfirmActivity.this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                        confirmTableBean.SPERSON=sp.getString("name", "");
                         mCustomConfirmActivityBinding.tvMeasurePerson.setText(confirmTableBean.SPERSON);
                         mCustomConfirmActivityBinding.maleMeasuredCount.setText(confirmTableBean.IMALEMEASUREDQTY);
                         mCustomConfirmActivityBinding.maleWaitMeasureCount.setText(confirmTableBean.INOTMALEMEASUREDQTY);
@@ -138,6 +250,9 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                         mCustomConfirmActivityBinding.femaleWaitMeasureCount.setText(confirmTableBean.INOTFEMALEMEASUREDQTY);
                         mCustomConfirmActivityBinding.measuredCount.setText(confirmTableBean.IMEASUREDQTY);
                         mCustomConfirmActivityBinding.waitMeasureCount.setText(confirmTableBean.INOTMEASUREDQTY);
+
+                        int etOriginalToatal = Integer.parseInt(mCustomConfirmActivityBinding.measuredCount.getText().toString()) + Integer.parseInt(mCustomConfirmActivityBinding.waitMeasureCount.getText().toString());
+                        mCustomConfirmActivityBinding.etOriginalToatal.setText(String.valueOf(etOriginalToatal));
                         mCustomConfirmActivityBinding.tvContact.setText("量体服务联系人：" + confirmTableBean.SCUSTOMSERVICECONTACTS);
                         mCustomConfirmActivityBinding.tvPhone.setText("电话：" + confirmTableBean.SCONTACTNUMBER);
                         mCustomConfirmActivityBinding.tvEmail.setText("电话：" + confirmTableBean.SEMAIL);
@@ -241,4 +356,5 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
 
                 });
     }
+
 }

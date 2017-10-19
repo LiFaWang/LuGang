@@ -8,37 +8,7 @@ import huansi.net.qianjingapp.entity.WsData;
  * {
  "STATUS": "0",
  "DATA": [
- {
- "ISDSTYLETYPEMSTID": "1006",
- "SBILLNO": "001",
- "SVALUECODE": "",
- "SVALUEGROUP": "西服",
- "SDSTYLETYPEITEMDTLID": "1001",
- "SMETERCODE": "00101",
- "SMETERNAME": "衣长",
- "ISEQ": "1"
- },
- {
- "ISDSTYLETYPEMSTID": "1006",
- "SBILLNO": "001",
- "SVALUECODE": "",
- "SVALUEGROUP": "西服",
- "SDSTYLETYPEITEMDTLID": "1002",
- "SMETERCODE": "00102",
- "SMETERNAME": "肩宽",
- "ISEQ": "2"
- },
- {
- "ISDSTYLETYPEMSTID": "1007",//分组
- "SBILLNO": "001",
- "SVALUECODE": "",
- "SVALUEGROUP": "chenyi",
- "SDSTYLETYPEITEMDTLID": "1003",
- "SMETERCODE": "00103",
- "SMETERNAME": "袖长",
- "ISEQ": "3"
- },
- {
+ "ISDORDERMETERDTLID": "1001",订单明细id
  "ISDSTYLETYPEMSTID": "1006",
  "SBILLNO": "001",
  "SVALUECODE": "",
@@ -53,6 +23,7 @@ import huansi.net.qianjingapp.entity.WsData;
  */
 
 public class MeasureCustomBean extends WsData {
+    public String ISDORDERMETERDTLID="";//订单明细id
     public String ISDSTYLETYPEMSTID="";//款式ID
     public String SBILLNO="";
     public String SVALUECODE="";

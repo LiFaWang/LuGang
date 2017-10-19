@@ -1,9 +1,6 @@
 package lugang.app.huansi.net.lugang.fragment;
 
 import android.content.Intent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +14,6 @@ import huansi.net.qianjingapp.utils.OthersUtil;
 import huansi.net.qianjingapp.utils.SPHelper;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
-import lugang.app.huansi.net.lugang.activity.MeasureCustomActivity;
 import lugang.app.huansi.net.lugang.adapter.FininshAdapter;
 import lugang.app.huansi.net.lugang.bean.FinishMeasureBean;
 import lugang.app.huansi.net.lugang.constant.Constant;
@@ -57,13 +53,13 @@ public class FinishMeasureFragment extends BaseFragment{
         String suserid = intent.getStringExtra(Constant.SUSERID);
         final String userGUID= SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
 
-        setFinishMeasure(userGUID);
+        setFinishMeasure(userGUID,"", "", "");
     }
 
     /**
      * 联网获取已量体人数据
      */
-    private void setFinishMeasure(final String userGUID) {
+    private void setFinishMeasure(final String userGUID, final String sCustomerName, final String sDepartmentName, final String sSearch) {
         OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
@@ -72,7 +68,10 @@ public class FinishMeasureFragment extends BaseFragment{
                                 //已量体
                                 return NewRxjavaWebUtils.getJsonData(getContext(), CUS_SERVICE,
                                         "spappMeasureOrderList"
-                                        , "iIndex=1" + ",uUserGUID=" + userGUID,
+                                        , "iIndex=1" + ",uUserGUID=" + userGUID +
+                                                ",sCustomerName=" + sCustomerName +
+                                                ",sDepartmentName=" + sDepartmentName +
+                                                ",sSearch=" + sSearch,
                                         FinishMeasureBean.class.getName(),
                                         true, "");
                             }
@@ -93,33 +92,34 @@ public class FinishMeasureFragment extends BaseFragment{
                     }
                 });
     }
-    private void setMeasureData(final FinishMeasureBean finishMeasureBean) {
-        View view = View.inflate(getActivity(), R.layout.finish_measure_item, null);
-        TextView customerName = (TextView) view.findViewById(R.id.customerName);
-        TextView areaName = (TextView) view.findViewById(R.id.areaName);
-        TextView cityName = (TextView) view.findViewById(R.id.cityName);
-        TextView countyName = (TextView) view.findViewById(R.id.countyName);
-        TextView departmentName = (TextView) view.findViewById(R.id.departmentName);
-        TextView person = (TextView) view.findViewById(R.id.person);
-        Button btnMeasure = (Button) view.findViewById(R.id.btnMeasure);
-        customerName.setText(finishMeasureBean.SCUSTOMERNAME);
-        areaName.setText(finishMeasureBean.SAREANAME);
-        cityName.setText(finishMeasureBean.SCITYNAME);
-        countyName.setText(finishMeasureBean.SCOUNTYNAME);
-        departmentName.setText(finishMeasureBean.SDEPARTMENTNAME);
-        person.setText(finishMeasureBean.SPERSON);
-        btnMeasure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MeasureCustomActivity.class);
-                intent.putExtra(Constant.SPERSON, finishMeasureBean.SPERSON);
-                intent.putExtra(Constant.SDEPARTMENTNAME, finishMeasureBean.SDEPARTMENTNAME);
-                intent.putExtra(Constant.IID,finishMeasureBean.IID);
-                intent.putExtra(Constant.SVALUENAME,finishMeasureBean.SVALUENAME);
-                intent.putExtra(Constant.STATUS,finishMeasureBean.STATUS);
-                startActivity(intent);
-            }
-        });
-//        mFinishMeasureFragmentBinding.llCustomer.addView(view);
-    }
+//    private void setMeasureData(final FinishMeasureBean finishMeasureBean) {
+//        View view = View.inflate(getActivity(), R.layout.finish_measure_item, null);
+//        TextView customerName = (TextView) view.findViewById(R.id.customerName);
+//        TextView areaName = (TextView) view.findViewById(R.id.areaName);
+//        TextView cityName = (TextView) view.findViewById(R.id.cityName);
+//        TextView countyName = (TextView) view.findViewById(R.id.countyName);
+//        TextView departmentName = (TextView) view.findViewById(R.id.departmentName);
+//        TextView person = (TextView) view.findViewById(R.id.person);
+//        Button btnMeasure = (Button) view.findViewById(R.id.btnMeasure);
+//        customerName.setText(finishMeasureBean.SCUSTOMERNAME);
+//        areaName.setText(finishMeasureBean.SAREANAME);
+//        cityName.setText(finishMeasureBean.SCITYNAME);
+//        countyName.setText(finishMeasureBean.SCOUNTYNAME);
+//        departmentName.setText(finishMeasureBean.SDEPARTMENTNAME);
+//        person.setText(finishMeasureBean.SPERSON);
+//        btnMeasure.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), MeasureCustomActivity.class);
+//                intent.putExtra(Constant.SPERSON, finishMeasureBean.SPERSON);
+//                intent.putExtra(Constant.SDEPARTMENTNAME, finishMeasureBean.SDEPARTMENTNAME);
+//                intent.putExtra(Constant.ISDORDERMETERMSTID,finishMeasureBean.ISDORDERMETERMSTID);
+//                intent.putExtra(Constant.SVALUENAME,finishMeasureBean.SVALUENAME);
+//                intent.putExtra(Constant.STATUS,finishMeasureBean.STATUS);
+//                intent.putExtra(Constant.IORDERTYPE,finishMeasureBean.IORDERTYPE);
+//                startActivity(intent);
+//            }
+//        });
+////        mFinishMeasureFragmentBinding.llCustomer.addView(view);
+//    }
 }

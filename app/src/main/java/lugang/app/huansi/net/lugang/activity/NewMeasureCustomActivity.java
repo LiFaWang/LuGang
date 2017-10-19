@@ -70,7 +70,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                     OthersUtil.ToastMsg(NewMeasureCustomActivity.this, "请先将已经填写的清单上传服务器");
 
                 } else{
-                    addBaseData(sOrderBillNo);
+                      addBaseData(sOrderBillNo);
 
                 }
             }
@@ -136,11 +136,9 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                         OthersUtil.ToastMsg(NewMeasureCustomActivity.this, "上传成功！！");
                         mNewMeasureBeanItemList.clear();
                         finish();
-
                     }
                 }
         );
-
     }
 
     /**
@@ -225,6 +223,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
         final ArrayAdapter<String> spAdapter = new ArrayAdapter<>(this, R.layout.string_item,
                 R.id.tvString, mClothStyleStringList);
         spClothStyle.setAdapter(spAdapter);
+
         spClothStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

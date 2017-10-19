@@ -64,7 +64,7 @@ import huansi.net.qianjingapp.entity.WsData;
 
 public class FinishMeasureBean extends WsData {
     /*
-     "IID": "1001",
+     "ISDORDERMETERMSTID": "1001",
      "ILISTNO": "1",
      "SAREANAME": "江苏省",
      "SCITYNAME": "苏州市",
@@ -74,7 +74,7 @@ public class FinishMeasureBean extends WsData {
      "SPERSON": "张三"
      "SVALUENAME":
      */
-    public String IID="";
+    public String ISDORDERMETERMSTID="";
     public String ILISTNO="";
     public String SAREANAME="";
     public String SCITYNAME="";
@@ -85,4 +85,6 @@ public class FinishMeasureBean extends WsData {
     public String SVALUENAME="";//款式的ID
     public String STATUS="FINISH";//跳转的状态
     public String SBILLNO="";//清单的ID
+    public String IORDERTYPE="1";//区分是从哪个界面跳转的
+
 }

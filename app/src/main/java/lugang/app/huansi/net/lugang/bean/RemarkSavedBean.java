@@ -12,6 +12,8 @@ public class RemarkSavedBean extends WsData {
 //    C.sMeterMarkCode,--备注Code
 //    C.sMeterMarkName,--备注名
 //    C.iid AS iSmetermarkDtlId --备注明细ID
+  //  "ISDORDERMETERDTLID":1001
+public String ISDORDERMETERDTLID="";//订单明细id
     public String SMETERMARKCODE="";
     public String SMETERMARKNAME="";
     public String ISMETERMARKDTLID="";

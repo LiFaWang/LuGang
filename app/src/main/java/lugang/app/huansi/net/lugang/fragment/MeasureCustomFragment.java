@@ -1,7 +1,6 @@
 package lugang.app.huansi.net.lugang.fragment;
 
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,7 +14,6 @@ import huansi.net.qianjingapp.fragment.BaseFragment;
 import huansi.net.qianjingapp.utils.OthersUtil;
 import lugang.app.huansi.net.factory.FragmentFactory;
 import lugang.app.huansi.net.lugang.R;
-import lugang.app.huansi.net.lugang.activity.NewMeasureCustomActivity;
 import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
 import lugang.app.huansi.net.lugang.databinding.MeasureCustomFragmentBinding;
 
@@ -74,20 +72,20 @@ public class MeasureCustomFragment extends BaseFragment {
                 mMeasureCustomFragmentBinding.vpMeasureCustom.setCurrentItem(1);
             }
         });
-        mMeasureCustomFragmentBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NewMeasureCustomActivity.class);
-                startActivity(intent);
-            }
-        });
-        mMeasureCustomFragmentBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String orderNO = mMeasureCustomFragmentBinding.orderSearch.getText().toString();
-                searchMeasureOrder(orderNO);
-            }
-        });
+//        mMeasureCustomFragmentBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), NewMeasureCustomActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        mMeasureCustomFragmentBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String orderNO = mMeasureCustomFragmentBinding.orderSearch.getText().toString();
+//                searchMeasureOrder(orderNO);
+//            }
+//        });
     }
 
     /**
@@ -101,6 +99,7 @@ public class MeasureCustomFragment extends BaseFragment {
         if (TextUtils.isEmpty(orderNO)) {
             item.setStartMeasureBeanList(mStartMeasureBeanList);
             OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
+            return;
 
         }
 

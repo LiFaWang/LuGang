@@ -19,7 +19,7 @@ import huansi.net.qianjingapp.entity.WsData;
  "SPERSON": "李七"
  },
  {
- "IID": "1007",
+ "ISDORDERMETERMSTID": "1007",
  "ILISTNO": "7",
  "SAREANAME": "浙江省",
  "SCITYNAME": "杭州市",
@@ -34,7 +34,7 @@ import huansi.net.qianjingapp.entity.WsData;
  */
 
 public class RepairRegisterBean extends WsData {
-    public String IID="";//订单id
+    public String ISDORDERMETERMSTID="";//订单id
     public String ILISTNO="";
     public String SAREANAME="";
     public String SCITYNAME="";
@@ -45,5 +45,7 @@ public class RepairRegisterBean extends WsData {
     public String SVALUENAME="";//款式的ID
     public String STATUS="REPAIR";//跳转的状态
     public String SBILLNO="";//清单的ID
+    public String IORDERTYPE="2";//区分是从哪个界面跳转的
+
 
 }

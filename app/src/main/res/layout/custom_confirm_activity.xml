@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -71,7 +76,7 @@
                         style="@style/customConfirm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:gravity="center_horizontal"
                         android:text="量体单位"/>
 
@@ -89,7 +94,7 @@
                         style="@style/customConfirm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:gravity="center_horizontal"
                         android:text="部门"/>
 
@@ -98,9 +103,9 @@
                         style="@style/customConfirm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:gravity="center_horizontal"
-                        android:text="客户部"/>
+                        android:text="所有部门"/>
 
                 </TableRow>
             </TableLayout>
@@ -652,13 +657,23 @@
         <!--android:layout_height="match_parent"-->
         <!--app:penColor="@android:color/black"-->
         <!--/>-->
-        <!--<ImageView-->
-            <!--android:id="@+id/ivConfirm"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:src="@drawable/ic_launcher"/>-->
+        <TextView
+            android:background="#acd534"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:text="上次截图信息"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:src="@drawable/ic_launcher"
+            android:id="@+id/ivConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
-
+    </ScrollView>
 
 </layout>

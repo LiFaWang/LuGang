@@ -12,7 +12,7 @@ import huansi.net.qianjingapp.entity.WsData;
 public class StartMeasureBean extends WsData {
 /*
  {
-            "IID": "1026",
+            "ISDORDERMETERMSTID": "1026",
             "ILISTNO": "0",
             "SAREANAME": "a",
             "SCITYNAME": "d",
@@ -24,7 +24,7 @@ public class StartMeasureBean extends WsData {
             "SBILLNO": "A0001"
         }
  */
-    public String IID="";
+    public String ISDORDERMETERMSTID="";
     public String ILISTNO="";
     public String SAREANAME="";
     public String SCITYNAME="";
@@ -34,4 +34,5 @@ public class StartMeasureBean extends WsData {
     public String SPERSON="";
     public String SVALUENAME="";//款式的ID
     public String SBILLNO="";//清单的ID
+    public String IORDERTYPE="0";//区分是从哪个界面跳转的
 }

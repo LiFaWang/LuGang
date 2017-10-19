@@ -20,10 +20,11 @@ public final class Constant {
 
     public final static String SPERSON="SPERSON";//客户姓名
     public final static String SDEPARTMENTNAME="SDEPARTMENTNAME";//客户部门
-    public final static String IID="IID";//订单ID
+    public final static String ISDORDERMETERMSTID="ISDORDERMETERMSTID";//订单ID
     public final static String SVALUENAME="SVALUENAME";//款式的ID
     public final static String STATUS="STATUS";//订单的状态
     public final static String SUSERID="SUSERID";//员工的id
+    public final static String IORDERTYPE="IORDERTYPE";//区分从哪个界面跳转
 
     /**
      * MeasureCustomActivity的常量

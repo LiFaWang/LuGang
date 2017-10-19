@@ -94,14 +94,15 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"/>
+
     <Spinner
-        android:layout_margin="5dp"
         android:id="@+id/spClothStyle"
-        android:background="#AB9F9D"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:layout_weight="1.5"
-        android:gravity="center"
-        android:layout_height="match_parent"/>
+        android:background="#AB9F9D"
+        android:gravity="center"/>
 
     <!--<TextView-->
     <!--android:id="@+id/tvClothStyle"-->

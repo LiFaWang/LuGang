@@ -204,6 +204,7 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
     private void requestRemarkDetailDate(final String remarkCategoryId) {
         OthersUtil.showLoadDialog(mDialog);
         remarkDetailList.clear();
+
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
