@@ -6,6 +6,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,49 +54,19 @@
                 android:paddingRight="20dp"
                 android:textSize="18sp"/>
 
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#383F51">
-
-            <ImageView
-                android:id="@+id/IvSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="120dp"
-                android:src="@drawable/icon_search"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="120dp"/>
-
-            <EditText
-                android:id="@+id/Search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="35dp"
-                android:layout_toLeftOf="@id/IvSearch"
-                android:background="@drawable/bg_edittext_selector"
-                android:hint="其他查询"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:textSize="18sp"/>
-
             <Spinner
                 android:id="@+id/spElement"
                 android:layout_width="150dp"
+                android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_toLeftOf="@id/Search"
+                android:layout_toLeftOf="@id/orderSearch"
                />
 
             <Spinner
                 android:id="@+id/spDepartment"
                 android:layout_width="150dp"
+                android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_toLeftOf="@id/spElement"

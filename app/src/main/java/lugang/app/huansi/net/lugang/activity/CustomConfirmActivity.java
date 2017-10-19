@@ -77,11 +77,17 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                 requestDepartName(orderId);
             }
         });
-        requestConfirmTable(orderId, "");
-        String a = gpicture.replace("@", "=");
-        Bitmap bitmap = Base64BitmapUtils.base64ToBitmap(a);
-//        加载保存的图片
-        mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(bitmap);
+        String absolutePath = getExternalFilesDir("screenshot").getAbsoluteFile()
+                + "/" + orderId + ".png";
+        Bitmap diskBitmap = getDiskBitmap(absolutePath);
+        // mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(diskBitmap);
+        mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(diskBitmap);
+
+//        requestConfirmTable(orderId, "");
+//        String a = gpicture.replace("@", "=");
+//        Bitmap bitmap = Base64BitmapUtils.base64ToBitmap(a);
+////        加载保存的图片
+//        mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(bitmap);
 
         mCustomConfirmActivityBinding.signaturePad.setMinWidth((float) 0.5);
 

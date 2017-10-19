@@ -20,6 +20,7 @@ import huansi.net.qianjingapp.utils.OthersUtil;
 import huansi.net.qianjingapp.utils.SPHelper;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
+import lugang.app.huansi.net.lugang.activity.NewMeasureCustomActivity;
 import lugang.app.huansi.net.lugang.adapter.StartAdapter;
 import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
 import lugang.app.huansi.net.lugang.constant.Constant;
@@ -81,13 +82,6 @@ public class StartMeasureFragment extends BaseFragment {
         mUserGUID = SPHelper.getLocalData(getContext(), USER_GUID, String.class.getName(), "").toString();
 
         mStartMeasureFragmentBinding = (StartMeasureFragmentBinding) viewDataBinding;
-        mStartMeasureFragmentBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String orderNO = mStartMeasureFragmentBinding.orderSearch.getText().toString();
-                searchMeasureOrder(orderNO);
-            }
-        });
         initSearchDate(mUserGUID);//初始化查询筛选条件
 
 
@@ -225,15 +219,28 @@ public class StartMeasureFragment extends BaseFragment {
         /**
          * 筛选查询
          */
-        mStartMeasureFragmentBinding.IvSearch.setOnClickListener(new View.OnClickListener() {
+        mStartMeasureFragmentBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //根据分类筛选显示数据
                 if(mDepartment.equals("所有单位"))mDepartment="";
                 if(mElement.equals("所有部门"))mElement="";
-                String sSearch = mStartMeasureFragmentBinding.Search.getText().toString();
-
+                String sSearch = mStartMeasureFragmentBinding.orderSearch.getText().toString();
+//                if (TextUtils.isEmpty(sSearch)) {
+//                    OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
+//                    return;
+//                }
                 setStartMeasure(mUserGUID, mDepartment, mElement, sSearch);
+            }
+        });
+        /**
+         * 新增测量人员的界面
+         */
+        mStartMeasureFragmentBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NewMeasureCustomActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -260,7 +267,7 @@ public class StartMeasureFragment extends BaseFragment {
                                                 ",sSearch=" + sSearch,
 
                                         StartMeasureBean.class.getName(),
-                                        true, "");
+                                        true, "没有找到清单号哦");
                             }
                         })
                 , getContext(), mDialog, new SimpleHsWeb() {
