@@ -58,6 +58,7 @@ public class FinishMeasureFragment extends BaseFragment{
         mDialog = new LoadProgressDialog(getActivity());
         mDepartStringList = new ArrayList<>();
         mElementStringList = new ArrayList<>();
+
         initSearchDate(mUserGUID);//初始化查询筛选条件
     }
     @Override
@@ -79,6 +80,8 @@ public class FinishMeasureFragment extends BaseFragment{
         OthersUtil.showLoadDialog(mDialog);
         mDepartStringList.clear();
         mElementStringList.clear();
+        mElementStringList.add("所有部门");
+        mDepartStringList.add("所有单位");
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
@@ -108,6 +111,7 @@ public class FinishMeasureFragment extends BaseFragment{
                                 StartMeasureBean.class.getName(),
                                 true, ""
                         );
+                        if (!info.success) return info;
                         map.put("element", info.wsData.LISTWSDATA);
                         info.object = map;
                         return info;

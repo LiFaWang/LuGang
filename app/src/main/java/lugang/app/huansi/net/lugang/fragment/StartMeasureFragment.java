@@ -136,6 +136,7 @@ public class StartMeasureFragment extends BaseFragment {
                                 StartMeasureBean.class.getName(),
                                 true, ""
                         );
+                        if (!info.success) return info;
                         map.put("element", info.wsData.LISTWSDATA);
                         info.object = map;
                         return info;

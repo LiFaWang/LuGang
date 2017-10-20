@@ -152,7 +152,6 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                     List<MeasureCustomBean> subList = mMeasureCustomLists.get(i);
                                     for (int j = 0; j < subList.size(); j++) {
                                         MeasureCustomBean bean = subList.get(j);
-//                                        mIsdordermeterdtlid = bean.ISDORDERMETERDTLID;
                                         sbStr.append("EXEC spappMeasureSaveMeasureData ")
                                              .append("@uHrEmployeeGUID='").append(userGUID ).append("'")
                                              .append(",@isdOrderMeterDtlid=").append(bean.ISDORDERMETERDTLID)
@@ -343,7 +342,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         Map<String,MeasureDateBean> measureDataMap=new HashMap<>();
         for (int i = 0; i <measureDateList.size() ; i++) {
             MeasureDateBean measureDateBean = (MeasureDateBean) measureDateList.get(i);
-            measureDataMap.put(measureDateBean.ISDSTYLETYPEITEMDTLID,measureDateBean);
+            measureDataMap.put(measureDateBean.ISDSTYLETYPEITEMDTLID+"_"+measureDateBean.ISDORDERMETERDTLID,measureDateBean);
         }
         LayoutInflater layoutInflater = getLayoutInflater();
         //添加View 即每个款式
@@ -358,7 +357,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 View convertView = LinearLayout.inflate(getApplicationContext(), R.layout.ll_parameter, null);
                 TextView tvParameter = (TextView) convertView.findViewById(R.id.tvParameter);
                 tvParameter.setText(measureCustom.SMETERNAME);
-                MeasureDateBean measureDateBean=measureDataMap.get(measureCustom.SDSTYLETYPEITEMDTLID);
+                MeasureDateBean measureDateBean=measureDataMap.get(measureCustom.SDSTYLETYPEITEMDTLID+"_"+measureCustom.ISDORDERMETERDTLID);
                 measureCustom.ISMETERSIZE=measureDateBean==null?"":measureDateBean.ISMETERSIZE;
                 final EditText editText = (EditText) convertView.findViewById(R.id.etParameter);
                 editText.setText(measureCustom.ISMETERSIZE);
