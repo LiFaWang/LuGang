@@ -1,7 +1,6 @@
 package lugang.app.huansi.net.lugang.fragment;
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,29 +41,29 @@ public class StartMeasureFragment extends BaseFragment {
     private StartMeasureFragmentBinding mStartMeasureFragmentBinding;
     private String mDepartment;//单位名称
     private List<StartMeasureBean> mStartMeasureBeanList;
-    private List<StartMeasureBean> mBeanList;
+//    private List<StartMeasureBean> mBeanList;
     private StartAdapter mAdapter;
     private List<String> mDepartStringList;//单位名称集合
     private List<String> mElementStringList;//部门名称集合
     private String mUserGUID;
     private String mElement;
 
-    public void setStartMeasureBeanList(List<StartMeasureBean> startMeasureBeanList) {
-//        mStartMeasureFragmentBinding.lvCustomer.removeAllViews();
-//        mStartMeasureBeanList.clear();
-//        mStartMeasureBeanList.addAll(startMeasureBeanList);
+//    public void setStartMeasureBeanList(List<StartMeasureBean> startMeasureBeanList) {
+////        mStartMeasureFragmentBinding.lvCustomer.removeAllViews();
+////        mStartMeasureBeanList.clear();
+////        mStartMeasureBeanList.addAll(startMeasureBeanList);
+//
+//        mAdapter.setList(startMeasureBeanList);
+////        for (StartMeasureBean startMeasureBean : startMeasureBeanList) {
+//////            setMeasureData(startMeasureBean);
+////            mStartMeasureBeanList.add(startMeasureBean);
+////        }
+//        mAdapter.notifyDataSetChanged();
+//    }
 
-        mAdapter.setList(startMeasureBeanList);
-//        for (StartMeasureBean startMeasureBean : startMeasureBeanList) {
-////            setMeasureData(startMeasureBean);
-//            mStartMeasureBeanList.add(startMeasureBean);
-//        }
-        mAdapter.notifyDataSetChanged();
-    }
-
-    public List<StartMeasureBean> getStartMeasureBeanList() {
-        return mStartMeasureBeanList;
-    }
+//    public List<StartMeasureBean> getStartMeasureBeanList() {
+//        return mStartMeasureBeanList;
+//    }
 
     @Override
     public int getLayout() {
@@ -267,7 +266,7 @@ public class StartMeasureFragment extends BaseFragment {
                                                 ",sSearch=" + sSearch,
 
                                         StartMeasureBean.class.getName(),
-                                        true, "没有找到清单号哦");
+                                        true, "");
                             }
                         })
                 , getContext(), mDialog, new SimpleHsWeb() {
@@ -292,34 +291,34 @@ public class StartMeasureFragment extends BaseFragment {
      *
      * @param orderNO
      */
-    private void searchMeasureOrder(String orderNO) {
-//        StartMeasureFragment item = ((StartMeasureFragment) ((FragmentPagerAdapter) mMeasureCustomFragmentBinding.vpMeasureCustom.getAdapter()).getItem(0));
-//        List<StartMeasureBean> mStartMeasureBeanList = item.getStartMeasureBeanList();
-        if (TextUtils.isEmpty(orderNO)) {
-//            item.setStartMeasureBeanList(mStartMeasureBeanList);
-            OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
-            return;
-
-        }
-
-        mBeanList = new ArrayList<>();
-        for (int i = 0; i < mStartMeasureBeanList.size(); i++) {
-            StartMeasureBean sbillno = mStartMeasureBeanList.get(i);
-            if (sbillno.SBILLNO.equals(orderNO)) {
-                mBeanList.add(sbillno);
-            }
-
-        }
-        if (mBeanList != null && mBeanList.size() > 0) {
-//            item.setStartMeasureBeanList(mBeanList);
-            mAdapter.setList(mBeanList);
-            mAdapter.notifyDataSetChanged();
-        } else {
-            OthersUtil.ToastMsg(getActivity(), "没有找到清单号哦");
-        }
-
-
-    }
+//    private void searchMeasureOrder(String orderNO) {
+////        StartMeasureFragment item = ((StartMeasureFragment) ((FragmentPagerAdapter) mMeasureCustomFragmentBinding.vpMeasureCustom.getAdapter()).getItem(0));
+////        List<StartMeasureBean> mStartMeasureBeanList = item.getStartMeasureBeanList();
+//        if (TextUtils.isEmpty(orderNO)) {
+////            item.setStartMeasureBeanList(mStartMeasureBeanList);
+//            OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
+//            return;
+//
+//        }
+//
+//        mBeanList = new ArrayList<>();
+//        for (int i = 0; i < mStartMeasureBeanList.size(); i++) {
+//            StartMeasureBean sbillno = mStartMeasureBeanList.get(i);
+//            if (sbillno.SBILLNO.equals(orderNO)) {
+//                mBeanList.add(sbillno);
+//            }
+//
+//        }
+//        if (mBeanList != null && mBeanList.size() > 0) {
+////            item.setStartMeasureBeanList(mBeanList);
+//            mAdapter.setList(mBeanList);
+//            mAdapter.notifyDataSetChanged();
+//        } else {
+//            OthersUtil.ToastMsg(getActivity(), "没有找到清单号哦");
+//        }
+//
+//
+//    }
 
 //    private void setMeasureData(final StartMeasureBean startMeasureBean) {
 //        if (getStartMeasureBeanList().isEmpty()) return;

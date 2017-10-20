@@ -4,14 +4,11 @@ package lugang.app.huansi.net.lugang.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import huansi.net.qianjingapp.fragment.BaseFragment;
-import huansi.net.qianjingapp.utils.OthersUtil;
 import lugang.app.huansi.net.factory.FragmentFactory;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
@@ -93,30 +90,30 @@ public class MeasureCustomFragment extends BaseFragment {
      *
      * @param orderNO
      */
-    private void searchMeasureOrder(String orderNO) {
-        StartMeasureFragment item = ((StartMeasureFragment) ((FragmentPagerAdapter) mMeasureCustomFragmentBinding.vpMeasureCustom.getAdapter()).getItem(0));
-        List<StartMeasureBean> mStartMeasureBeanList = item.getStartMeasureBeanList();
-        if (TextUtils.isEmpty(orderNO)) {
-            item.setStartMeasureBeanList(mStartMeasureBeanList);
-            OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
-            return;
-
-        }
-
-        mBeanList = new ArrayList<>();
-        for (int i = 0; i < mStartMeasureBeanList.size(); i++) {
-            StartMeasureBean sbillno = mStartMeasureBeanList.get(i);
-            if (sbillno.SBILLNO.equals(orderNO)) {
-                mBeanList.add(sbillno);
-            }
-
-        }
-        if (mBeanList != null && mBeanList.size() > 0) {
-            item.setStartMeasureBeanList(mBeanList);
-        } else {
-            OthersUtil.ToastMsg(getActivity(), "没有找到清单号哦");
-        }
-
-
-    }
+//    private void searchMeasureOrder(String orderNO) {
+//        StartMeasureFragment item = ((StartMeasureFragment) ((FragmentPagerAdapter) mMeasureCustomFragmentBinding.vpMeasureCustom.getAdapter()).getItem(0));
+//        List<StartMeasureBean> mStartMeasureBeanList = item.getStartMeasureBeanList();
+//        if (TextUtils.isEmpty(orderNO)) {
+//            item.setStartMeasureBeanList(mStartMeasureBeanList);
+//            OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
+//            return;
+//
+//        }
+//
+//        mBeanList = new ArrayList<>();
+//        for (int i = 0; i < mStartMeasureBeanList.size(); i++) {
+//            StartMeasureBean sbillno = mStartMeasureBeanList.get(i);
+//            if (sbillno.SBILLNO.equals(orderNO)) {
+//                mBeanList.add(sbillno);
+//            }
+//
+//        }
+//        if (mBeanList != null && mBeanList.size() > 0) {
+//            item.setStartMeasureBeanList(mBeanList);
+//        } else {
+//            OthersUtil.ToastMsg(getActivity(), "没有找到清单号哦");
+//        }
+//
+//
+//    }
 }

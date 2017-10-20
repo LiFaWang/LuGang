@@ -44,6 +44,7 @@ import rx.functions.Func1;
 import static huansi.net.qianjingapp.utils.NewRxjavaWebUtils.getJsonData;
 import static huansi.net.qianjingapp.utils.SPHelper.USER_GUID;
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
+import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.ORDER_DTL_ID_INTENT;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_INTENT_DATA;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_INTENT_KEY;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_RETURN_DATA;
@@ -74,7 +75,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         Intent intent = getIntent();
         final String sperson = intent.getStringExtra(Constant.SPERSON);
         String departmentName = intent.getStringExtra(Constant.SDEPARTMENTNAME);
-        final String orderDtlId = intent.getStringExtra(Constant.ISDORDERMETERMSTID);//订单id
+        final String orderId = intent.getStringExtra(Constant.ISDORDERMETERMSTID);//订单头表id
         final String iOrderType = intent.getStringExtra(Constant.IORDERTYPE);//区分从哪个界面跳转
         mActivityMeasureCustomBinding.customName.setText(departmentName+": " + sperson);
         mActivityMeasureCustomBinding.btnSaveMeasure.setOnClickListener(new View.OnClickListener() {
@@ -91,14 +92,14 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        saveMeasure(userGUID, orderDtlId);//保存录入信息
+                        saveMeasure(userGUID);//保存录入信息
                     }
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
         });
-        initData(orderDtlId,iOrderType,sperson);
+        initData(orderId,iOrderType,sperson);
     }
 
     @Override
@@ -121,7 +122,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         dialog.show();
     }
     //保存录入信息
-    private void saveMeasure(final String userGUID, final String orderDtlId) {
+    private void saveMeasure(final String userGUID) {
         OthersUtil.showLoadDialog(mDialog);
         //查询输入框的数据，并保存到数组中
         for(int i=0;i<mMeasureCustomLists.size();i++){
@@ -142,7 +143,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
 
-                            private String mIsdordermeterdtlid;
+//                            private String mIsdordermeterdtlid;
 
                             @Override
                             public HsWebInfo call(String s) {
@@ -151,29 +152,33 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                     List<MeasureCustomBean> subList = mMeasureCustomLists.get(i);
                                     for (int j = 0; j < subList.size(); j++) {
                                         MeasureCustomBean bean = subList.get(j);
-                                        mIsdordermeterdtlid = bean.ISDORDERMETERDTLID;
+//                                        mIsdordermeterdtlid = bean.ISDORDERMETERDTLID;
                                         sbStr.append("EXEC spappMeasureSaveMeasureData ")
                                              .append("@uHrEmployeeGUID='").append(userGUID ).append("'")
-                                             .append(",@isdOrderMeterDtlid=").append(mIsdordermeterdtlid)
+                                             .append(",@isdOrderMeterDtlid=").append(bean.ISDORDERMETERDTLID)
                                              .append(",@isMeterSize=").append(bean.ISMETERSIZE)
                                              .append(",@isdStyleTypeItemDtlid=").append(bean.SDSTYLETYPEITEMDTLID)
                                              .append(";");
                                     }
                                 }
-                                StringBuilder sbRemarkId=new StringBuilder();
+
                                 for (int i = 0; i < remarkAllList.size(); i++) {
+                                    StringBuilder sbRemarkId=new StringBuilder();
                                     List<RemarkDetailBean> subList = remarkAllList.get(i);
                                     if (subList == null) subList = new ArrayList<>();
+                                    String orderDtlId="";
                                     for (int j=0;j<subList.size();j++) {
                                         RemarkDetailBean remarkDetailBean=subList.get(j);
+                                        orderDtlId=remarkDetailBean.iOrderDtlId;
                                         sbRemarkId.append(remarkDetailBean.IID);
                                         if(j!=subList.size()-1) sbRemarkId.append("@");
                                     }
+                                    if(!orderDtlId.isEmpty())
+                                        sbStr.append("EXEC spappMeasureSaveMeasureRemark ")
+                                        .append("@sSdMeterMarkDtlid='").append(sbRemarkId.toString()).append("'")
+                                        .append(",@isdOrderMeterDtlid=").append(orderDtlId)
+                                        .append("; ");
                                 }
-                                sbStr.append("EXEC spappMeasureSaveMeasureRemark ")
-                                     .append("@sSdMeterMarkDtlid='").append(sbRemarkId.toString()).append("'")
-                                     .append(",@isdOrderMeterDtlid=").append(mIsdordermeterdtlid)
-                                     .append("; ");
                                 return getJsonData(getApplicationContext(), CUS_SERVICE,
                                         sbStr.toString(), "", MeasureCustomBean.class.getName(), true,
                                         "上传失败！！");
@@ -192,7 +197,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
      * 初始化数据
      */
     @SuppressWarnings("unchecked")
-    private void initData(final String orderDtlId,final String iOrderType,final String sPerson) {
+    private void initData(final String orderId,final String iOrderType,final String sPerson) {
         OthersUtil.showLoadDialog(mDialog);
         mMeasureCustomLists.clear();
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
@@ -201,7 +206,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                             public HsWebInfo call(String s) {
                                 HsWebInfo hsWebInfo = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
                                         "spappMeasureStyleTypeList",
-                                        "iIndex=0" +",iOrderType="+ iOrderType+",iSdOrderMeterMstId=" + orderDtlId+
+                                        "iIndex=0" +",iOrderType="+ iOrderType+",iSdOrderMeterMstId=" + orderId+
                                         ",sPerson="+sPerson,
                                         MeasureCustomBean.class.getName(),
                                         true, "待量体款式信息未获取到，请重试！");
@@ -218,7 +223,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 Map<String, Object> map = (Map<String, Object>) hsWebInfo.object;
                                 HsWebInfo hsInfo = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
                                         "spappMeasureStyleTypeList",
-                                        "iIndex=1" +",iOrderType="+ iOrderType+ ",iSdOrderMeterMstId=" + orderDtlId+
+                                        "iIndex=1" +",iOrderType="+ iOrderType+ ",iSdOrderMeterMstId=" + orderId+
                                                 ",sPerson="+sPerson,
                                         MeasureDateBean.class.getName(),
                                         true, "已量体款式信息未获取到，请重试！");
@@ -237,7 +242,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         List<WsEntity> measureDateList = (List<WsEntity>) map.get("measureStyleData");
 
                         showMeasureType(measureStyleList);
-                        initRemarkSaved(orderDtlId,iOrderType,measureDateList,sPerson);
+                        initRemarkSaved(orderId,iOrderType,measureDateList,sPerson);
 
                     }
                 });
@@ -246,13 +251,14 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     /**
      * 查询已上传备注的信息
      */
-    private void initRemarkSaved(final String orderDtlId,final String iOrderType, final List<WsEntity> measureDateList,final String sPerson){
+    private void initRemarkSaved(final String orderId,final String iOrderType, final List<WsEntity> measureDateList,final String sPerson){
         OthersUtil.showLoadDialog(mDialog);
         remarkAllList.clear();
-        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, orderDtlId)
+
+        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, orderId)
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
-                    public HsWebInfo call(String orderDtlId) {
+                    public HsWebInfo call(String orderId) {
                         for(List<MeasureCustomBean> subList:mMeasureCustomLists) {
                             if (subList == null || subList.isEmpty()) {
                                 remarkAllList.add(new ArrayList<RemarkDetailBean>());
@@ -263,7 +269,8 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 HsWebInfo info = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
                                         "spappMeasureStyleTypeList",
                                         "iIndex=2" +",iOrderType="+ iOrderType+
-                                        ",iSdOrderMeterMstId=" + orderDtlId +
+                                        ",iSdOrderMeterMstId="+orderId+
+                                        ",iSdOrderMeterDtlId=" + measureCustomBean.ISDORDERMETERDTLID +
                                                 ",sPerson="+sPerson+
                                         ",isdStyleTypeMstId=" + measureCustomBean.ISDSTYLETYPEMSTID,
                                         RemarkSavedBean.class.getName(),
@@ -279,11 +286,8 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         detailBean.IID=remarkSavedBean.ISMETERMARKDTLID;
                                         detailBean.SMETERMARKCODE=remarkSavedBean.SMETERMARKCODE;
                                         detailBean.SMETERMARKNAME=remarkSavedBean.SMETERMARKNAME;
-                                        detailBean.ISDORDERMETERDTLID=remarkSavedBean.ISDORDERMETERDTLID;
-                                        if (orderDtlId.equals(remarkSavedBean.ISDORDERMETERDTLID)){
-                                            remarkList.add(detailBean);
-                                        }
-
+                                        detailBean.iOrderDtlId=remarkSavedBean.ISDORDERMETERDTLID;
+                                        remarkList.add(detailBean);
                                     }
                                     remarkAllList.add(remarkList);
                                 }
@@ -374,6 +378,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(MeasureCustomActivity.this, RemarkDetailActivity.class);
                     intent.putExtra(STYLE_ID_INTENT, mMeasureCustomLists.get(finalI1).get(0).ISDSTYLETYPEMSTID);
+                    intent.putExtra(ORDER_DTL_ID_INTENT, mMeasureCustomLists.get(finalI1).get(0).ISDORDERMETERDTLID);
                     intent.putExtra(REMARK_INTENT_DATA, (Serializable) remarkAllList.get(finalI));
                     startActivity(intent);
                 }

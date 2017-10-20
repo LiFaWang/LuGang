@@ -23,7 +23,9 @@ import huansi.net.qianjingapp.entity.WsData;
  */
 
 public class RemarkDetailBean extends WsData {
-    public String ISDORDERMETERDTLID="";//订单明细id
+    public String iOrderDtlId="";//订单明细id
+
+
     public String IID="";
     public String SMETERMARKCODE="";
     public String SMETERMARKNAME="";

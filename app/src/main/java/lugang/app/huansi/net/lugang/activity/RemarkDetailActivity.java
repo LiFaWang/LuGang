@@ -28,6 +28,7 @@ import rx.functions.Func1;
 
 import static huansi.net.qianjingapp.utils.NewRxjavaWebUtils.getJsonData;
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
+import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.ORDER_DTL_ID_INTENT;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_INTENT_DATA;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_INTENT_KEY;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_RETURN_DATA;
@@ -49,6 +50,8 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
     private RemarkDetailAdapter mRemarkDetailAdapter;//备注明细的adapter
     private RemarkAddAdapter mRemarkAddAdapter;//已选的adapter
 
+    private  String orderDtlID;//订单明细ID
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_remark_detail;
@@ -59,6 +62,9 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
         mActivityRemarkDetailBinding = (ActivityRemarkDetailBinding) viewDataBinding;
 
         String styleId = getIntent().getStringExtra(STYLE_ID_INTENT);//款式ID
+        orderDtlID= getIntent().getStringExtra(ORDER_DTL_ID_INTENT);
+
+
         remarkAddList= (List<RemarkDetailBean>) getIntent().getSerializableExtra(REMARK_INTENT_DATA);
         if(remarkAddList==null) remarkAddList=new ArrayList<>();
 
@@ -85,6 +91,7 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
                         addBean.IID=bean.IID;
                         addBean.SMETERMARKCODE=bean.SMETERMARKCODE;
                         addBean.SMETERMARKNAME=bean.SMETERMARKNAME;
+                        addBean.iOrderDtlId=orderDtlID;
                         addBean.isChoose=false;
                         chooseList.add(addBean);
                     }

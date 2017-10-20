@@ -83,7 +83,7 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         // mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(diskBitmap);
         mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(diskBitmap);
 
-//        requestConfirmTable(orderId, "");
+        requestConfirmTable(orderId, "");
 //        String a = gpicture.replace("@", "=");
 //        Bitmap bitmap = Base64BitmapUtils.base64ToBitmap(a);
 ////        加载保存的图片

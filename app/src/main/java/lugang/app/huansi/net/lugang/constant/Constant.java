@@ -33,6 +33,7 @@ public final class Constant {
         public static final int REMARK_INTENT_KEY=1;//跳转到备注界面选择备注
         public static final String REMARK_INTENT_DATA="remark_intent_data";//传入备注界面的数据
         public static final String STYLE_ID_INTENT="style_id_intent";//传入备注的款式ID
+        public static final String ORDER_DTL_ID_INTENT="order_dtl_id_intent";//订单明细ID传入备注界面
         public static final String REMARK_RETURN_DATA="remark_return_data";//备注界面返回的数据
         public static final String STYLE_ID_KEY="ISDSTYLETYPEMSTID";
     }

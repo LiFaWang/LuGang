@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:gravity="center_horizontal"
-                        android:text="**银行"/>
+                        />
 
                     <TextView
                         android:id="@+id/textView3"
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
                         android:gravity="center_horizontal"
-                        android:text="所有部门"/>
+                        />
 
                 </TableRow>
             </TableLayout>
@@ -133,7 +133,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=""/>
+                       />
 
                     <TextView
                         style="@style/customConfirm"
@@ -150,7 +150,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
-                        android:text="张三"/>
+                       />
 
                     <TextView
                         style="@style/customConfirm"
@@ -165,7 +165,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="2017年9月16日"/>
+                       />
 
                 </TableRow>
             </TableLayout>
@@ -198,7 +198,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
-                            android:text="20"/>
+                            />
 
                         <TextView
                             style="@style/customConfirm"
@@ -213,7 +213,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
-                            android:text="10"/>
+                           />
 
                         <TextView
                             style="@style/customConfirm"
@@ -250,7 +250,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
-                            android:text="20"/>
+                           />
 
                         <TextView
                             style="@style/customConfirm"
@@ -265,7 +265,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
-                            android:text="10"/>
+                            />
 
                         <TextView
                             style="@style/customConfirm"
@@ -300,7 +300,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
-                            android:text="20"/>
+                           />
 
                         <TextView
                             style="@style/customConfirm"
@@ -315,7 +315,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
-                            android:text="10"/>
+                           />
 
                         <TextView
                             style="@style/customConfirm"
@@ -371,7 +371,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=""/>
+                       />
                 </TableRow>
 
                 <TableRow
@@ -389,7 +389,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=""/>
+                        />
                 </TableRow>
 
 
@@ -612,7 +612,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="量体服务联系人：陆艳红"/>
+                        />
 
                     <TextView
                         android:id="@+id/tvPhone"
@@ -620,7 +620,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="电话：0512-58357551"/>
+                        />
 
                     <TextView
                         android:id="@+id/tvEmail"
@@ -628,7 +628,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="邮箱：347448715@qq.com"/>
+                        />
                 </TableRow>
             </TableLayout>
             <!--<FrameLayout-->

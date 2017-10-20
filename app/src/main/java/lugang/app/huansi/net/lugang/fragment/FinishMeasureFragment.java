@@ -44,6 +44,7 @@ public class FinishMeasureFragment extends BaseFragment{
     private String mUserGUID;
     private List<String> mDepartStringList;//单位名称集合
     private List<String> mElementStringList;//部门名称集合
+    private List<FinishMeasureBean> mFinishMeasureBeanList;
 
     @Override
     public int getLayout() {
@@ -53,7 +54,7 @@ public class FinishMeasureFragment extends BaseFragment{
     public void init() {
         mFinishMeasureFragmentBinding= (FinishMeasureFragmentBinding) viewDataBinding;
         mUserGUID = SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
-
+        mFinishMeasureBeanList = new ArrayList<>();
         mDialog = new LoadProgressDialog(getActivity());
         mDepartStringList = new ArrayList<>();
         mElementStringList = new ArrayList<>();
@@ -211,6 +212,7 @@ public class FinishMeasureFragment extends BaseFragment{
      * 联网获取已量体人数据
      */
     private void setFinishMeasure(final String userGUID, final String sCustomerName, final String sDepartmentName, final String sSearch) {
+        mFinishMeasureBeanList.clear();
         OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
@@ -231,13 +233,13 @@ public class FinishMeasureFragment extends BaseFragment{
                     @Override
                     public void success(HsWebInfo hsWebInfo) {
                         List<WsEntity> listwsdata = hsWebInfo.wsData.LISTWSDATA;
-                        List<FinishMeasureBean>finishMeasureBeanList=new ArrayList<>();
+
                         for (int i = 0; i < listwsdata.size(); i++) {
                             FinishMeasureBean finishMeasureBean = (FinishMeasureBean) listwsdata.get(i);
-                            finishMeasureBeanList.add(finishMeasureBean);
+                            mFinishMeasureBeanList.add(finishMeasureBean);
 //                          setMeasureData(finishMeasureBean);
                         }
-                       if (mFininshAdapter==null)mFininshAdapter = new FininshAdapter(finishMeasureBeanList,getActivity());
+                       if (mFininshAdapter==null)mFininshAdapter = new FininshAdapter(mFinishMeasureBeanList,getActivity());
                         mFinishMeasureFragmentBinding.lvCustomer.setAdapter(mFininshAdapter);
 
                     }
