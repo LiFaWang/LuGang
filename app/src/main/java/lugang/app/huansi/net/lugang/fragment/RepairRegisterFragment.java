@@ -44,13 +44,20 @@ public class RepairRegisterFragment extends BaseFragment {
         mRegisterFragmentBinding = (RepairRegisterFragmentBinding) viewDataBinding;
         Intent intent = getActivity().getIntent();
         String suserid = intent.getStringExtra(Constant.SUSERID);
-        final String userGUID= SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
-        setRepairMeasure(userGUID);
+
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        final String userGUID= SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
+        setRepairMeasure(userGUID,"","","");
+    }
+
     /**
      * 联网获取量体人返修数据
      */
-    private void setRepairMeasure(final String userGUID) {
+    private void setRepairMeasure(final String userGUID, final String sCustomerName, final String sDepartmentName, final String sSearch) {
         OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
@@ -59,7 +66,10 @@ public class RepairRegisterFragment extends BaseFragment {
                                 //待量体
                                 return NewRxjavaWebUtils.getJsonData(getContext(), CUS_SERVICE,
                                         "spappMeasureOrderList"
-                                        , "iIndex=2" + ",uUserGUID=" + userGUID,
+                                        , "iIndex=2" + ",uUserGUID=" + userGUID+
+                                                ",sCustomerName=" + sCustomerName +
+                                                ",sDepartmentName=" + sDepartmentName +
+                                                ",sSearch=" + sSearch,
                                         RepairRegisterBean.class.getName(),
                                         true, "");
                             }

@@ -106,7 +106,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MeasureCustomActivity.this);
         builder.setTitle("提示");
-        builder.setMessage("确定要退出当前页面吗");
+        builder.setMessage("当前页面数据未上传保存，是否要确认退出");
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

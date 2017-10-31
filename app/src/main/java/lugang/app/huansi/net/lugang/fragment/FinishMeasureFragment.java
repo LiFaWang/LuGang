@@ -80,8 +80,6 @@ public class FinishMeasureFragment extends BaseFragment{
         OthersUtil.showLoadDialog(mDialog);
         mDepartStringList.clear();
         mElementStringList.clear();
-        mElementStringList.add("所有部门");
-        mDepartStringList.add("所有单位");
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
@@ -151,6 +149,10 @@ public class FinishMeasureFragment extends BaseFragment{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mElement = (String) mFinishMeasureFragmentBinding.spElement.getSelectedItem();
+                if(mElement.equals("所有部门"))mElement="";
+
+                setFinishMeasure(mUserGUID, "", mElement, "");
+
             }
 
             @Override
@@ -184,6 +186,10 @@ public class FinishMeasureFragment extends BaseFragment{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mDepartment = (String) mFinishMeasureFragmentBinding.spDepartment.getSelectedItem();
+                if(mDepartment.equals("所有单位"))mDepartment="";
+
+                setFinishMeasure(mUserGUID, mDepartment, "", "");
+
             }
 
             @Override
@@ -197,14 +203,14 @@ public class FinishMeasureFragment extends BaseFragment{
             @Override
             public void onClick(View v) {
                 //根据分类筛选显示数据
-                if(mDepartment.equals("所有单位"))mDepartment="";
-                if(mElement.equals("所有部门"))mElement="";
+//                if(mDepartment.equals("所有单位"))mDepartment="";
+//                if(mElement.equals("所有部门"))mElement="";
                 String sSearch = mFinishMeasureFragmentBinding.orderSearch.getText().toString();
 //                if (TextUtils.isEmpty(sSearch)) {
 //                    OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
 //                    return;
 //                }
-                setFinishMeasure(mUserGUID, mDepartment, mElement, sSearch);
+                setFinishMeasure(mUserGUID, "", "", sSearch);
             }
         });
 
@@ -243,7 +249,7 @@ public class FinishMeasureFragment extends BaseFragment{
                             mFinishMeasureBeanList.add(finishMeasureBean);
 //                          setMeasureData(finishMeasureBean);
                         }
-                       if (mFininshAdapter==null)mFininshAdapter = new FininshAdapter(mFinishMeasureBeanList,getActivity());
+                      mFininshAdapter = new FininshAdapter(mFinishMeasureBeanList,getActivity());
                         mFinishMeasureFragmentBinding.lvCustomer.setAdapter(mFininshAdapter);
 
                     }

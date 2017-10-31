@@ -5,7 +5,7 @@ def VERSON_CODE = 1 //versonCode
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "lugang.app.huansi.net.lugang"
         minSdkVersion 16

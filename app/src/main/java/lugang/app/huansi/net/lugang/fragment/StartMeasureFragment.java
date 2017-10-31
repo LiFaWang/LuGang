@@ -177,6 +177,9 @@ public class StartMeasureFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mElement = (String) mStartMeasureFragmentBinding.spElement.getSelectedItem();
+                if(mElement.equals("所有部门"))mElement="";
+                setStartMeasure(mUserGUID, "", mElement, "");
+
             }
 
             @Override
@@ -210,6 +213,10 @@ public class StartMeasureFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mDepartment = (String) mStartMeasureFragmentBinding.spDepartment.getSelectedItem();
+                if(mDepartment.equals("所有单位"))mDepartment="";
+
+                setStartMeasure(mUserGUID, mDepartment, "", "");
+
             }
 
             @Override
@@ -223,14 +230,14 @@ public class StartMeasureFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 //根据分类筛选显示数据
-                if(mDepartment.equals("所有单位"))mDepartment="";
-                if(mElement.equals("所有部门"))mElement="";
+//                if(mDepartment.equals("所有单位"))mDepartment="";
+//                if(mElement.equals("所有部门"))mElement="";
                 String sSearch = mStartMeasureFragmentBinding.orderSearch.getText().toString();
 //                if (TextUtils.isEmpty(sSearch)) {
 //                    OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
 //                    return;
 //                }
-                setStartMeasure(mUserGUID, mDepartment, mElement, sSearch);
+                setStartMeasure(mUserGUID, "", "", sSearch);
             }
         });
         /**
@@ -239,6 +246,7 @@ public class StartMeasureFragment extends BaseFragment {
         mStartMeasureFragmentBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(), NewMeasureCustomActivity.class);
                 startActivity(intent);
             }
@@ -278,7 +286,7 @@ public class StartMeasureFragment extends BaseFragment {
                         for (int i = 0; i < listWsdata.size(); i++) {
                             final StartMeasureBean startMeasureBean = (StartMeasureBean) listWsdata.get(i);
                             mStartMeasureBeanList.add(startMeasureBean);
-//                            setMeasureData(startMeasureBean);
+//                          setMeasureData(startMeasureBean);
                         }
                         mAdapter = new StartAdapter(mStartMeasureBeanList, getActivity());
                         mStartMeasureFragmentBinding.lvCustomer.setAdapter(mAdapter);

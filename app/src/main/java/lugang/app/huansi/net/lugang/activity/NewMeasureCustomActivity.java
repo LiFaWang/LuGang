@@ -18,11 +18,13 @@ import huansi.net.qianjingapp.base.NotWebBaseActivity;
 import huansi.net.qianjingapp.entity.HsWebInfo;
 import huansi.net.qianjingapp.entity.WsEntity;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
+import huansi.net.qianjingapp.listener.WebListener;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
 import huansi.net.qianjingapp.utils.OthersUtil;
 import huansi.net.qianjingapp.utils.SPHelper;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.bean.NewMeasureBean;
+import lugang.app.huansi.net.lugang.bean.ObtainNewMeasureOrderNoBean;
 import lugang.app.huansi.net.lugang.databinding.ActivityNewMeasureCustomBinding;
 import rx.functions.Func1;
 
@@ -44,6 +46,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
     private EditText mEtCount;
     private List<WsEntity> mCustomerNameList;
     private List<NewMeasureBean> mNewMeasureBeanItemList;//新增的列表条目数据
+    private List<ObtainNewMeasureOrderNoBean> mObtainNewMeasureOrderNoBeanList;//清单号的集合
 
     @Override
     protected int getLayoutId() {
@@ -56,14 +59,20 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
         mNewMeasureBeanItemList = new ArrayList<>();
         mClothStyleStringList = new ArrayList<>();
         mClothStyleidStringList = new ArrayList<>();
+        mObtainNewMeasureOrderNoBeanList = new ArrayList<>();
+
         mClothStyleMap = new HashMap<>();
+        final String userGUID = SPHelper.getLocalData(getApplicationContext(), USER_GUID, String.class.getName(), "").toString();
+
+        //获取量体清单编号
+        obtainNewMeasureOrderNo(userGUID);
 
         //新增待量体清单人员条目界面
         mActivityNewMeasureCustomBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String sOrderBillNo = mActivityNewMeasureCustomBinding.etOrderSearch.getText().toString();
+                String sOrderBillNo = mActivityNewMeasureCustomBinding.textView.getText().toString();
                 if (TextUtils.isEmpty(sOrderBillNo)) {
                     OthersUtil.ToastMsg(NewMeasureCustomActivity.this, "请先填写量体清单单号");
                 } else if (mNewMeasureBeanItemList!=null&&mNewMeasureBeanItemList.size()>0){
@@ -75,7 +84,6 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                 }
             }
         });
-        final String userGUID = SPHelper.getLocalData(getApplicationContext(), USER_GUID, String.class.getName(), "").toString();
         //上传服务器
         mActivityNewMeasureCustomBinding.btnSaveMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +101,70 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                 }
 
                 upDateNewBaseData(userGUID);
+            }
+        });
+    }
+
+    /**
+     * 获取新增量体条目的清单编号
+     * @param userGUID
+     */
+    private void obtainNewMeasureOrderNo(final String userGUID) {
+        OthersUtil.showLoadDialog(mDialog);
+        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
+                        .map(new Func1<String, HsWebInfo>() {
+                            @Override
+                            public HsWebInfo call(String s) {
+                                return NewRxjavaWebUtils.getJsonData(getApplicationContext(),CUS_SERVICE,
+                                       "spappMeasureAddPremiseData","uUserGUID="+userGUID,
+                                        ObtainNewMeasureOrderNoBean.class.getName(),
+                                        true, ""
+                                        );
+
+                            }
+                        }), this, mDialog, new WebListener() {
+                    @Override
+                    public void success(HsWebInfo hsWebInfo) {
+                        List<WsEntity> listwsdata = hsWebInfo.wsData.LISTWSDATA;
+                        for (int i = 0; i < listwsdata.size(); i++) {
+                            ObtainNewMeasureOrderNoBean obtainNewMeasureOrderNoBean = (ObtainNewMeasureOrderNoBean) listwsdata.get(i);
+                            mObtainNewMeasureOrderNoBeanList.add(obtainNewMeasureOrderNoBean);
+                        }
+                        //选取清单编号
+                        selectorNewMeasureOrderNo(mObtainNewMeasureOrderNoBeanList);
+
+
+                    }
+
+                    @Override
+                    public void error(HsWebInfo hsWebInfo, Context context) {
+
+                    }
+                }
+        );
+
+    }
+
+    private void selectorNewMeasureOrderNo(List<ObtainNewMeasureOrderNoBean> obtainNewMeasureOrderNoBeanList) {
+        final List<String>  measureNoList=new ArrayList<>();
+        for (int i = 0; i < obtainNewMeasureOrderNoBeanList.size(); i++) {
+
+           String measureNo = obtainNewMeasureOrderNoBeanList.get(i).SBILLNO;
+            measureNoList.add(measureNo);
+        }
+        ArrayAdapter<String> measureNoAdapter=new ArrayAdapter<>(this,R.layout.element_string_item,
+                R.id.tvElementString,measureNoList);
+        mActivityNewMeasureCustomBinding.spMeasureNo.setAdapter(measureNoAdapter);
+        mActivityNewMeasureCustomBinding.spMeasureNo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String measureNoSelected = measureNoList.get(position);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
@@ -135,7 +207,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                     public void success(HsWebInfo hsWebInfo) {
                         OthersUtil.ToastMsg(NewMeasureCustomActivity.this, "上传成功！！");
                         mNewMeasureBeanItemList.clear();
-                        finish();
+                        mActivityNewMeasureCustomBinding.llNewCustom.removeAllViews();
                     }
                 }
         );
@@ -194,7 +266,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
 //                //添加单位名称
 //                addCustomerName(customerNameList,mClothStyleStringList);
                 //新增一行表单
-                addMeasurItem(mCustomerNameList, clothStyleList);
+                addMeasureItem(mCustomerNameList, clothStyleList);
 
             }
 
@@ -212,7 +284,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
      * @param
      * @param clothStyleStringList
      */
-    private void addMeasurItem(List<WsEntity> customerNameList, final List<WsEntity> clothStyleStringList) {
+    private void addMeasureItem(List<WsEntity> customerNameList, final List<WsEntity> clothStyleStringList) {
 
         final NewMeasureBean mBean = (NewMeasureBean) customerNameList.get(0);
         addClothStyle(clothStyleStringList);

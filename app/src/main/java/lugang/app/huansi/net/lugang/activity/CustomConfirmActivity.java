@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -48,7 +47,7 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CustomConfirmActivity.this);
         builder.setTitle("提示");
-        builder.setMessage("确定要退出当前页面吗");
+        builder.setMessage("当前页面数据未上传保存，是否要确认退出");
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -103,16 +102,13 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         mCustomConfirmActivityBinding.btnSavePng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String string = mCustomConfirmActivityBinding.etMaleAddCount.getText().toString();
-                String string1 = mCustomConfirmActivityBinding.etFemaleAddCount.getText().toString();
                 String originalToatalMeasure = mCustomConfirmActivityBinding.etOriginalToatal.getText().toString();
-                String addMeasure = mCustomConfirmActivityBinding.etAddCount.getText().toString();
-                int toatal = Integer.parseInt(originalToatalMeasure) + Integer.parseInt(addMeasure);
-                if (TextUtils.isEmpty(toatal+"")) {
-                    OthersUtil.ToastMsg(CustomConfirmActivity.this, "原总人数或者添加人数不能为空");
-                }else {
-                    mCustomConfirmActivityBinding.etToatalCount.setText(String.valueOf(toatal));
-                }
+//                int toatal = Integer.parseInt(originalToatalMeasure) + Integer.parseInt(addMeasure);
+//                if (TextUtils.isEmpty(toatal+"")) {
+//                    OthersUtil.ToastMsg(CustomConfirmActivity.this, "原总人数或者添加人数不能为空");
+//                }else {
+//                    mCustomConfirmActivityBinding.etToatalCount.setText(String.valueOf(toatal));
+//                }
 
 
 
@@ -256,6 +252,10 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                         mCustomConfirmActivityBinding.femaleWaitMeasureCount.setText(confirmTableBean.INOTFEMALEMEASUREDQTY);
                         mCustomConfirmActivityBinding.measuredCount.setText(confirmTableBean.IMEASUREDQTY);
                         mCustomConfirmActivityBinding.waitMeasureCount.setText(confirmTableBean.INOTMEASUREDQTY);
+                        mCustomConfirmActivityBinding.etMaleAddCount.setText(confirmTableBean.IMALEADDMEASUREQTY);
+                        mCustomConfirmActivityBinding.etFemaleAddCount.setText(confirmTableBean.IFEMALEADDMEASUREQTY);
+                        mCustomConfirmActivityBinding.etAddCount.setText(confirmTableBean.ITOTALADDMEASUREQTY);
+
 
                         int etOriginalToatal = Integer.parseInt(mCustomConfirmActivityBinding.measuredCount.getText().toString()) + Integer.parseInt(mCustomConfirmActivityBinding.waitMeasureCount.getText().toString());
                         mCustomConfirmActivityBinding.etOriginalToatal.setText(String.valueOf(etOriginalToatal));
