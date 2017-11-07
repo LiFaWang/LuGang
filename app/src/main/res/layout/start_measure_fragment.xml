@@ -54,23 +54,22 @@
                 android:paddingRight="20dp"
                 android:textSize="18sp"/>
 
+
+
             <Spinner
-                android:id="@+id/spElement"
+                android:layout_toLeftOf="@+id/spDepartment"
+                android:id="@+id/spCustomer"
                 android:layout_width="150dp"
                 android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_toLeftOf="@id/orderSearch"
-               />
-
+                android:layout_gravity="center" />
             <Spinner
                 android:id="@+id/spDepartment"
                 android:layout_width="150dp"
                 android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_toLeftOf="@id/spElement"
-               />
+                android:layout_toLeftOf="@id/orderSearch" />
 
 
         </RelativeLayout>
@@ -156,12 +155,16 @@
         <!--android:layout_height="match_parent">-->
 
         <!--</LinearLayout>-->
-        <ListView
-            android:id="@+id/lvCustomer"
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </ListView>
-
+            android:id="@+id/srlStart"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <ListView
+                android:layout_weight="1"
+                android:id="@+id/lvCustomer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>

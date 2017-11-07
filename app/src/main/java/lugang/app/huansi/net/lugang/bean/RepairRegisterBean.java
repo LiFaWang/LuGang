@@ -40,7 +40,9 @@ public class RepairRegisterBean extends WsData {
     public String SCITYNAME="";
     public String SCOUNTYNAME="";
     public String SCUSTOMERNAME="";//单位
+    public String SCUSTOMERCODE="";
     public String SDEPARTMENTNAME="";//部门
+    public String SJOBNAME="";
     public String SPERSON="";//姓名
     public String SVALUENAME="";//款式的ID
     public String STATUS="REPAIR";//跳转的状态

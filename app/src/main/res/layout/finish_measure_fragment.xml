@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#383F51">
@@ -52,8 +52,17 @@
             android:paddingRight="20dp"
             android:textSize="18sp"/>
 
+
         <Spinner
-            android:id="@+id/spElement"
+            android:layout_toLeftOf="@+id/spDepartment"
+            android:id="@+id/spCustomer"
+            android:layout_width="150dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+        <Spinner
+            android:id="@+id/spDepartment"
             android:layout_width="150dp"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content"
@@ -61,19 +70,10 @@
             android:layout_toLeftOf="@id/orderSearch"
             />
 
-        <Spinner
-            android:id="@+id/spDepartment"
-            android:layout_width="150dp"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_toLeftOf="@id/spElement"
-            />
-
 
 
     </RelativeLayout>
-    <LinearLayout
+        <LinearLayout
         android:background="#383F51"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
@@ -147,11 +147,16 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content">-->
     <!--</LinearLayout>-->
-<ListView
-    android:id="@+id/lvCustomer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:id="@+id/srlFinish"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <ListView
+                android:id="@+id/lvCustomer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-</ListView>
-</LinearLayout>
+    </LinearLayout>
 </layout>

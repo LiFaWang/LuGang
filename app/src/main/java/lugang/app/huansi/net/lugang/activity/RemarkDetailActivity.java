@@ -1,5 +1,6 @@
 package lugang.app.huansi.net.lugang.activity;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -14,8 +15,14 @@ import huansi.net.qianjingapp.base.NotWebBaseActivity;
 import huansi.net.qianjingapp.entity.HsWebInfo;
 import huansi.net.qianjingapp.entity.WsEntity;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
+import huansi.net.qianjingapp.utils.NetUtil;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
 import huansi.net.qianjingapp.utils.OthersUtil;
+import lugang.app.huansi.net.db.MeasureRemarkDataInSQLite;
+import lugang.app.huansi.net.db.RemarkCategoryDataInSQLite;
+import lugang.app.huansi.net.db.RemarkDetailDataInSQLite;
+import lugang.app.huansi.net.greendao.RemarkCategoryDataInSQLiteDao;
+import lugang.app.huansi.net.greendao.RemarkDetailDataInSQLiteDao;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.adapter.RemarkAddAdapter;
 import lugang.app.huansi.net.lugang.adapter.RemarkCategoryAdapter;
@@ -24,6 +31,8 @@ import lugang.app.huansi.net.lugang.bean.RemarkCategoryBean;
 import lugang.app.huansi.net.lugang.bean.RemarkDetailBean;
 import lugang.app.huansi.net.lugang.databinding.ActivityRemarkDetailBinding;
 import lugang.app.huansi.net.lugang.event.SecondToFirstActivityEvent;
+import lugang.app.huansi.net.util.GreenDaoUtil;
+import lugang.app.huansi.net.util.LGSPUtils;
 import rx.functions.Func1;
 
 import static huansi.net.qianjingapp.utils.NewRxjavaWebUtils.getJsonData;
@@ -34,6 +43,7 @@ import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivi
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_RETURN_DATA;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.STYLE_ID_INTENT;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.STYLE_ID_KEY;
+import static lugang.app.huansi.net.util.LGSPUtils.USER_GUID;
 
 /**
  * 备注详情页面
@@ -42,15 +52,16 @@ import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivi
 public class RemarkDetailActivity extends NotWebBaseActivity {
 
     private ActivityRemarkDetailBinding mActivityRemarkDetailBinding;
-    private List<RemarkDetailBean> remarkDetailList;
-    private List<RemarkCategoryBean> remarkCategoryList;
-    private List<RemarkDetailBean> remarkAddList;//选中的list
+    private List<RemarkDetailDataInSQLite> remarkDetailList;
+    private List<RemarkCategoryDataInSQLite> remarkCategoryList;
+    private List<MeasureRemarkDataInSQLite> remarkAddList;//选中的list
 
     private RemarkCategoryAdapter mRemarkCategoryAdapter;//备注大类的adapter
     private RemarkDetailAdapter mRemarkDetailAdapter;//备注明细的adapter
     private RemarkAddAdapter mRemarkAddAdapter;//已选的adapter
 
     private  String orderDtlID;//订单明细ID
+    private String styleId;//款式ID
 
     @Override
     protected int getLayoutId() {
@@ -61,11 +72,9 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
     public void init() {
         mActivityRemarkDetailBinding = (ActivityRemarkDetailBinding) viewDataBinding;
 
-        String styleId = getIntent().getStringExtra(STYLE_ID_INTENT);//款式ID
+        styleId = getIntent().getStringExtra(STYLE_ID_INTENT);//款式ID
         orderDtlID= getIntent().getStringExtra(ORDER_DTL_ID_INTENT);
-
-
-        remarkAddList= (List<RemarkDetailBean>) getIntent().getSerializableExtra(REMARK_INTENT_DATA);
+        remarkAddList= (List<MeasureRemarkDataInSQLite>) getIntent().getSerializableExtra(REMARK_INTENT_DATA);
         if(remarkAddList==null) remarkAddList=new ArrayList<>();
 
         remarkDetailList=new ArrayList<>();
@@ -82,22 +91,37 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
         mActivityRemarkDetailBinding.butAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<RemarkDetailBean> chooseList=new ArrayList<>();
-
+                List<MeasureRemarkDataInSQLite> chooseList=new ArrayList<>();
+                String userGUID= LGSPUtils.getLocalData(getApplicationContext(), USER_GUID,String.class.getName(),"").toString();
                 for(int i=0;i<remarkDetailList.size();i++){
-                    RemarkDetailBean bean=remarkDetailList.get(i);
-                    if(!bean.isAdd&&bean.isChoose){
-                        RemarkDetailBean addBean=new RemarkDetailBean();
-                        addBean.IID=bean.IID;
-                        addBean.SMETERMARKCODE=bean.SMETERMARKCODE;
-                        addBean.SMETERMARKNAME=bean.SMETERMARKNAME;
-                        addBean.iOrderDtlId=orderDtlID;
-                        addBean.isChoose=false;
-                        chooseList.add(addBean);
+                    RemarkDetailDataInSQLite remarkDetailDataInSQLite=remarkDetailList.get(i);
+                    if(!remarkDetailDataInSQLite.isAdd&&remarkDetailDataInSQLite.isChoose) {
+//                        try {
+                        MeasureRemarkDataInSQLite measureRemarkDataInSQLite = new MeasureRemarkDataInSQLite();
+//                            RemarkDetailDataInSQLite addRemarkDetailData= (RemarkDetailDataInSQLite) remarkDetailDataInSQLite.clone();
+                        measureRemarkDataInSQLite.setIOrderDtlId(orderDtlID);
+                        measureRemarkDataInSQLite.setSMeterMarkName(remarkDetailDataInSQLite.getSMeterMarkName());
+                        measureRemarkDataInSQLite.setSMeterMarkCode(remarkDetailDataInSQLite.getSMeterMarkCode());
+                        measureRemarkDataInSQLite.setUserGUID(userGUID);
+                        measureRemarkDataInSQLite.setIId(remarkDetailDataInSQLite.getIId());
+//                            measureRemarkDataInSQLite.setType();
+//                            measureRemarkDataInSQLite.setPerson();
+//                            measureRemarkDataInSQLite.set
+//                            RemarkDetailBean addBean=new RemarkDetailBean();
+//                            addBean.IID=bean.IID;
+//                            addBean.SMETERMARKCODE=bean.SMETERMARKCODE;
+//                            addBean.SMETERMARKNAME=bean.SMETERMARKNAME;
+//                            addBean.iOrderDtlId=orderDtlID;
+                        measureRemarkDataInSQLite.isChoose = false;
+                        chooseList.add(measureRemarkDataInSQLite);
+
+//                        } catch (CloneNotSupportedException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 }
-                if(chooseList.isEmpty()){
-                    OthersUtil.ToastMsg(RemarkDetailActivity.this,"请先选择要添加的备注 ");
+                if (chooseList.isEmpty()) {
+                    OthersUtil.ToastMsg(RemarkDetailActivity.this, "请先选择要添加的备注 ");
                     return;
                 }
                 remarkAddList.addAll(chooseList);
@@ -110,12 +134,12 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
             @Override
             public void onClick(View v) {
 
-                List<RemarkDetailBean> chooseList=new ArrayList<>();
+                List<MeasureRemarkDataInSQLite> chooseList=new ArrayList<>();
 
                 for(int i=0;i<remarkAddList.size();i++){
-                    RemarkDetailBean bean=remarkAddList.get(i);
-                    if(bean.isChoose){
-                        chooseList.add(bean);
+                    MeasureRemarkDataInSQLite measureRemarkDataInSQLite=remarkAddList.get(i);
+                    if(measureRemarkDataInSQLite.isChoose){
+                        chooseList.add(measureRemarkDataInSQLite);
                     }
                 }
                 if(chooseList.isEmpty()){
@@ -138,8 +162,8 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
                 }
                 remarkCategoryList.get(position).isChoose=true;
                 mRemarkCategoryAdapter.notifyDataSetChanged();
-                RemarkCategoryBean categoryBean=remarkCategoryList.get(position);
-                requestRemarkDetailDate(categoryBean.IID);
+                RemarkCategoryDataInSQLite remarkCategoryDataInSQLite=remarkCategoryList.get(position);
+                requestRemarkDetailDate(remarkCategoryDataInSQLite.getIId());
             }
         });
 
@@ -160,7 +184,7 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
             }
         });
 
-        initData(styleId);
+        initData();
 
     }
 
@@ -168,22 +192,48 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
      * 获取网络返回的数据
      */
     @SuppressWarnings("unchecked")
-    private void initData(final String styleId) {
+    private void initData() {
         OthersUtil.showLoadDialog(mDialog);
+        remarkCategoryList.clear();
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                 //获取备注大类
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
                     public HsWebInfo call(String s) {
-                        HsWebInfo info= getJsonData(getApplicationContext(), CUS_SERVICE,
-                                "spappMeasureRemarkList",
-                                "isdStyleTypeMstId="+styleId,
-                                RemarkCategoryBean.class.getName(),
-                                true, "没有查询到备注大类");
-                        if(!info.success) return info;
-                        List<WsEntity> remarkHdrList=info.wsData.LISTWSDATA;
+                        HsWebInfo info=null;
+                        List<RemarkCategoryDataInSQLite> list=new ArrayList<>();
+                        if(NetUtil.isNetworkAvailable(getApplicationContext())){
+                            info= getJsonData(getApplicationContext(), CUS_SERVICE,
+                                    "spappMeasureRemarkList",
+                                    "isdStyleTypeMstId="+styleId,
+                                    RemarkCategoryBean.class.getName(),
+                                    true, "没有查询到备注大类");
+                            if(!info.success) return info;
+                            List<WsEntity> remarkHdrList=info.wsData.LISTWSDATA;
+                            for(WsEntity entity:remarkHdrList){
+                                RemarkCategoryBean bean= (RemarkCategoryBean) entity;
+                                RemarkCategoryDataInSQLite categoryDataInSQLite=new RemarkCategoryDataInSQLite();
+                                categoryDataInSQLite.setIId(bean.IID);
+                                categoryDataInSQLite.setSBillNo(bean.SBILLNO);
+                                categoryDataInSQLite.setSMeterMarkName(bean.SMETERMARKNAME);
+                                categoryDataInSQLite.setStyleId(styleId);
+                                list.add(categoryDataInSQLite);
+                            }
+                        }else {
+
+                            RemarkCategoryDataInSQLiteDao dao= GreenDaoUtil.getGreenDaoSession(getApplicationContext()).getRemarkCategoryDataInSQLiteDao();
+                            List<RemarkCategoryDataInSQLite> categoryDataInSQLiteList=null;
+                            try {
+                                categoryDataInSQLiteList=dao.queryBuilder()
+                                        .where(RemarkCategoryDataInSQLiteDao.Properties.StyleId.eq(styleId))
+                                        .list();
+                            }catch (Exception e){}
+                            if(categoryDataInSQLiteList==null) categoryDataInSQLiteList=new ArrayList<>();
+                            list.addAll(categoryDataInSQLiteList);
+                        }
                         Map<String,Object> map=new HashMap<>();
-                        map.put("remarkHdrList",remarkHdrList);
+                        map.put("remarkHdrList",list);
+                        if(info==null) info=new HsWebInfo();
                         info.object=map;
                         return info;
                     }
@@ -192,14 +242,14 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
             @Override
             public void success(HsWebInfo hsWebInfo) {
                 Map<String,Object> map= (Map<String, Object>) hsWebInfo.object;
-                List<WsEntity> remarkHdrList= (List<WsEntity>) map.get("remarkHdrList");
-                for(WsEntity entity:remarkHdrList){
-                    remarkCategoryList.add((RemarkCategoryBean) entity);
-                }
+                List<RemarkCategoryDataInSQLite> remarkHdrList= (List<RemarkCategoryDataInSQLite>) map.get("remarkHdrList");
+//                for(WsEntity entity:remarkHdrList){
+//                    remarkCategoryList.add((RemarkCategoryBean) entity);
+//                }
+                remarkCategoryList.addAll(remarkHdrList);
                 if(!remarkCategoryList.isEmpty()) remarkCategoryList.get(0).isChoose=true;
                 mRemarkCategoryAdapter.notifyDataSetChanged();
-                if(!remarkCategoryList.isEmpty())
-                    requestRemarkDetailDate(remarkCategoryList.get(0).IID);
+                if(!remarkCategoryList.isEmpty()) requestRemarkDetailDate(remarkCategoryList.get(0).getIId());
             }
         });
     }
@@ -208,30 +258,63 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
     /**
      * 获取备注的详情
      */
-    private void requestRemarkDetailDate(final String remarkCategoryId) {
+    private void requestRemarkDetailDate( String remarkCategoryId) {
         OthersUtil.showLoadDialog(mDialog);
         remarkDetailList.clear();
 
-        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
+        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, remarkCategoryId)
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
-                    public HsWebInfo call(String s) {
-                        return getJsonData(getApplicationContext(), CUS_SERVICE,
-                                "spappMeasureRemarkList"
-                                ,"isdMeterMarkMstid="+remarkCategoryId,
-                                RemarkDetailBean.class.getName(),
-                                true, "");
+                    public HsWebInfo call(String remarkCategoryId) {
+                        HsWebInfo info=null;
+                        List<RemarkDetailDataInSQLite> list=new ArrayList<>();
+                        if(NetUtil.isNetworkAvailable(getApplicationContext())){
+                            info= getJsonData(getApplicationContext(), CUS_SERVICE,
+                                    "spappMeasureRemarkList"
+                                    ,"isdMeterMarkMstid="+remarkCategoryId,
+                                    RemarkDetailBean.class.getName(),
+                                    true, "");
+                            if(!info.success) return info;
+                            for(WsEntity entity:info.wsData.LISTWSDATA){
+                                RemarkDetailBean bean= (RemarkDetailBean) entity;
+                                RemarkDetailDataInSQLite remarkDetailDataInSQLite=new RemarkDetailDataInSQLite();
+                                remarkDetailDataInSQLite.setIId(bean.IID);
+//                                remarkDetailDataInSQLite.setIOrderDtlId(orderDtlID);
+                                remarkDetailDataInSQLite.setRemarkCategoryId(remarkCategoryId);
+                                remarkDetailDataInSQLite.setSMeterMarkCode(bean.SMETERMARKCODE);
+                                remarkDetailDataInSQLite.setSMeterMarkName(bean.SMETERMARKNAME);
+                                list.add(remarkDetailDataInSQLite);
+                            }
+                        }else {
+                            RemarkDetailDataInSQLiteDao dao=GreenDaoUtil.getGreenDaoSession(getApplicationContext()).getRemarkDetailDataInSQLiteDao();
+                            List<RemarkDetailDataInSQLite> detailDataInSQLiteList=null;
+                            try {
+                                detailDataInSQLiteList=dao.queryBuilder()
+                                        .where(RemarkDetailDataInSQLiteDao.Properties.RemarkCategoryId.eq(remarkCategoryId))
+                                        .list();
+                            }catch (Exception e){}
+                            if(detailDataInSQLiteList==null) detailDataInSQLiteList=new ArrayList<>();
+                            list.addAll(detailDataInSQLiteList);
+                        }
+                        if(info==null) info=new HsWebInfo();
+                        info.object=list;
+                        return info;
                     }
                 }), this, mDialog, new SimpleHsWeb() {
             @Override
             public void success(HsWebInfo hsWebInfo) {
-                for(WsEntity entity:hsWebInfo.wsData.LISTWSDATA){
-                    remarkDetailList.add((RemarkDetailBean) entity);
-                }
+//                for(WsEntity entity:hsWebInfo.wsData.LISTWSDATA){
+//                    remarkDetailList.add((RemarkDetailBean) entity);
+//                }
+                remarkDetailList.addAll((List<RemarkDetailDataInSQLite>) hsWebInfo.object);
                 showDetailData();
             }
 
-
+            @Override
+            public void error(HsWebInfo hsWebInfo, Context context) {
+                super.error(hsWebInfo, context);
+                showDetailData();
+            }
         });
     }
 
@@ -241,13 +324,14 @@ public class RemarkDetailActivity extends NotWebBaseActivity {
     private void showDetailData(){
         Map<String,String> map=new HashMap<>();
         for(int i=0;i<remarkAddList.size();i++){
-            RemarkDetailBean bean=remarkAddList.get(i);
-            map.put(bean.IID,bean.IID);
+            MeasureRemarkDataInSQLite measureRemarkDataInSQLite=remarkAddList.get(i);
+            map.put(measureRemarkDataInSQLite.getIId(),measureRemarkDataInSQLite.getIId());
         }
         for(int i=0;i<remarkDetailList.size();i++){
-            RemarkDetailBean bean=remarkDetailList.get(i);
-            bean.isAdd=map.get(bean.IID)!=null;
-            bean.isChoose=false;
+            RemarkDetailDataInSQLite remarkDetailDataInSQLite=remarkDetailList.get(i);
+            remarkDetailDataInSQLite.isAdd=map.get(remarkDetailDataInSQLite.getIId())!=null;
+            remarkDetailDataInSQLite.isChoose=false;
+            remarkDetailList.set(i,remarkDetailDataInSQLite);
         }
         mRemarkDetailAdapter.notifyDataSetChanged();
     }

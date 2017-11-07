@@ -2,98 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="40dp"
     >
     <TextView
         android:id="@+id/tvCustomerName"
-        android:background="#AB9F9D"
-        android:gravity="center"
-        android:text=""
-        android:textSize="18sp"
-        android:textColor="#fff"
-        android:layout_margin="5dp"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"/>
+        style="@style/new_measure_style"/>
+    <AutoCompleteTextView
+        android:id="@+id/actAreaName"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:completionThreshold="1"
+        style="@style/new_measure_style"/>
+    <AutoCompleteTextView
+        android:id="@+id/actCityName"
+        android:completionThreshold="1"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        style="@style/new_measure_style"/>
+    <AutoCompleteTextView
+        android:id="@+id/actCountyName"
+        android:completionThreshold="1"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        style="@style/new_measure_style"/>
+    <AutoCompleteTextView
+        android:id="@+id/actDepartmentName"
+        android:completionThreshold="1"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        style="@style/new_measure_style"/>
+    <AutoCompleteTextView
+        android:id="@+id/actJobName"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:completionThreshold="1"
+        style="@style/new_measure_style"/>
 
     <EditText
-        android:id="@+id/etAreaName"
+        android:id="@+id/etPerson"
+        android:text=""
+        style="@style/new_measure_style"/>
+    <Spinner
+        android:id="@+id/spSex"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
         android:layout_weight="1"
         android:background="#AB9F9D"
-        android:gravity="center"
-        android:text=""
-        android:textColor="#fff"
-        android:textSize="18sp"/>
-
-    <EditText
-        android:id="@+id/etCityName"
-        android:background="#AB9F9D"
-        android:gravity="center"
-        android:layout_margin="5dp"
-        android:text=""
-        android:textSize="18sp"
-        android:textColor="#fff"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"/>
-    <EditText
-        android:id="@+id/etCountyName"
-        android:layout_margin="5dp"
-        android:background="#AB9F9D"
-        android:gravity="center"
-        android:text=""
-        android:textSize="18sp"
-        android:textColor="#fff"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"/>
-    <EditText
-        android:id="@+id/etDepartmentName"
-        android:layout_margin="5dp"
-        android:background="#AB9F9D"
-        android:gravity="center"
-        android:text=""
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"/>
-    <EditText
-        android:id="@+id/etJobName"
-        android:layout_margin="5dp"
-        android:background="#AB9F9D"
-        android:gravity="center"
-        android:text=""
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"/>
-    <EditText
-        android:id="@+id/etPerson"
-        android:layout_margin="5dp"
-        android:background="#AB9F9D"
-        android:gravity="center"
-        android:text=""
-        android:textSize="18sp"
-        android:textColor="#fff"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"/>
-    <EditText
-        android:id="@+id/etSex"
-        android:layout_margin="5dp"
-        android:background="#AB9F9D"
-        android:gravity="center"
-        android:text=""
-        android:textSize="18sp"
-        android:textColor="#fff"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"/>
+        android:gravity="center"/>
 
     <Spinner
         android:id="@+id/spClothStyle"
@@ -104,26 +62,9 @@
         android:background="#AB9F9D"
         android:gravity="center"/>
 
-    <!--<TextView-->
-    <!--android:id="@+id/tvClothStyle"-->
-    <!--android:layout_margin="5dp"-->
-    <!--android:background="#AB9F9D"-->
-    <!--android:gravity="center"-->
-    <!--android:text="衬衫"-->
-    <!--android:textSize="16sp"-->
-    <!--android:textColor="#fff"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:layout_height="match_parent"/>-->
     <EditText
+        android:inputType="number"
         android:id="@+id/etCount"
-        android:layout_margin="5dp"
-        android:background="#AB9F9D"
-        android:gravity="center"
         android:text="1"
-        android:textSize="18sp"
-        android:textColor="#fff"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"/>
+        style="@style/new_measure_style"/>
 </LinearLayout>

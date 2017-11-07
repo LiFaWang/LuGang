@@ -18,6 +18,8 @@ public final class Constant {
 //            Manifest.permission.READ_CONTACTS
     };
 
+    public static final String LG_DB_NAME="lugang_measure_db";//SQLite的数据库名
+
     public final static String SPERSON="SPERSON";//客户姓名
     public final static String SDEPARTMENTNAME="SDEPARTMENTNAME";//客户部门
     public final static String ISDORDERMETERMSTID="ISDORDERMETERMSTID";//订单ID

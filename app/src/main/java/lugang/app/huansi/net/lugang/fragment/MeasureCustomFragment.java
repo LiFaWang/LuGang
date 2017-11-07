@@ -15,7 +15,7 @@ import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
 import lugang.app.huansi.net.lugang.databinding.MeasureCustomFragmentBinding;
 
 /**
- * 量体定制的fm
+ *
  * Created by Tony on 2017/9/6.
  * 15:45
  */

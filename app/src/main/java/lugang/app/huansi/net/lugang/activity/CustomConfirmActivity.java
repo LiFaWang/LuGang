@@ -69,6 +69,7 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         final Intent intent = getIntent();
         final String orderId = intent.getStringExtra("iordermetermstid");
         final String gpicture = intent.getStringExtra("gpicture");
+        final String scustomername = intent.getStringExtra("scustomername");
         mCustomConfirmActivityBinding.tvDepartment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,9 +78,8 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
             }
         });
         String absolutePath = getExternalFilesDir("screenshot").getAbsoluteFile()
-                + "/" + orderId + ".png";
+                + "/" + scustomername+"_"+orderId + ".png";
         Bitmap diskBitmap = getDiskBitmap(absolutePath);
-        // mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(diskBitmap);
         mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(diskBitmap);
 
         requestConfirmTable(orderId, "");
@@ -102,27 +102,10 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         mCustomConfirmActivityBinding.btnSavePng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String originalToatalMeasure = mCustomConfirmActivityBinding.etOriginalToatal.getText().toString();
-//                int toatal = Integer.parseInt(originalToatalMeasure) + Integer.parseInt(addMeasure);
-//                if (TextUtils.isEmpty(toatal+"")) {
-//                    OthersUtil.ToastMsg(CustomConfirmActivity.this, "原总人数或者添加人数不能为空");
-//                }else {
-//                    mCustomConfirmActivityBinding.etToatalCount.setText(String.valueOf(toatal));
-//                }
-
-
-
-
-//            //截屏
-                screenShot(orderId);
-//            Intent intent=new Intent(CustomConfirmActivity.this, ScreenShotActivity.class);
-//            intent.putExtra("orderId",orderId);
-//            startActivity(intent);
-//            Bitmap signatureBitmap = customConfirmActivityBinding.signaturePad.getSignatureBitmap();
-//            String pictureData = Base64BitmapUtils.bitmapToBase64(signatureBitmap);
-//            //上传数据库
-//            upConfirmPicture(pictureData, orderId);
-//            showImage(orderId);
+//                mCustomConfirmActivityBinding.btnSavePng.setVisibility(View.INVISIBLE);
+//                mCustomConfirmActivityBinding.llEcho.setVisibility(View.GONE);
+                //截屏
+                screenShot(orderId, scustomername);
             }
         });
     }
@@ -206,7 +189,6 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                             }
                         }
                         // TODO Auto-generated method stub
-//                        Toast.makeText(CustomConfirmActivity.this, sb.toString(), Toast.LENGTH_LONG).show();
                         requestConfirmTable(orderId, sb.toString());
                         mCustomConfirmActivityBinding.tvDepartment.setText(sb1.toString());
 
@@ -255,10 +237,12 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                         mCustomConfirmActivityBinding.etMaleAddCount.setText(confirmTableBean.IMALEADDMEASUREQTY);
                         mCustomConfirmActivityBinding.etFemaleAddCount.setText(confirmTableBean.IFEMALEADDMEASUREQTY);
                         mCustomConfirmActivityBinding.etAddCount.setText(confirmTableBean.ITOTALADDMEASUREQTY);
-
-
-                        int etOriginalToatal = Integer.parseInt(mCustomConfirmActivityBinding.measuredCount.getText().toString()) + Integer.parseInt(mCustomConfirmActivityBinding.waitMeasureCount.getText().toString());
-                        mCustomConfirmActivityBinding.etOriginalToatal.setText(String.valueOf(etOriginalToatal));
+                        // TODO Auto-generated method stub
+                        int etOriginalTotal = Integer.parseInt(mCustomConfirmActivityBinding.measuredCount.getText().toString()) + Integer.parseInt(mCustomConfirmActivityBinding.waitMeasureCount.getText().toString());
+                        int addCount=Integer.parseInt(mCustomConfirmActivityBinding.etAddCount.getText().toString());
+                        int total = etOriginalTotal + addCount;
+                        mCustomConfirmActivityBinding.etOriginalToatal.setText(String.valueOf(etOriginalTotal));
+                        mCustomConfirmActivityBinding.etToatalCount.setText(String.valueOf(total));
                         mCustomConfirmActivityBinding.tvContact.setText("量体服务联系人：" + confirmTableBean.SCUSTOMSERVICECONTACTS);
                         mCustomConfirmActivityBinding.tvPhone.setText("电话：" + confirmTableBean.SCONTACTNUMBER);
                         mCustomConfirmActivityBinding.tvEmail.setText("电话：" + confirmTableBean.SEMAIL);
@@ -273,10 +257,10 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
 
     /**
      * 截屏
-     *
      * @param orderId
+     * @param scustomername
      */
-    private void screenShot(String orderId) {
+    private void screenShot(String orderId, String scustomername) {
         mLayout = (LinearLayout) findViewById(R.id.llConfimBody);
         //打开图像缓存
         mLayout.setDrawingCacheEnabled(true);
@@ -287,7 +271,7 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         FileOutputStream fos = null;
         //获得sd卡路径
         String rootPath = getExternalFilesDir("screenshot").getAbsoluteFile()
-                + "/" + orderId + ".png";
+                + "/" + scustomername+"_"+orderId + ".png";
         File file = new File(rootPath);
         try {
             fos = new FileOutputStream(file);
@@ -303,7 +287,7 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
             e.printStackTrace();
         }
 
-        showImage(orderId);
+        showImage(orderId,scustomername);
 //            String pictureData = Base64BitmapUtils.bitmapToBase64(cacheBitmap);
 //        //上传数据库
 //        System.out.println(pictureData);
@@ -311,14 +295,12 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
     }
 
 
-    private void showImage(String orderId) {
+    private void showImage(String orderId, String scustomername) {
 
         String absolutePath = getExternalFilesDir("screenshot").getAbsoluteFile()
-                + "/" + orderId + ".png";
+                + "/" + scustomername+"_"+orderId +  ".png";
         Bitmap diskBitmap = getDiskBitmap(absolutePath);
-        // mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(diskBitmap);
         String pictureData = Base64BitmapUtils.bitmapToBase64(diskBitmap);
-
         //上传数据库
         upConfirmPicture(pictureData, orderId);
     }

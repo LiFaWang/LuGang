@@ -45,28 +45,41 @@
             <Spinner
                 android:id="@+id/spMeasureNo"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content">
 
             </Spinner>
-            <Spinner
-                android:id="@+id/spCustomerName"
+            <TextView
+                android:id="@+id/tvCustomerName"
+                android:text="单位名称"
+                android:background="#AB9F9D"
+                android:textColor="#fff"
+                android:padding="3dp"
+                android:gravity="center"
+                android:textSize="18sp"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-            </Spinner>
-            <Spinner
-                android:id="@+id/spCustomerCode"
+            </TextView>
+            <TextView
+                android:id="@+id/tvCustomerCode"
+                android:text="单位编号"
+                android:background="#AB9F9D"
+                android:textColor="#fff"
+                android:padding="3dp"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_marginRight="50dp"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-            </Spinner>
+            </TextView>
 
             <Button
                 android:id="@+id/btnNewMeasure"
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
@@ -79,7 +92,7 @@
 
             <Button
                 android:id="@+id/btnSaveMeasure"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:textSize="18sp"
@@ -87,7 +100,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/btn_buy_selector"
-                android:text="上传服务器"
+                android:text="保存"
                 android:textColor="#fff"/>
         </LinearLayout>
 

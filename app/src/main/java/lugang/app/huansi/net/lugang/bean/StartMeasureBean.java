@@ -24,14 +24,17 @@ public class StartMeasureBean extends WsData {
             "SBILLNO": "A0001"
         }
  */
-    public String ISDORDERMETERMSTID="";
+    public String ISDORDERMETERMSTID="";//订单头表
     public String ILISTNO="";
     public String SAREANAME="";
     public String SCITYNAME="";
     public String SCOUNTYNAME="";
+    public String SCUSTOMERCODE="";
     public String SCUSTOMERNAME="";
     public String SDEPARTMENTNAME="";
     public String SPERSON="";
+    public String SJOBNAME="";
+
     public String SVALUENAME="";//款式的ID
     public String SBILLNO="";//清单的ID
     public String IORDERTYPE="0";//区分是从哪个界面跳转的

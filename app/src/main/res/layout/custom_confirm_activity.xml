@@ -6,6 +6,7 @@
 
 
     <LinearLayout
+        android:id="@+id/llConfirmScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -535,7 +536,7 @@
                         xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:layout_width="0dp"
-                        android:layout_height="65dp"
+                        android:layout_height="90dp"
                         android:layout_weight="1"
                         app:penColor="@android:color/black"
                         />
@@ -657,21 +658,28 @@
         <!--android:layout_height="match_parent"-->
         <!--app:penColor="@android:color/black"-->
         <!--/>-->
-        <TextView
-            android:background="#acd534"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#000"
-            android:text="上次截图信息"
+        <LinearLayout
+            android:id="@+id/llEcho"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:src="@drawable/ic_launcher"
-            android:id="@+id/ivConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="match_parent">
+            <TextView
+                android:background="#acd534"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:text="上次截图信息"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:src="@drawable/ic_launcher"
+                android:id="@+id/ivConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
 
     </LinearLayout>
     </ScrollView>

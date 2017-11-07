@@ -1,5 +1,6 @@
 package lugang.app.huansi.net.lugang.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,18 +13,17 @@ import huansi.net.qianjingapp.entity.WsEntity;
 import huansi.net.qianjingapp.fragment.BaseFragment;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
-import huansi.net.qianjingapp.utils.OthersUtil;
-import huansi.net.qianjingapp.utils.SPHelper;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.activity.CustomConfirmActivity;
 import lugang.app.huansi.net.lugang.adapter.ConfirmListAdapter;
 import lugang.app.huansi.net.lugang.bean.ConfirmPictureBean;
 import lugang.app.huansi.net.lugang.databinding.ConfirmFragmentBinding;
+import lugang.app.huansi.net.util.LGSPUtils;
 import rx.functions.Func1;
 
-import static huansi.net.qianjingapp.utils.SPHelper.USER_GUID;
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
+import static lugang.app.huansi.net.util.LGSPUtils.USER_GUID;
 
 /**
  * Created by Tony on 2017/9/9.
@@ -55,8 +55,10 @@ public class CustomConfirmFragment extends BaseFragment {
                 Intent intent =new Intent(getActivity(),CustomConfirmActivity.class);
                 String iordermetermstid = mConfirmPictureBeanList.get(position).IORDERMETERMSTID;
                 String gpicture = mConfirmPictureBeanList.get(position).SPICTURE;
+                String scustomername = mConfirmPictureBeanList.get(position).SCUSTOMERNAME;
                 intent.putExtra("iordermetermstid",iordermetermstid);
                 intent.putExtra("gpicture",gpicture);
+                intent.putExtra("scustomername",scustomername);
                 startActivity(intent);
             }
         });
@@ -66,21 +68,19 @@ public class CustomConfirmFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        final String userGUID= SPHelper.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
-        reqeustConfirmPicture(userGUID);
+        requestConfirmPicture();
     }
 
     /**
      * 联网请求图片
-     * @param userGUID
      */
-    private void reqeustConfirmPicture(final String userGUID) {
-        OthersUtil.showLoadDialog(mDialog);
+    private void requestConfirmPicture() {
         mConfirmPictureBeanList.clear();
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
                             public HsWebInfo call(String s) {
+                                String userGUID= LGSPUtils.getLocalData(getContext(),USER_GUID,String.class.getName(),"").toString();
                                 return NewRxjavaWebUtils.getJsonData(getContext(), CUS_SERVICE,
                                         "spappMeasureConfirmationList"
                                         ,  "uUserGUID=" + userGUID,
@@ -98,6 +98,10 @@ public class CustomConfirmFragment extends BaseFragment {
                         }
                         mConfirmListAdapter.notifyDataSetChanged();
 
+                    }
+
+                    @Override
+                    public void error(HsWebInfo hsWebInfo, Context context) {
                     }
                 });
 

@@ -80,7 +80,9 @@ public class FinishMeasureBean extends WsData {
     public String SCITYNAME="";
     public String SCOUNTYNAME="";
     public String SCUSTOMERNAME="";
+    public String SCUSTOMERCODE="";
     public String SDEPARTMENTNAME="";
+    public String SJOBNAME="";
     public String SPERSON="";
     public String SVALUENAME="";//款式的ID
     public String STATUS="FINISH";//跳转的状态

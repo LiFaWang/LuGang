@@ -21,7 +21,7 @@ public class LoginBean extends WsData {
     public String UGUID="";
     public String SUSERID="";//员工的id
     public String SUSERNAME="";//员工的名字
-    public String SUSERIP="";//员工的ip
-    public String SUSERPSW="";//员工的密码
+//    public String SUSERIP="";//员工的ip
+//    public String SUSERPSW="";//员工的密码
 
 }

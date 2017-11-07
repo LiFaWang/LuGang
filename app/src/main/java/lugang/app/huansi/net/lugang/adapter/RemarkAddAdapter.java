@@ -9,17 +9,17 @@ import java.util.List;
 
 import huansi.net.qianjingapp.adapter.HsBaseAdapter;
 import huansi.net.qianjingapp.utils.ViewHolder;
+import lugang.app.huansi.net.db.MeasureRemarkDataInSQLite;
 import lugang.app.huansi.net.lugang.R;
-import lugang.app.huansi.net.lugang.bean.RemarkDetailBean;
 
 /**
  * Created by Tony on 2017/9/22.
  * 17:08
  */
 
-public class RemarkAddAdapter extends HsBaseAdapter<RemarkDetailBean> {
+public class RemarkAddAdapter extends HsBaseAdapter<MeasureRemarkDataInSQLite> {
 
-    public RemarkAddAdapter(List<RemarkDetailBean> list, Context context) {
+    public RemarkAddAdapter(List<MeasureRemarkDataInSQLite> list, Context context) {
         super(list, context);
     }
 
@@ -27,9 +27,10 @@ public class RemarkAddAdapter extends HsBaseAdapter<RemarkDetailBean> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView==null) convertView=mInflater.inflate(R.layout.remark_add_item,parent,false);
         CheckBox cbRemarkDetailAdd= ViewHolder.get(convertView, R.id.cbRemarkDetailAdd);
-        RemarkDetailBean bean=mList.get(position);
-        cbRemarkDetailAdd.setText(bean.SMETERMARKNAME);
-        cbRemarkDetailAdd.setChecked(bean.isChoose);
+        MeasureRemarkDataInSQLite measureRemarkDataInSQLite=mList.get(position);
+        cbRemarkDetailAdd.setText(measureRemarkDataInSQLite.getSMeterMarkName());
+        cbRemarkDetailAdd.setTextSize(18);
+        cbRemarkDetailAdd.setChecked(measureRemarkDataInSQLite.isChoose);
         return convertView;
     }
 }

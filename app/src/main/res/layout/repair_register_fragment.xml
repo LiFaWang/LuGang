@@ -93,12 +93,23 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llCustomer"
+            <android.support.v4.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </LinearLayout>
+                android:id="@+id/srlRepair"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                <LinearLayout
+                    android:id="@+id/llCustomer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </ScrollView>
+            </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
 
     </LinearLayout>
