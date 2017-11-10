@@ -7,7 +7,7 @@
         <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#383F51">
+        android:background="@color/colorMainBackground">
 
         <Button
             android:id="@+id/btnNewMeasure"
@@ -34,7 +34,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:layout_toLeftOf="@id/btnNewMeasure"
-            android:background="@drawable/btn_buy_selector"
+            android:background="@drawable/btn_check_selector"
             android:text="查 询"
             android:textColor="#fff"
             android:textSize="18dp"/>
@@ -74,7 +74,7 @@
 
     </RelativeLayout>
         <LinearLayout
-        android:background="#383F51"
+        android:background="@color/colorMainBackground"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,10 +89,10 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="单位名称"
-            android:textColor="#fff"/>
+            android:textColor="@color/colorMainBackgroundText"/>
 
         <TextView
-            android:textColor="#fff"
+            android:textColor="@color/colorMainBackgroundText"
             android:text="地区"
             android:textSize="20sp"
             android:layout_width="0dp"
@@ -100,7 +100,7 @@
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"/>
         <TextView
-            android:textColor="#fff"
+            android:textColor="@color/colorMainBackgroundText"
             android:text="地市"
             android:textSize="20sp"
             android:gravity="center_horizontal"
@@ -108,7 +108,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
         <TextView
-            android:textColor="#fff"
+            android:textColor="@color/colorMainBackgroundText"
             android:text="县市"
             android:textSize="20sp"
             android:gravity="center_horizontal"
@@ -116,7 +116,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
         <TextView
-            android:textColor="#fff"
+            android:textColor="@color/colorMainBackgroundText"
             android:text="部门名称"
             android:textSize="20sp"
             android:gravity="center_horizontal"
@@ -124,7 +124,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
         <TextView
-            android:textColor="#fff"
+            android:textColor="@color/colorMainBackgroundText"
             android:text="姓名"
             android:textSize="20sp"
             android:gravity="center_horizontal"
@@ -132,7 +132,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
         <TextView
-            android:textColor="#fff"
+            android:textColor="@color/colorMainBackgroundText"
             android:text="状态"
             android:textSize="20sp"
             android:gravity="center_horizontal"
@@ -141,12 +141,6 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
-    <!--<LinearLayout-->
-        <!--android:id="@+id/llCustomer"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-    <!--</LinearLayout>-->
         <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:id="@+id/srlFinish"

@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/tvParameter"
         android:gravity="center"
-        android:background="#475e8e"
+        android:background="@color/colorMainBackground"
         android:textSize="20sp"
         android:text="衣长"
         android:textColor="#fff"
@@ -27,7 +27,7 @@
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
         android:textColor="#fff"
-        android:background="#3C4F76"
+        android:background="@color/colorMainBackground"
         android:gravity="center"
         android:textSize="20sp"/>
 

@@ -14,10 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="#3C4F76"
+            android:background="@color/colorMainBackground"
             android:gravity="center_horizontal"
             android:text="春秋上衣"
-            android:textColor="#fff"
+            android:textColor="@color/colorMainBackgroundText"
             android:textSize="20sp"/>
 
         <android.support.v7.widget.CardView
@@ -52,7 +52,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/remarkLayout"
-                    android:background="#AB9F9D"
+                    android:background="@color/colorMainBackground"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
@@ -63,6 +63,8 @@
                         android:focusableInTouchMode="false"
                         android:id="@+id/cbRemark"
                         android:gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorMainBackgroundText"
                         android:padding="5dp"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"

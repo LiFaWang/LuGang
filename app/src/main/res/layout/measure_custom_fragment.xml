@@ -6,7 +6,7 @@
         android:orientation="vertical">
         <LinearLayout
             android:paddingTop="5dp"
-            android:background="#25396a"
+            android:background="@color/colorMainBackground"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_width="match_parent"

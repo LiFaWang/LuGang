@@ -28,7 +28,7 @@ public class MeasureDataInSQLite {
     private String sMeterCode;
     private String sMeterName;
     private String iSeq;
-    private String iSMeterSize = "0";//测量的数据
+    private String iSMeterSize = "";//测量的数据
 
     private String sex;//性别
     private int count;//数量

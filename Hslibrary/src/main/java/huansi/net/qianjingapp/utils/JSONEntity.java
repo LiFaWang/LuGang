@@ -1,10 +1,9 @@
 package huansi.net.qianjingapp.utils;
 
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -50,20 +49,18 @@ public class JSONEntity {
         Object obj=null;
         //----------------------------利用反射结束---------------------------------------------------
         try {
-            JSONObject objData =new  JSONObject(sData);
+            JSONObject objData = JSON.parseObject(sData);
             String sStatus = objData.getString("STATUS").toString();
             wsData.SSTATUS = sStatus;
             wsData.SMESSAGE = "";
-            sData = objData.getString("DATA");
+            JSONArray arr = objData.getJSONArray("DATA");
 
-            JSONArray arr = new JSONArray(sData);
-            if(sStatus.equalsIgnoreCase("0"))
-            {
+            if(sStatus.equalsIgnoreCase("0")) {
                 //----------------------------利用反射开始---------------------------------------------------
                 Field fd=null;
                 WsEntity entity;
                 try {
-                    for(int i=0;i<arr.length();i++) {
+                    for(int i=0;i<arr.size();i++) {
                         obj = cls.newInstance();
                         JSONObject line = arr.getJSONObject(i);
                         for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -76,7 +73,7 @@ public class JSONEntity {
                             }
                             fd.setAccessible(true);
 
-                            if(line.has(sKey)) {
+                            if(line.containsKey(sKey)) {
                                 String objValue = line.getString(sKey).trim();
                                 fd.set(obj, objValue);
                             }
@@ -91,7 +88,7 @@ public class JSONEntity {
                 }
                 //----------------------------利用反射结束---------------------------------------------------
             } else {
-                JSONObject message = new JSONObject(arr.getJSONObject(0).toString());
+                JSONObject message = JSON.parseObject(arr.getJSONObject(0).toString());
                 String sMessage = message.getString("MESSAGE");
                 wsData.SMESSAGE = sMessage;
             }

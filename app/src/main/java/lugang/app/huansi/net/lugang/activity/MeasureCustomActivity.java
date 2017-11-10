@@ -148,9 +148,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
     }
 
-
-
-//    public void init() {
+    //    public void init() {
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);//默认自动跳出软键盘
 //        mActivityMeasureCustomBinding = (ActivityMeasureCustomBinding) viewDataBinding;
 //        OthersUtil.registerEvent(this);
@@ -523,7 +521,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     Intent intent = new Intent(MeasureCustomActivity.this, RemarkDetailActivity.class);
                     intent.putExtra(STYLE_ID_INTENT, mMeasureCustomLists.get(finalI).get(0).getISdStyleTypeMstId());
                     intent.putExtra(ORDER_DTL_ID_INTENT, mMeasureCustomLists.get(finalI).get(0).getISdOrderMeterDtlId());
-                    intent.putExtra(REMARK_INTENT_DATA, (Serializable) remarkAllList.get(finalI));
+                     intent.putExtra(REMARK_INTENT_DATA, (Serializable) remarkAllList.get(finalI));
                     startActivity(intent);
                 }
             });
@@ -534,7 +532,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             }catch (Exception e){
                 cbRemark.setChecked(false);
             }
-            mActivityMeasureCustomBinding.llCloth.addView(view, width / 5, height - 110);
+            mActivityMeasureCustomBinding.llCloth.addView(view, width / 4, height - 110);
         }
 
     }
@@ -599,15 +597,20 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         Map<String,MeasureDateBean> measureDataMap=new HashMap<>();
                         for (int i = 0; i <measureDateList.size() ; i++) {
                             MeasureDateBean measureDateBean = (MeasureDateBean) measureDateList.get(i);
-                            measureDataMap.put(measureDateBean.ISDSTYLETYPEMSTID+"_"+measureDateBean.ISDSTYLETYPEITEMDTLID,measureDateBean);
+                            String key=measureDateBean.ISDSTYLETYPEMSTID+"_"+measureDateBean.ISDSTYLETYPEITEMDTLID;
+                            measureDataMap.put(key,measureDateBean);
                         }
+
                         for (int i = 0; i < mMeasureCustomLists.size(); i++) {
                             List<MeasureDataInSQLite> measureDataInSQLiteList = mMeasureCustomLists.get(i);
                             //添加咩咯款式每条量体信息
                             for (int j=0;j<measureDataInSQLiteList.size();j++) {
                                 MeasureDataInSQLite measureDataInSQLite =measureDataInSQLiteList.get(j);
-                                MeasureDateBean measureDateBean = measureDataMap.get(measureDataInSQLite.getISdStyleTypeMstId()
-                                        + "_" + measureDataInSQLite.getSdStyleTypeItemDtlId());
+                                String key=measureDataInSQLite.getISdStyleTypeMstId()
+                                        + "_" + measureDataInSQLite.getSdStyleTypeItemDtlId();
+
+                                MeasureDateBean measureDateBean = measureDataMap.get(key);
+
                                 measureDataInSQLite.setISMeterSize(measureDateBean == null ? "" : measureDateBean.ISMETERSIZE);
                                 measureDataInSQLiteList.set(j,measureDataInSQLite);
                             }
@@ -662,10 +665,10 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         measureRemarkDataInSQLite.setIOrderDtlId(bean.ISDORDERMETERDTLID);
                                         measureRemarkDataInSQLite.setOrderId(orderId);
 
-//                                        detailBean.IID=remarkSavedBean.ISMETERMARKDTLID;
-//                                        detailBean.SMETERMARKCODE=remarkSavedBean.SMETERMARKCODE;
-//                                        detailBean.SMETERMARKNAME=remarkSavedBean.SMETERMARKNAME;
-//                                        detailBean.iOrderDtlId=remarkSavedBean.ISDORDERMETERDTLID;
+//                                      detailBean.IID=remarkSavedBean.ISMETERMARKDTLID;
+//                                      detailBean.SMETERMARKCODE=remarkSavedBean.SMETERMARKCODE;
+//                                      detailBean.SMETERMARKNAME=remarkSavedBean.SMETERMARKNAME;
+//                                      detailBean.iOrderDtlId=remarkSavedBean.ISDORDERMETERDTLID;
                                         remarkList.add(measureRemarkDataInSQLite);
                                     }
                                     remarkAllList.add(remarkList);

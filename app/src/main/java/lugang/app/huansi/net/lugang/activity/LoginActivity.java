@@ -14,7 +14,6 @@ import huansi.net.qianjingapp.utils.PermissionsChecker;
 import huansi.net.qianjingapp.utils.SPUtils;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.bean.LoginBean;
-import lugang.app.huansi.net.lugang.constant.Constant;
 import lugang.app.huansi.net.lugang.databinding.ActivityLoginBinding;
 import lugang.app.huansi.net.util.LGSPUtils;
 import rx.functions.Func1;
@@ -41,12 +40,6 @@ public class LoginActivity extends NotWebBaseActivity {
 
         mActivityLoginBinding = (ActivityLoginBinding) viewDataBinding;
         mChecker = new PermissionsChecker(this);
-//        LoginBean loginBean = readUser();
-//        if (!TextUtils.isEmpty(loginBean.toString())){
-//            mActivityLoginBinding.etIpNumber.setText(loginBean.SUSERIP);
-//            mActivityLoginBinding.etLoginNumber.setText(loginBean.SUSERID);
-//            mActivityLoginBinding.etLoginPwd.setText(loginBean.SUSERPSW);
-//        }
 
 
         mActivityLoginBinding.etIpNumber.setText(SPUtils.readMacIp(getApplicationContext()));
@@ -85,10 +78,10 @@ public class LoginActivity extends NotWebBaseActivity {
         if (!mChecker.lacksPermissions(PERMISSIONS)) {
             PermissionsActivity.startActivityForResult(this, 0, PERMISSIONS);
         }
-        String userGUID=LGSPUtils.getLocalData(getApplicationContext(),USER_GUID,String.class.getName(),"").toString();
-        if(!userGUID.isEmpty()){
-            toMain();
-        }
+//        String userGUID=LGSPUtils.getLocalData(getApplicationContext(),USER_GUID,String.class.getName(),"").toString();
+//        if(!userGUID.isEmpty()){
+//            toMain();
+//        }
     }
 
     /**

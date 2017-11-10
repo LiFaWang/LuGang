@@ -10,7 +10,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#383F51">
+            android:background="@color/colorMainBackground">
 
             <Button
                 android:id="@+id/btnNewMeasure"
@@ -21,7 +21,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/btn_buy_selector"
+                android:background="@drawable/btn_check_selector"
                 android:gravity="center"
                 android:text="新 增"
                 android:textColor="#fff"
@@ -36,7 +36,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_toLeftOf="@id/btnNewMeasure"
-                android:background="@drawable/btn_buy_selector"
+                android:background="@drawable/btn_check_selector"
                 android:text="查 询"
                 android:textColor="#fff"
                 android:textSize="18dp"/>
@@ -78,7 +78,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#383F51"
+            android:background="@color/colorMainBackground"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="单位名称"
-                android:textColor="#fff"
+                android:textColor="@color/colorMainBackgroundText"
                 android:textSize="20sp"/>
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="地区"
-                android:textColor="#fff"
+                android:textColor="@color/colorMainBackgroundText"
                 android:textSize="20sp"/>
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="地市"
-                android:textColor="#fff"
+                android:textColor="@color/colorMainBackgroundText"
                 android:textSize="20sp"/>
 
             <TextView
@@ -117,7 +117,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="县市"
-                android:textColor="#fff"
+                android:textColor="@color/colorMainBackgroundText"
                 android:textSize="20sp"/>
 
             <TextView
@@ -126,7 +126,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="部门名称"
-                android:textColor="#fff"
+                android:textColor="@color/colorMainBackgroundText"
                 android:textSize="20sp"/>
 
             <TextView
@@ -135,7 +135,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="姓名"
-                android:textColor="#fff"
+                android:textColor="@color/colorMainBackgroundText"
                 android:textSize="20sp"/>
 
             <TextView
@@ -143,18 +143,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="测量"
-                android:textColor="#fff"
+                android:text="状态"
+                android:textColor="@color/colorMainBackgroundText"
                 android:textSize="20sp"/>
 
         </LinearLayout>
-        <!--<LinearLayout-->
-        <!--android:orientation="vertical"-->
-        <!--android:id="@+id/llCustomer"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-        <!--</LinearLayout>-->
         <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:id="@+id/srlStart"

@@ -1,14 +1,22 @@
 package lugang.app.huansi.net.lugang.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.github.gcacace.signaturepad.views.SignaturePad;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,6 +45,10 @@ import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVIC
 public class CustomConfirmActivity extends NotWebBaseActivity {
     private CustomConfirmActivityBinding mCustomConfirmActivityBinding;
     private LinearLayout mLayout;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE" };
 
     @Override
     protected int getLayoutId() {
@@ -62,9 +74,34 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    public static boolean isGrantExternalRW(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
+            activity.requestPermissions(new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            }, 1);
+
+            return false;
+        }
+
+        return true;
+    }
     @Override
     public void init() {
+
+            try {
+                //检测是否有写的权限
+                int permission = ActivityCompat.checkSelfPermission(CustomConfirmActivity.this,
+                        "android.permission.WRITE_EXTERNAL_STORAGE");
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    // 没有写的权限，去申请写的权限，会弹出对话框
+                    ActivityCompat.requestPermissions(CustomConfirmActivity.this, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         mCustomConfirmActivityBinding = (CustomConfirmActivityBinding) viewDataBinding;
         final Intent intent = getIntent();
         final String orderId = intent.getStringExtra("iordermetermstid");
@@ -77,9 +114,11 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                 requestDepartName(orderId);
             }
         });
-        String absolutePath = getExternalFilesDir("screenshot").getAbsoluteFile()
+//        String rootPath = getExternalFilesDir("screenshot").getAbsoluteFile()
+//                + "/" + scustomername+"_"+orderId + ".png";
+        String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures/"
                 + "/" + scustomername+"_"+orderId + ".png";
-        Bitmap diskBitmap = getDiskBitmap(absolutePath);
+        Bitmap diskBitmap = getDiskBitmap(rootPath);
         mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(diskBitmap);
 
         requestConfirmTable(orderId, "");
@@ -87,7 +126,21 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
 //        Bitmap bitmap = Base64BitmapUtils.base64ToBitmap(a);
 ////        加载保存的图片
 //        mCustomConfirmActivityBinding.ivConfirm.setImageBitmap(bitmap);
+        mCustomConfirmActivityBinding.signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
+            @Override
+            public void onStartSigning() {
+            }
 
+            @Override
+            public void onSigned() {
+            }
+
+            @Override
+            public void onClear() {
+
+
+            }
+        });
         mCustomConfirmActivityBinding.signaturePad.setMinWidth((float) 0.5);
 
         mCustomConfirmActivityBinding.signaturePad.setMaxWidth(3);
@@ -261,6 +314,7 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
      * @param scustomername
      */
     private void screenShot(String orderId, String scustomername) {
+
         mLayout = (LinearLayout) findViewById(R.id.llConfimBody);
         //打开图像缓存
         mLayout.setDrawingCacheEnabled(true);
@@ -270,9 +324,12 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         Bitmap cacheBitmap = mLayout.getDrawingCache();
         FileOutputStream fos = null;
         //获得sd卡路径
-        String rootPath = getExternalFilesDir("screenshot").getAbsoluteFile()
-                + "/" + scustomername+"_"+orderId + ".png";
+        String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures/"
+                 + scustomername+"_"+orderId + ".png";
+//        String rootPath = getExternalFilesDir("screenshot")
+//                + "/" + scustomername+"_"+orderId + ".png";
         File file = new File(rootPath);
+
         try {
             fos = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
@@ -296,10 +353,11 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
 
 
     private void showImage(String orderId, String scustomername) {
-
-        String absolutePath = getExternalFilesDir("screenshot").getAbsoluteFile()
-                + "/" + scustomername+"_"+orderId +  ".png";
-        Bitmap diskBitmap = getDiskBitmap(absolutePath);
+        String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures/"
+                + "/" + scustomername+"_"+orderId + ".png";
+//        String rootPath = getExternalFilesDir("screenshot").getAbsoluteFile()
+//                + "/" + scustomername+"_"+orderId + ".png";
+        Bitmap diskBitmap = getDiskBitmap(rootPath);
         String pictureData = Base64BitmapUtils.bitmapToBase64(diskBitmap);
         //上传数据库
         upConfirmPicture(pictureData, orderId);

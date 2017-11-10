@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/btn_buy_selector"
+                android:background="@drawable/btn_check_selector"
                 android:text="保 存"
                 android:textColor="#fff"
                 android:textSize="22sp"/>
@@ -572,6 +572,7 @@
                         android:text="客户联系方式"/>
 
                     <EditText
+                        android:id="@+id/etCustomContact"
                         style="@style/customConfirm"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
