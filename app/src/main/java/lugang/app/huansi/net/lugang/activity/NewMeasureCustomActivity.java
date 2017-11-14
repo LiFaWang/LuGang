@@ -656,7 +656,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                                             "spappMeasureAddBaseData"
                                             , "iIndex=6" + ",sOrderBillNo=" + billNo,
                                             NewMeasureBean.class.getName(),
-                                            true, "岗位名称有错误"
+                                            true, ""
                                     );
                                     if (!hsWebInfo.success) return hsWebInfo;
                                     map.put("job", hsWebInfo.wsData.LISTWSDATA);

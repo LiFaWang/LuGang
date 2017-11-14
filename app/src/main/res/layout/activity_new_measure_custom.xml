@@ -40,7 +40,7 @@
             <TextView
                 android:id="@+id/tvCustomerName"
                 android:text="单位名称"
-                android:background="#AB9F9D"
+                android:background="@color/colorMainBackground"
                 android:textColor="#fff"
                 android:padding="3dp"
                 android:gravity="center"
@@ -53,7 +53,7 @@
             <TextView
                 android:id="@+id/tvCustomerCode"
                 android:text="单位编号"
-                android:background="#AB9F9D"
+                android:background="@color/colorMainBackground"
                 android:textColor="#fff"
                 android:padding="3dp"
                 android:gravity="center"
@@ -74,7 +74,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:textSize="18sp"
-                android:background="@drawable/btn_check_selector"
+                android:background="@drawable/btn_buy_selector"
                 android:text="新  增"
                 android:textColor="#fff"/>
 
@@ -87,7 +87,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/btn_check_selector"
+                android:background="@drawable/btn_buy_selector"
                 android:text="保存"
                 android:textColor="#fff"/>
         </LinearLayout>

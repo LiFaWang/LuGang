@@ -14,7 +14,6 @@ import huansi.net.qianjingapp.utils.ViewHolder;
 import lugang.app.huansi.net.db.MeasureOrderInSQLite;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.activity.MeasureCustomActivity;
-import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
 import lugang.app.huansi.net.lugang.constant.Constant;
 
 /**
@@ -33,14 +32,12 @@ public class StartAdapter extends HsBaseAdapter<MeasureOrderInSQLite> {
         if (convertView==null) convertView = View.inflate(mContext, R.layout.start_measure_item, null);
         final MeasureOrderInSQLite measureOrderInSQLite = mList.get(position);
         TextView customerName = ViewHolder.get(convertView,R.id.customerName);
-        TextView areaName = ViewHolder.get(convertView,R.id.areaName);
         TextView cityName =  ViewHolder.get(convertView,R.id.cityName);
         TextView countyName = ViewHolder.get(convertView,R.id.countyName);
         TextView departmentName = ViewHolder.get(convertView,R.id.departmentName);
         TextView person = ViewHolder.get(convertView,R.id.person);
         Button btnMeasure =  ViewHolder.get(convertView,R.id.btnMeasure);
         customerName.setText(measureOrderInSQLite.getSCustomerName());
-        areaName.setText(measureOrderInSQLite.getSAreaName());
         cityName.setText(measureOrderInSQLite.getSCityName());
         countyName.setText(measureOrderInSQLite.getSCountyName());
         departmentName.setText(measureOrderInSQLite.getSDepartmentName());

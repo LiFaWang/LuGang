@@ -98,22 +98,6 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         mActivityMeasureCustomBinding.btnSaveMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MeasureCustomActivity.this);
-//                builder.setTitle("提示");
-//                builder.setMessage("是否确定信息无误并同步到服务器");
-//                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                    }
-//                });
-//                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        saveMeasure(userGUID, orderDtlId);//保存录入信息
-//                    }
-//                });
-//                AlertDialog dialog = builder.create();
-//                dialog.show();
                 if(NetUtil.isNetworkAvailable(getApplicationContext())){
                     submitMeasureData();
                 }else {
@@ -126,10 +110,10 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //                            public void onClick(DialogInterface dialog, int which) {
 //                                switch (which) {
 //                                    case 0:
-//                                        
+//
 //                                        break;
 //                                    case 1:
-//                                        
+//
 //                                        break;
 //                                }
 //                            }

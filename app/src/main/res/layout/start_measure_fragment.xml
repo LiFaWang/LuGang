@@ -49,7 +49,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_toLeftOf="@id/btnSearch"
                 android:background="@drawable/bg_edittext_selector"
-                android:hint="编号查询"
+                android:hint="其他查询"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:textSize="18sp"/>
@@ -83,53 +83,59 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="单位名称"
+                android:id="@+id/tvCustomerSearch"
                 android:textColor="@color/colorMainBackgroundText"
-                android:textSize="20sp"/>
+                android:text="单位"
+                android:textSize="20sp"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                />
+
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:text="地区"-->
+                <!--android:textColor="@color/colorMainBackgroundText"-->
+                <!--android:textSize="20sp"/>-->
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="地区"
+                android:id="@+id/tvCitySearch"
                 android:textColor="@color/colorMainBackgroundText"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
                 android:text="地市"
-                android:textColor="@color/colorMainBackgroundText"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:textSize="20sp"
+                android:drawableRight="@drawable/arrow"
                 android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/tvCountySearch"
+                android:textColor="@color/colorMainBackgroundText"
                 android:text="县市"
-                android:textColor="@color/colorMainBackgroundText"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:drawableRight="@drawable/arrow"
+                android:textSize="20sp"
                 android:gravity="center_horizontal"
-                android:text="部门名称"
-                android:textColor="@color/colorMainBackgroundText"
-                android:textSize="20sp"/>
-
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/tvDepartmentSearch"
+                android:textColor="@color/colorMainBackgroundText"
+                android:text="部门"
+                android:drawableRight="@drawable/arrow"
+                android:textSize="20sp"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/spNameSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -6,12 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import java.util.List;
-
 import huansi.net.qianjingapp.fragment.BaseFragment;
 import lugang.app.huansi.net.factory.FragmentFactory;
 import lugang.app.huansi.net.lugang.R;
-import lugang.app.huansi.net.lugang.bean.StartMeasureBean;
 import lugang.app.huansi.net.lugang.databinding.MeasureCustomFragmentBinding;
 
 /**
@@ -24,7 +21,6 @@ public class MeasureCustomFragment extends BaseFragment {
 
 
     private MeasureCustomFragmentBinding mMeasureCustomFragmentBinding;
-    private List<StartMeasureBean> mBeanList;
 
     @Override
     public int getLayout() {
@@ -69,51 +65,6 @@ public class MeasureCustomFragment extends BaseFragment {
                 mMeasureCustomFragmentBinding.vpMeasureCustom.setCurrentItem(1);
             }
         });
-//        mMeasureCustomFragmentBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), NewMeasureCustomActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//        mMeasureCustomFragmentBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String orderNO = mMeasureCustomFragmentBinding.orderSearch.getText().toString();
-//                searchMeasureOrder(orderNO);
-//            }
-//        });
     }
 
-    /**
-     * 根据量体清单单号查询
-     *
-     * @param orderNO
-     */
-//    private void searchMeasureOrder(String orderNO) {
-//        StartMeasureFragment item = ((StartMeasureFragment) ((FragmentPagerAdapter) mMeasureCustomFragmentBinding.vpMeasureCustom.getAdapter()).getItem(0));
-//        List<StartMeasureBean> mStartMeasureBeanList = item.getStartMeasureBeanList();
-//        if (TextUtils.isEmpty(orderNO)) {
-//            item.setStartMeasureBeanList(mStartMeasureBeanList);
-//            OthersUtil.ToastMsg(getActivity(), "请输入要查询的清单号");
-//            return;
-//
-//        }
-//
-//        mBeanList = new ArrayList<>();
-//        for (int i = 0; i < mStartMeasureBeanList.size(); i++) {
-//            StartMeasureBean sbillno = mStartMeasureBeanList.get(i);
-//            if (sbillno.SBILLNO.equals(orderNO)) {
-//                mBeanList.add(sbillno);
-//            }
-//
-//        }
-//        if (mBeanList != null && mBeanList.size() > 0) {
-//            item.setStartMeasureBeanList(mBeanList);
-//        } else {
-//            OthersUtil.ToastMsg(getActivity(), "没有找到清单号哦");
-//        }
-//
-//
-//    }
 }
