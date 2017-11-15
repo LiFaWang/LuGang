@@ -428,7 +428,7 @@ public class MainActivity  extends NotWebBaseActivity  {
                                 return s;
                             }
                         })
-                //待量体数据
+                        //待量体数据
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
                             public HsWebInfo call(String s) {
@@ -650,6 +650,7 @@ public class MainActivity  extends NotWebBaseActivity  {
             measureOrderInSQLite.setSCustomerCode(((StartMeasureBean) wsData).SCUSTOMERCODE);
             measureOrderInSQLite.setISdOrderMeterMstId(((StartMeasureBean) wsData).ISDORDERMETERMSTID);
             measureOrderInSQLite.setSJobName(((StartMeasureBean) wsData).SJOBNAME);
+            measureOrderInSQLite.setSex(((StartMeasureBean) wsData).SSEX);
             //已量体
         }else if (wsData instanceof FinishMeasureBean){
             measureOrderInSQLite.setUserGUID(userGUID);
@@ -664,6 +665,7 @@ public class MainActivity  extends NotWebBaseActivity  {
             measureOrderInSQLite.setSCustomerCode(((FinishMeasureBean) wsData).SCUSTOMERCODE);
             measureOrderInSQLite.setISdOrderMeterMstId(((FinishMeasureBean) wsData).ISDORDERMETERMSTID);
             measureOrderInSQLite.setSJobName(((FinishMeasureBean) wsData).SJOBNAME);
+            measureOrderInSQLite.setSex(((FinishMeasureBean) wsData).SSEX);
             //返修
         }else if(wsData instanceof RepairRegisterBean){
             measureOrderInSQLite.setUserGUID(userGUID);
@@ -678,6 +680,7 @@ public class MainActivity  extends NotWebBaseActivity  {
             measureOrderInSQLite.setSCustomerCode(((RepairRegisterBean) wsData).SCUSTOMERCODE);
             measureOrderInSQLite.setISdOrderMeterMstId(((RepairRegisterBean) wsData).ISDORDERMETERMSTID);
             measureOrderInSQLite.setSJobName(((RepairRegisterBean) wsData).SJOBNAME);
+            measureOrderInSQLite.setSex(((RepairRegisterBean) wsData).SSEX);
         }
         return measureOrderInSQLite;
     }
@@ -727,6 +730,13 @@ public class MainActivity  extends NotWebBaseActivity  {
                 measureDataInSQLite.setPerson(measureOrderInSQLite.getSPerson());
                 measureDataInSQLite.setType(measureOrderInSQLite.getOrderType());
                 measureDataInSQLite.setOrderId(measureOrderInSQLite.getISdOrderMeterMstId());
+                measureDataInSQLite.setSFemaleMinLenth(bean.SFEMALEMINLENTH);
+                measureDataInSQLite.setSFemaleMaxLenth(bean.SFEMALEMAXLENTH);
+                measureDataInSQLite.setSMaleMinLenth(bean.SMALEMINLENTH);
+                measureDataInSQLite.setSMaleMaxLenth(bean.SMALEMAXLENTH);
+                measureDataInSQLite.setBEvenNo(bean.BEVENNO);
+                measureDataInSQLite.setBPoint(bean.BPOINT);
+
                 measureDataInSQLiteList.add(measureDataInSQLite);
             }
 

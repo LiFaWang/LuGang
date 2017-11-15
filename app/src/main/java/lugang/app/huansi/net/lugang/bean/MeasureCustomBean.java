@@ -22,6 +22,13 @@ import huansi.net.qianjingapp.entity.WsData;
  }
  */
 
+/*B.sFemaleMinLenth,--女最小值 空就不判断
+		B.sFemaleMaxLenth,--女最大值 空就不判断
+		B.sMaleMinLenth,--男最小值 空就不判断
+		B.sMaleMaxLenth,--男最大值 空就不判断
+		B.bEvenNo,--0是偶数 1是奇数  空就不判断
+		B.bPoint--0是允许 1不允许 空就不判断*/
+
 public class MeasureCustomBean extends WsData {
     public String ISDORDERMETERDTLID="";//订单明细id
     public String ISDSTYLETYPEMSTID="";//款式ID
@@ -34,6 +41,15 @@ public class MeasureCustomBean extends WsData {
     public String ISEQ="0";
     public String ISMETERSIZE="0";//测量的数据
 
+    /************************输入框的校验**开始**********************************/
+    public String SFEMALEMINLENTH; //女最小值 空就不判断
+    public String SFEMALEMAXLENTH; //女最大值 空就不判断
+    public String SMALEMINLENTH;//男最小值 空就不判断
+    public String SMALEMAXLENTH;//男最大值 空就不判断
+    public String BEVENNO;//0是偶数 1是奇数  空就不判断
+    public String BPOINT;//0是允许小数 1不允许小数 空就不判断
+
+    /*************************输入框的校验**结束*****************************/
 
 
 }

@@ -87,6 +87,7 @@ public class FinishMeasureBean extends WsData {
     public String SVALUENAME="";//款式的ID
     public String STATUS="FINISH";//跳转的状态
     public String SBILLNO="";//清单的ID
+    public String SSEX="男";
     public String IORDERTYPE="1";//区分是从哪个界面跳转的
 
 }

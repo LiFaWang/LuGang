@@ -37,6 +37,7 @@ public class MeasureOrderInSQLiteDao extends AbstractDao<MeasureOrderInSQLite, L
         public final static Property SDepartmentName = new Property(10, String.class, "sDepartmentName", false, "S_DEPARTMENT_NAME");
         public final static Property SPerson = new Property(11, String.class, "sPerson", false, "S_PERSON");
         public final static Property SBillNo = new Property(12, String.class, "sBillNo", false, "S_BILL_NO");
+        public final static Property Sex = new Property(13, String.class, "sex", false, "SEX");
     };
 
 
@@ -64,7 +65,8 @@ public class MeasureOrderInSQLiteDao extends AbstractDao<MeasureOrderInSQLite, L
                 "\"S_CUSTOMER_CODE\" TEXT," + // 9: sCustomerCode
                 "\"S_DEPARTMENT_NAME\" TEXT," + // 10: sDepartmentName
                 "\"S_PERSON\" TEXT," + // 11: sPerson
-                "\"S_BILL_NO\" TEXT);"); // 12: sBillNo
+                "\"S_BILL_NO\" TEXT," + // 12: sBillNo
+                "\"SEX\" TEXT);"); // 13: sex
     }
 
     /** Drops the underlying database table. */
@@ -137,6 +139,11 @@ public class MeasureOrderInSQLiteDao extends AbstractDao<MeasureOrderInSQLite, L
         if (sBillNo != null) {
             stmt.bindString(13, sBillNo);
         }
+ 
+        String sex = entity.getSex();
+        if (sex != null) {
+            stmt.bindString(14, sex);
+        }
     }
 
     @Override
@@ -203,6 +210,11 @@ public class MeasureOrderInSQLiteDao extends AbstractDao<MeasureOrderInSQLite, L
         if (sBillNo != null) {
             stmt.bindString(13, sBillNo);
         }
+ 
+        String sex = entity.getSex();
+        if (sex != null) {
+            stmt.bindString(14, sex);
+        }
     }
 
     @Override
@@ -225,7 +237,8 @@ public class MeasureOrderInSQLiteDao extends AbstractDao<MeasureOrderInSQLite, L
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // sCustomerCode
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // sDepartmentName
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // sPerson
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // sBillNo
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // sBillNo
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // sex
         );
         return entity;
     }
@@ -245,6 +258,7 @@ public class MeasureOrderInSQLiteDao extends AbstractDao<MeasureOrderInSQLite, L
         entity.setSDepartmentName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setSPerson(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
         entity.setSBillNo(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setSex(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     @Override

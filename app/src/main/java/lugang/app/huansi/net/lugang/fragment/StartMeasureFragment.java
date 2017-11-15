@@ -160,6 +160,11 @@ public class StartMeasureFragment extends BaseFragment {
         mStartMeasureFragmentBinding.srlStart.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mStartMeasureFragmentBinding.tvCustomerSearch.setText("单位");
+                mStartMeasureFragmentBinding.tvCitySearch.setText("地市");
+                mStartMeasureFragmentBinding.tvCountySearch.setText("县市");
+                mStartMeasureFragmentBinding.tvDepartmentSearch.setText("部门");
+                mStartAdapter.setList(measureOrderInSQLiteList);
                 initSearchData();
                 loadMeasureData();
             }
@@ -567,6 +572,7 @@ public class StartMeasureFragment extends BaseFragment {
                                         measureOrderInSQLite.setSDepartmentName(bean.SDEPARTMENTNAME);
                                         measureOrderInSQLite.setSPerson(bean.SPERSON);
                                         measureOrderInSQLite.setUserGUID(userGUID);
+                                        measureOrderInSQLite.setSex(bean.SSEX);
                                         list.add(measureOrderInSQLite);
                                     }
                                     //离线查询
@@ -579,7 +585,6 @@ public class StartMeasureFragment extends BaseFragment {
                                     if (!sCustomerNameFinal.equalsIgnoreCase("所有单位")&&!sCustomerNameFinal.isEmpty()) {
                                         queryBuilder.where(MeasureOrderInSQLiteDao.Properties.SCustomerName.eq(sCustomerNameFinal));
                                     }
-
                                     if (!sDepartmentNameFinal.equalsIgnoreCase("所有部门")&&!sDepartmentNameFinal.isEmpty()) {
                                         queryBuilder.where(MeasureOrderInSQLiteDao.Properties.SDepartmentName.eq(sDepartmentNameFinal));
                                     }

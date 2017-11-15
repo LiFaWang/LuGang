@@ -105,7 +105,8 @@ public class RepairRegisterFragment extends BaseFragment {
                                 if(NetUtil.isNetworkAvailable(getContext())) {
                                     info=NewRxjavaWebUtils.getJsonData(getContext(), CUS_SERVICE,
                                             "spappMeasureOrderList"
-                                            , "iIndex=2" + ",uUserGUID=" + userGUID +
+                                            , "iIndex=2" +
+                                                    ",uUserGUID=" + userGUID +
                                                     ",sCustomerName=" + "" +
                                                     ",sDepartmentName=" + "" +
                                                     ",sSearch=" + "",
@@ -125,6 +126,7 @@ public class RepairRegisterFragment extends BaseFragment {
                                         measureOrderInSQLite.setSDepartmentName(bean.SDEPARTMENTNAME);
                                         measureOrderInSQLite.setSPerson(bean.SPERSON);
                                         measureOrderInSQLite.setUserGUID(userGUID);
+                                        measureOrderInSQLite.setSex(bean.SSEX);
                                         list.add(measureOrderInSQLite);
                                     }
                                     //离线查询
@@ -188,6 +190,7 @@ public class RepairRegisterFragment extends BaseFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MeasureCustomActivity.class);
                 intent.putExtra(Constant.SPERSON,measureOrderInSQLite.getSPerson());
+                intent.putExtra(Constant.SEX, measureOrderInSQLite.getSex());
                 intent.putExtra(Constant.SDEPARTMENTNAME,measureOrderInSQLite.getSDepartmentName());
                 intent.putExtra(Constant.ISDORDERMETERMSTID,measureOrderInSQLite.getISdOrderMeterMstId());
                 intent.putExtra(Constant.IORDERTYPE,2);

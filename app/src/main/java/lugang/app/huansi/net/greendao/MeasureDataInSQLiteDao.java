@@ -39,9 +39,15 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
         public final static Property SMeterName = new Property(12, String.class, "sMeterName", false, "S_METER_NAME");
         public final static Property ISeq = new Property(13, String.class, "iSeq", false, "I_SEQ");
         public final static Property ISMeterSize = new Property(14, String.class, "iSMeterSize", false, "I_SMETER_SIZE");
-        public final static Property Sex = new Property(15, String.class, "sex", false, "SEX");
-        public final static Property Count = new Property(16, int.class, "count", false, "COUNT");
-        public final static Property IsAdd = new Property(17, boolean.class, "isAdd", false, "IS_ADD");
+        public final static Property SFemaleMinLenth = new Property(15, String.class, "sFemaleMinLenth", false, "S_FEMALE_MIN_LENTH");
+        public final static Property SFemaleMaxLenth = new Property(16, String.class, "sFemaleMaxLenth", false, "S_FEMALE_MAX_LENTH");
+        public final static Property SMaleMinLenth = new Property(17, String.class, "sMaleMinLenth", false, "S_MALE_MIN_LENTH");
+        public final static Property SMaleMaxLenth = new Property(18, String.class, "sMaleMaxLenth", false, "S_MALE_MAX_LENTH");
+        public final static Property BEvenNo = new Property(19, String.class, "bEvenNo", false, "B_EVEN_NO");
+        public final static Property BPoint = new Property(20, String.class, "bPoint", false, "B_POINT");
+        public final static Property Sex = new Property(21, String.class, "sex", false, "SEX");
+        public final static Property Count = new Property(22, int.class, "count", false, "COUNT");
+        public final static Property IsAdd = new Property(23, boolean.class, "isAdd", false, "IS_ADD");
     };
 
 
@@ -72,9 +78,15 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
                 "\"S_METER_NAME\" TEXT," + // 12: sMeterName
                 "\"I_SEQ\" TEXT," + // 13: iSeq
                 "\"I_SMETER_SIZE\" TEXT," + // 14: iSMeterSize
-                "\"SEX\" TEXT," + // 15: sex
-                "\"COUNT\" INTEGER NOT NULL ," + // 16: count
-                "\"IS_ADD\" INTEGER NOT NULL );"); // 17: isAdd
+                "\"S_FEMALE_MIN_LENTH\" TEXT," + // 15: sFemaleMinLenth
+                "\"S_FEMALE_MAX_LENTH\" TEXT," + // 16: sFemaleMaxLenth
+                "\"S_MALE_MIN_LENTH\" TEXT," + // 17: sMaleMinLenth
+                "\"S_MALE_MAX_LENTH\" TEXT," + // 18: sMaleMaxLenth
+                "\"B_EVEN_NO\" TEXT," + // 19: bEvenNo
+                "\"B_POINT\" TEXT," + // 20: bPoint
+                "\"SEX\" TEXT," + // 21: sex
+                "\"COUNT\" INTEGER NOT NULL ," + // 22: count
+                "\"IS_ADD\" INTEGER NOT NULL );"); // 23: isAdd
     }
 
     /** Drops the underlying database table. */
@@ -158,12 +170,42 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
             stmt.bindString(15, iSMeterSize);
         }
  
+        String sFemaleMinLenth = entity.getSFemaleMinLenth();
+        if (sFemaleMinLenth != null) {
+            stmt.bindString(16, sFemaleMinLenth);
+        }
+ 
+        String sFemaleMaxLenth = entity.getSFemaleMaxLenth();
+        if (sFemaleMaxLenth != null) {
+            stmt.bindString(17, sFemaleMaxLenth);
+        }
+ 
+        String sMaleMinLenth = entity.getSMaleMinLenth();
+        if (sMaleMinLenth != null) {
+            stmt.bindString(18, sMaleMinLenth);
+        }
+ 
+        String sMaleMaxLenth = entity.getSMaleMaxLenth();
+        if (sMaleMaxLenth != null) {
+            stmt.bindString(19, sMaleMaxLenth);
+        }
+ 
+        String bEvenNo = entity.getBEvenNo();
+        if (bEvenNo != null) {
+            stmt.bindString(20, bEvenNo);
+        }
+ 
+        String bPoint = entity.getBPoint();
+        if (bPoint != null) {
+            stmt.bindString(21, bPoint);
+        }
+ 
         String sex = entity.getSex();
         if (sex != null) {
-            stmt.bindString(16, sex);
+            stmt.bindString(22, sex);
         }
-        stmt.bindLong(17, entity.getCount());
-        stmt.bindLong(18, entity.getIsAdd() ? 1L: 0L);
+        stmt.bindLong(23, entity.getCount());
+        stmt.bindLong(24, entity.getIsAdd() ? 1L: 0L);
     }
 
     @Override
@@ -241,12 +283,42 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
             stmt.bindString(15, iSMeterSize);
         }
  
+        String sFemaleMinLenth = entity.getSFemaleMinLenth();
+        if (sFemaleMinLenth != null) {
+            stmt.bindString(16, sFemaleMinLenth);
+        }
+ 
+        String sFemaleMaxLenth = entity.getSFemaleMaxLenth();
+        if (sFemaleMaxLenth != null) {
+            stmt.bindString(17, sFemaleMaxLenth);
+        }
+ 
+        String sMaleMinLenth = entity.getSMaleMinLenth();
+        if (sMaleMinLenth != null) {
+            stmt.bindString(18, sMaleMinLenth);
+        }
+ 
+        String sMaleMaxLenth = entity.getSMaleMaxLenth();
+        if (sMaleMaxLenth != null) {
+            stmt.bindString(19, sMaleMaxLenth);
+        }
+ 
+        String bEvenNo = entity.getBEvenNo();
+        if (bEvenNo != null) {
+            stmt.bindString(20, bEvenNo);
+        }
+ 
+        String bPoint = entity.getBPoint();
+        if (bPoint != null) {
+            stmt.bindString(21, bPoint);
+        }
+ 
         String sex = entity.getSex();
         if (sex != null) {
-            stmt.bindString(16, sex);
+            stmt.bindString(22, sex);
         }
-        stmt.bindLong(17, entity.getCount());
-        stmt.bindLong(18, entity.getIsAdd() ? 1L: 0L);
+        stmt.bindLong(23, entity.getCount());
+        stmt.bindLong(24, entity.getIsAdd() ? 1L: 0L);
     }
 
     @Override
@@ -272,9 +344,15 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
             cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // sMeterName
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // iSeq
             cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // iSMeterSize
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // sex
-            cursor.getInt(offset + 16), // count
-            cursor.getShort(offset + 17) != 0 // isAdd
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // sFemaleMinLenth
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // sFemaleMaxLenth
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // sMaleMinLenth
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // sMaleMaxLenth
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // bEvenNo
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // bPoint
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // sex
+            cursor.getInt(offset + 22), // count
+            cursor.getShort(offset + 23) != 0 // isAdd
         );
         return entity;
     }
@@ -296,9 +374,15 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
         entity.setSMeterName(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
         entity.setISeq(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setISMeterSize(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setSex(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setCount(cursor.getInt(offset + 16));
-        entity.setIsAdd(cursor.getShort(offset + 17) != 0);
+        entity.setSFemaleMinLenth(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setSFemaleMaxLenth(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setSMaleMinLenth(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setSMaleMaxLenth(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setBEvenNo(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setBPoint(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setSex(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setCount(cursor.getInt(offset + 22));
+        entity.setIsAdd(cursor.getShort(offset + 23) != 0);
      }
     
     @Override

@@ -1,15 +1,26 @@
 package lugang.app.huansi.net.lugang.activity;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +28,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,6 +62,7 @@ import lugang.app.huansi.net.lugang.databinding.ActivityMeasureCustomBinding;
 import lugang.app.huansi.net.lugang.event.SecondToFirstActivityEvent;
 import lugang.app.huansi.net.util.GreenDaoUtil;
 import lugang.app.huansi.net.util.LGSPUtils;
+import lugang.app.huansi.net.widget.VirtualKeyboardView;
 import rx.functions.Func1;
 
 import static huansi.net.qianjingapp.utils.NewRxjavaWebUtils.getJsonData;
@@ -60,6 +73,8 @@ import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivi
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_RETURN_DATA;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.STYLE_ID_INTENT;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.STYLE_ID_KEY;
+import static lugang.app.huansi.net.lugang.constant.Constant.SEX;
+import static lugang.app.huansi.net.lugang.constant.Constant.SPERSON;
 import static lugang.app.huansi.net.util.LGSPUtils.USER_GUID;
 
 /**
@@ -75,6 +90,13 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     private String person = "";//被量体人
     private String orderId = "";//订单ID
     private int orderType = 0;//0待量体 1已量体 2返修
+    private String sex="男";//性别
+    private VirtualKeyboardView virtualKeyboardView;
+    private Animation enterAnim;
+    private Animation exitAnim;
+    private GridView gridView;
+    private EditText mEditText;
+    private ArrayList<Map<String, String>> valueList;
 
     @Override
     protected int getLayoutId() {
@@ -83,14 +105,17 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
     @Override
     public void init() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);//默认自动跳出软键盘
+        OthersUtil.hideInputFirst(this);//默认自动跳出软键盘
         mActivityMeasureCustomBinding = (ActivityMeasureCustomBinding) viewDataBinding;
+        virtualKeyboardView = (VirtualKeyboardView) findViewById(R.id.virtualKeyboardView);
         OthersUtil.registerEvent(this);
         dialog=new LoadProgressDialog(this);
         remarkAllList = new ArrayList<>();
         mMeasureCustomLists = new ArrayList<>();
         Intent intent = getIntent();
-        person = intent.getStringExtra(Constant.SPERSON);
+        person = intent.getStringExtra(SPERSON);
+        sex=intent.getStringExtra(SEX);
+        if(TextUtils.isEmpty(sex)) sex="男";
         String departmentName = intent.getStringExtra(Constant.SDEPARTMENTNAME);
         orderId = intent.getStringExtra(Constant.ISDORDERMETERMSTID);//订单头表id
         orderType= intent.getIntExtra(Constant.IORDERTYPE,0);
@@ -98,11 +123,42 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         mActivityMeasureCustomBinding.btnSaveMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(NetUtil.isNetworkAvailable(getApplicationContext())){
-                    submitMeasureData();
-                }else {
-                    saveToSQLite();
-                }
+                clearAllInputFocus(v);
+                new AlertDialog.Builder(MeasureCustomActivity.this)
+                        .setMessage("是否确定要保存")
+                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setPositiveButton("是的", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(NetUtil.isNetworkAvailable(getApplicationContext())){
+                                    submitMeasureData();
+                                }else {
+                                    saveToSQLite();
+                                }
+                            }
+                        }).show();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MeasureCustomActivity.this);
+//                builder.setTitle("提示");
+//                builder.setMessage("是否确定信息无误并同步到服务器");
+//                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                    }
+//                });
+//                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        saveMeasure(userGUID, orderDtlId);//保存录入信息
+//                    }
+//                });
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+
                 
 //                new AlertDialog.Builder(MeasureCustomActivity.this)
 //                        .setItems(new String[]{"保存数据", "本地保存"}, new DialogInterface.OnClickListener() {
@@ -123,13 +179,27 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
             }
         });
-//        initData(orderDtlId);
+        mActivityMeasureCustomBinding.measureCustomTopLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllInputFocus(v);
+            }
+        });
+        initAnim();
+
         if(NetUtil.isNetworkAvailable(getApplicationContext())){
             initDataFromInternet();
         }else {
             initDataFromSQLite();
         }
+    }
+    /**
+     * 数字键盘显示动画
+     */
+    private void initAnim() {
 
+        enterAnim = AnimationUtils.loadAnimation(this, R.anim.push_bottom_in);
+        exitAnim = AnimationUtils.loadAnimation(this, R.anim.push_bottom_out);
     }
 
     //    public void init() {
@@ -200,6 +270,16 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 MeasureDataInSQLite measureDataInSQLite=subList.get(j);
                 View subItem=linearLayout.getChildAt(j);
                 EditText editText = (EditText) subItem.findViewById(R.id.etParameter);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable s) {}
+                });
                 String size=editText.getText().toString().trim();
                 if(size.isEmpty()) size="0";
                 measureDataInSQLite.setISMeterSize(size);
@@ -481,15 +561,204 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             List<MeasureDataInSQLite> measureDataInSQLiteList = mMeasureCustomLists.get(i);
             //添加咩咯款式每条量体信息
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.llClothTypeList);
+//            LinearLayout llClothTypeDetail= (LinearLayout) view.findViewById(R.id.llClothTypeDetail);
+//            CardView cvMeasureDetail= (CardView) view.findViewById(R.id.cvMeasureDetail);
+//            ScrollView svClothTypeDetail= (ScrollView) view.findViewById(R.id.svClothTypeDetail);
+
+//            svClothTypeDetail.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    clearAllInputFocus(v);
+//                }
+//            });
+
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clearAllInputFocus(v);
+                }
+            });
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clearAllInputFocus(v);
+                }
+            });
+//            cvMeasureDetail.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    clearAllInputFocus(v);
+//                }
+//            });
+//            llClothTypeDetail.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    clearAllInputFocus(v);
+//                }
+//            });
+
             for (MeasureDataInSQLite measureDataInSQLite : measureDataInSQLiteList) {
                 View convertView = LinearLayout.inflate(getApplicationContext(), R.layout.ll_parameter, null);
                 TextView tvParameter = (TextView) convertView.findViewById(R.id.tvParameter);
                 tvParameter.setText(measureDataInSQLite.getSMeterName());
 //                MeasureDateBean measureDateBean=measureDataMap.get(measureCustom.SDSTYLETYPEITEMDTLID+"_"+measureCustom.ISDORDERMETERDTLID);
 //                measureCustom.ISMETERSIZE=measureDateBean==null?"":measureDateBean.ISMETERSIZE;
-                EditText editText = (EditText) convertView.findViewById(R.id.etParameter);
-                editText.setText(measureDataInSQLite.getISMeterSize());
+                mEditText = (EditText) convertView.findViewById(R.id.etParameter);
+//不调用系统键盘
+                if (Build.VERSION.SDK_INT<=10){
+                    mEditText.setInputType(InputType.TYPE_NULL);
+                }else {
+                    this.getWindow().setSoftInputMode(
+                            WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                    try {
+                        Class<EditText> cls = EditText.class;
+                        Method setShowSoftInputOnFocus;
+                        setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus",
+                                boolean.class);
+                        setShowSoftInputOnFocus.setAccessible(true);
+                        setShowSoftInputOnFocus.invoke(mEditText, false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                int evenNo = -1;//奇偶数  1奇数 0偶数 -1不限制
+                try {
+                    evenNo = Boolean.parseBoolean(measureDataInSQLite.getBEvenNo().toLowerCase()) ? 1 : 0;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                boolean isCanPoint = false;//true 支持小数 false不支持
+
+                try {
+                    isCanPoint = Boolean.parseBoolean(measureDataInSQLite.getBPoint().toLowerCase());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (isCanPoint) mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                else mEditText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+                float minLength = -1;//最小的尺寸
+                try {
+                    switch (sex) {
+                        case "男":
+                        default:
+                            minLength = Float.parseFloat(measureDataInSQLite.getSFemaleMinLenth());
+                            break;
+                        case "女":
+                            minLength = Float.parseFloat(measureDataInSQLite.getSMaleMinLenth());
+                            break;
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                float maxLength = -1; //最大的尺寸
+                try {
+                    switch (sex) {
+                        case "男":
+                        default:
+                            maxLength = Float.parseFloat(measureDataInSQLite.getSFemaleMaxLenth());
+                            break;
+                        case "女":
+                            maxLength = Float.parseFloat(measureDataInSQLite.getSMaleMaxLenth());
+                            break;
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                valueList = virtualKeyboardView.getValueList();
+                //不允许最大值小于最小值
+                if (maxLength < minLength) maxLength = -1;
+
+
+                final float finalMaxLength = maxLength;
+                final float finalMinLength = minLength;
+                final boolean finalIsCanPoint = isCanPoint;
+//                editText.setOnKeyListener(new View.OnKeyListener() {
+//                    @Override
+//                    public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                        return false;
+//                    }
+//                });
+
+//                editText.addTextChangedListener(new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+//
+//                    @Override
+//                    public void afterTextChanged(Editable s) {
+//
+//                    }
+//                });
+                final int finalEvenNo = evenNo;
+                mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus) return;
+
+
+                        float number = 0;
+                        try {
+                            number = Float.parseFloat(((EditText) v).getText().toString().trim());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        //最小值限制
+                        if (finalMinLength > 0 && number < finalMinLength) number = finalMinLength;
+                        //最大值限制
+                        if (finalMaxLength > 0 && number > finalMaxLength) number = finalMaxLength;
+
+//                        ((EditText) v).setText(String.valueOf(finalIsCanPoint?number:(int)number));
+                        //奇偶数
+                        switch (finalEvenNo) {
+                            //奇数
+                            case 0:
+                                if ((int)number % 2 == 0) number = number - 1;
+                                break;
+                            //偶数
+                            case 1:
+                                if ((int)number % 2 != 0) number = number - 1;
+                                break;
+                        }
+                        if (number < 0) number = 0;
+                        if(number==0) ((EditText) v).setText("");
+                        else if(finalIsCanPoint) ((EditText) v).setText(String.valueOf(number));
+                        else ((EditText) v).setText(String.valueOf((int)number));
+                    }
+                });
+
+                mEditText.setText(measureDataInSQLite.getISMeterSize());
                 linearLayout.addView(convertView);
+            }
+
+                virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        virtualKeyboardView.startAnimation(exitAnim);
+                        virtualKeyboardView.setVisibility(View.GONE);
+                    }
+                });
+
+                gridView = virtualKeyboardView.getGridView();
+                gridView.setOnItemClickListener(onItemClickListener);
+
+                mEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        virtualKeyboardView.setFocusable(true);
+                        virtualKeyboardView.setFocusableInTouchMode(true);
+
+                        virtualKeyboardView.startAnimation(enterAnim);
+                        virtualKeyboardView.setVisibility(View.VISIBLE);
+                    }
+                });
+
             }
             mActivityMeasureCustomBinding.llCloth.setGravity(Gravity.CENTER_HORIZONTAL);
             WindowManager wm =getWindowManager();
@@ -505,7 +774,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     Intent intent = new Intent(MeasureCustomActivity.this, RemarkDetailActivity.class);
                     intent.putExtra(STYLE_ID_INTENT, mMeasureCustomLists.get(finalI).get(0).getISdStyleTypeMstId());
                     intent.putExtra(ORDER_DTL_ID_INTENT, mMeasureCustomLists.get(finalI).get(0).getISdOrderMeterDtlId());
-                     intent.putExtra(REMARK_INTENT_DATA, (Serializable) remarkAllList.get(finalI));
+                    intent.putExtra(REMARK_INTENT_DATA, (Serializable) remarkAllList.get(finalI));
                     startActivity(intent);
                 }
             });
@@ -520,7 +789,46 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         }
 
     }
+    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
 
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+            if (position < 11 && position != 9) {    //点击0~9按钮
+
+                String amount = mEditText.getText().toString().trim();
+                amount = amount + valueList.get(position).get("name");
+
+                mEditText.setText(amount);
+
+                Editable ea = mEditText.getText();
+                mEditText.setSelection(ea.length());
+            } else {
+
+                if (position == 9) {      //点击退格键
+                    String amount = mEditText.getText().toString().trim();
+                    if (!amount.contains(".")) {
+                        amount = amount + valueList.get(position).get("name");
+                        mEditText.setText(amount);
+
+                        Editable ea = mEditText.getText();
+                        mEditText.setSelection(ea.length());
+                    }
+                }
+
+                if (position == 11) {      //点击退格键
+                    String amount = mEditText.getText().toString().trim();
+                    if (amount.length() > 0) {
+                        amount = amount.substring(0, amount.length() - 1);
+                        mEditText.setText(amount);
+
+                        Editable ea = mEditText.getText();
+                        mEditText.setSelection(ea.length());
+                    }
+                }
+            }
+        }
+    };
 
 
 
@@ -695,6 +1003,14 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             measureDataInSQLite.setType(orderType);
             measureDataInSQLite.setUserGUID(userGUID);
 
+            measureDataInSQLite.setSFemaleMaxLenth(bean.SFEMALEMAXLENTH);
+            measureDataInSQLite.setSFemaleMinLenth(bean.SFEMALEMINLENTH);
+            measureDataInSQLite.setSMaleMaxLenth(bean.SMALEMAXLENTH);
+            measureDataInSQLite.setSMaleMinLenth(bean.SMALEMINLENTH);
+            measureDataInSQLite.setBEvenNo(bean.BEVENNO);
+            measureDataInSQLite.setBPoint(bean.BPOINT);
+
+
             List<MeasureDataInSQLite> measureDataInSQLiteList = map.get(measureDataInSQLite.getISdStyleTypeMstId());
             if (measureDataInSQLiteList == null) measureDataInSQLiteList = new ArrayList<>();
             measureDataInSQLiteList.add(measureDataInSQLite);
@@ -717,77 +1033,6 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             mMeasureCustomLists.add(subList);
         }
     }
-
-    /**
-     * 显示传上去的量体数据
-     */
-//    private void showMeasureDataSaved(List<WsEntity> measureDateList) {
-//        Map<String,MeasureDateBean> measureDataMap=new HashMap<>();
-//        for (int i = 0; i <measureDateList.size() ; i++) {
-//            MeasureDateBean measureDateBean = (MeasureDateBean) measureDateList.get(i);
-//            measureDataMap.put(measureDateBean.ISDSTYLETYPEITEMDTLID+"_"+measureDateBean.ISDORDERMETERDTLID,measureDateBean);
-//        }
-//        LayoutInflater layoutInflater = getLayoutInflater();
-//        //添加View 即每个款式
-//        for (int i = 0; i < mMeasureCustomLists.size(); i++) {
-//            View view = layoutInflater.inflate(R.layout.activity_measure_detial, null);
-//            TextView tvClothStyle = (TextView) view.findViewById(R.id.tvClothStyle);
-//            tvClothStyle.setText(mMeasureCustomLists.get(i).get(0).SVALUEGROUP);
-//            List<MeasureCustomBean> measureBeanList = mMeasureCustomLists.get(i);
-//            //添加咩咯款式每条量体信息
-//            LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.llClothTypeList);
-//            for (MeasureCustomBean measureCustom : measureBeanList) {
-//                View convertView = LinearLayout.inflate(getApplicationContext(), R.layout.ll_parameter, null);
-//                TextView tvParameter = (TextView) convertView.findViewById(R.id.tvParameter);
-//                tvParameter.setText(measureCustom.SMETERNAME);
-//                MeasureDateBean measureDateBean=measureDataMap.get(measureCustom.SDSTYLETYPEITEMDTLID+"_"+measureCustom.ISDORDERMETERDTLID);
-//                measureCustom.ISMETERSIZE=measureDateBean==null?"":measureDateBean.ISMETERSIZE;
-//                final EditText editText = (EditText) convertView.findViewById(R.id.etParameter);
-//                editText.setText(measureCustom.ISMETERSIZE);
-//                linearLayout.addView(convertView);
-//            }
-//            mActivityMeasureCustomBinding.llCloth.setGravity(Gravity.CENTER_HORIZONTAL);
-//            WindowManager wm =getWindowManager();
-//            int width = wm.getDefaultDisplay().getWidth();
-//            int height = wm.getDefaultDisplay().getHeight();
-//            LinearLayout remarkLayout= (LinearLayout) view.findViewById(R.id.remarkLayout);
-//
-//            //跳转到备注界面
-//            final int finalI = i;
-//            final int finalI1 = i;
-//            remarkLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(MeasureCustomActivity.this, RemarkDetailActivity.class);
-//                    intent.putExtra(STYLE_ID_INTENT, mMeasureCustomLists.get(finalI1).get(0).ISDSTYLETYPEMSTID);
-//                    intent.putExtra(ORDER_DTL_ID_INTENT, mMeasureCustomLists.get(finalI1).get(0).ISDORDERMETERDTLID);
-//                    intent.putExtra(REMARK_INTENT_DATA, (Serializable) remarkAllList.get(finalI));
-//                    startActivity(intent);
-//                }
-//            });
-//
-//            final CheckBox cbRemark = (CheckBox) view.findViewById(R.id.cbRemark);
-//            try {
-//                cbRemark.setChecked(remarkAllList.get(finalI)!=null&&!remarkAllList.get(finalI).isEmpty());
-//            }catch (Exception e){
-//                cbRemark.setChecked(false);
-//            }
-//            mActivityMeasureCustomBinding.llCloth.addView(view, width / 5, height - 110);
-//        }
-//    }
-
-
-//    @SuppressWarnings("unchecked")
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(resultCode!=RESULT_OK) return;
-//        if(data==null) return;
-//        switch (requestCode) {
-//            //备注界面
-//            case REMARK_INTENT_KEY:
-//        }
-//    }
 
     /**
      * 来自备注界面的数据
@@ -836,7 +1081,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MeasureCustomActivity.this);
+        Builder builder = new Builder(MeasureCustomActivity.this);
         builder.setTitle("提示");
         builder.setMessage("当前页面数据未保存保存，是否要确认退出");
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -858,5 +1103,16 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         OthersUtil.unregisterEvent(this);
+    }
+
+    /**
+     * 清除所有的输入框的焦点
+     */
+    private void clearAllInputFocus(View view){
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if(imm!=null) imm.hideSoftInputFromWindow(mActivityMeasureCustomBinding.btnSaveMeasure.getWindowToken(), 0);
     }
 }

@@ -47,6 +47,7 @@ public class StartAdapter extends HsBaseAdapter<MeasureOrderInSQLite> {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MeasureCustomActivity.class);
                 intent.putExtra(Constant.SPERSON, measureOrderInSQLite.getSPerson());
+                intent.putExtra(Constant.SEX, measureOrderInSQLite.getSex());
                 intent.putExtra(Constant.SDEPARTMENTNAME, measureOrderInSQLite.getSDepartmentName());
                 intent.putExtra(Constant.ISDORDERMETERMSTID,measureOrderInSQLite.getISdOrderMeterMstId());
                 intent.putExtra(Constant.IORDERTYPE,measureOrderInSQLite.getOrderType());

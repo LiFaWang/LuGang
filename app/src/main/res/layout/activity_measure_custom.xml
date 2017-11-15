@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical">
         <LinearLayout
+            android:id="@+id/measureCustomTopLayout"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_buy_selector"
+                android:textSize="20sp"
                 android:text="保存"
                 android:textColor="#fff"/>
         </LinearLayout>
@@ -56,5 +63,14 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"/>
         </HorizontalScrollView>
+
     </LinearLayout>
+        <lugang.app.huansi.net.widget.VirtualKeyboardView
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:id="@+id/virtualKeyboardView"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+    </RelativeLayout>
 </layout>

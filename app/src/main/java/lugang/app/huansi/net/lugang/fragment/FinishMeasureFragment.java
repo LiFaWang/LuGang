@@ -150,6 +150,11 @@ public class FinishMeasureFragment extends BaseFragment {
         mFinishMeasureFragmentBinding.srlFinish.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mFinishMeasureFragmentBinding.tvCustomerSearch.setText("单位");
+                mFinishMeasureFragmentBinding.tvCitySearch.setText("地市");
+                mFinishMeasureFragmentBinding.tvCountySearch.setText("县市");
+                mFinishMeasureFragmentBinding.tvDepartmentSearch.setText("部门");
+                mFinishAdapter.setList(measureOrderInSQLiteList);
                 initSearchData();
                 loadFinishMeasureData();
             }
@@ -616,6 +621,7 @@ public class FinishMeasureFragment extends BaseFragment {
                                         measureOrderInSQLite.setSDepartmentName(bean.SDEPARTMENTNAME);
                                         measureOrderInSQLite.setSPerson(bean.SPERSON);
                                         measureOrderInSQLite.setUserGUID(userGUID);
+                                        measureOrderInSQLite.setSex(bean.SSEX);
                                         list.add(measureOrderInSQLite);
                                     }
                                     //离线查询
@@ -645,8 +651,6 @@ public class FinishMeasureFragment extends BaseFragment {
                                 if (info == null) info = new HsWebInfo();
                                 info.object = list;
                                 return info;
-
-
                             }
                         })
                 , getContext(), mDialog, new SimpleHsWeb() {

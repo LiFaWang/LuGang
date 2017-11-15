@@ -29,6 +29,35 @@ public class MeasureOrderInSQLite {
     private String sDepartmentName;//部门
     private String sPerson;//姓名
     private String sBillNo;//单号
+    private String sex;
+
+
+    @Generated(hash = 197089727)
+    public MeasureOrderInSQLite(Long id, int orderType, String userGUID,
+            String sJobName, String iSdOrderMeterMstId, String sAreaName,
+            String sCityName, String sCountyName, String sCustomerName,
+            String sCustomerCode, String sDepartmentName, String sPerson,
+            String sBillNo, String sex) {
+        this.id = id;
+        this.orderType = orderType;
+        this.userGUID = userGUID;
+        this.sJobName = sJobName;
+        this.iSdOrderMeterMstId = iSdOrderMeterMstId;
+        this.sAreaName = sAreaName;
+        this.sCityName = sCityName;
+        this.sCountyName = sCountyName;
+        this.sCustomerName = sCustomerName;
+        this.sCustomerCode = sCustomerCode;
+        this.sDepartmentName = sDepartmentName;
+        this.sPerson = sPerson;
+        this.sBillNo = sBillNo;
+        this.sex = sex;
+    }
+    @Generated(hash = 1798843719)
+    public MeasureOrderInSQLite() {
+    }
+
+
     public String getSBillNo() {
         return this.sBillNo;
     }
@@ -107,27 +136,11 @@ public class MeasureOrderInSQLite {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 756719233)
-    public MeasureOrderInSQLite(Long id, int orderType, String userGUID,
-            String sJobName, String iSdOrderMeterMstId, String sAreaName,
-            String sCityName, String sCountyName, String sCustomerName,
-            String sCustomerCode, String sDepartmentName, String sPerson,
-            String sBillNo) {
-        this.id = id;
-        this.orderType = orderType;
-        this.userGUID = userGUID;
-        this.sJobName = sJobName;
-        this.iSdOrderMeterMstId = iSdOrderMeterMstId;
-        this.sAreaName = sAreaName;
-        this.sCityName = sCityName;
-        this.sCountyName = sCountyName;
-        this.sCustomerName = sCustomerName;
-        this.sCustomerCode = sCustomerCode;
-        this.sDepartmentName = sDepartmentName;
-        this.sPerson = sPerson;
-        this.sBillNo = sBillNo;
+    public String getSex() {
+        return this.sex;
     }
-    @Generated(hash = 1798843719)
-    public MeasureOrderInSQLite() {
+    public void setSex(String sex) {
+        this.sex = sex;
     }
+    
 }

@@ -42,11 +42,13 @@ public class FinishAdapter extends HsBaseAdapter<MeasureOrderInSQLite> {
         countyName.setText(measureOrderInSQLite.getSCountyName());
         departmentName.setText(measureOrderInSQLite.getSDepartmentName());
         person.setText(measureOrderInSQLite.getSPerson());
+
         btnMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MeasureCustomActivity.class);
                 intent.putExtra(Constant.SPERSON, measureOrderInSQLite.getSPerson());
+                intent.putExtra(Constant.SEX, measureOrderInSQLite.getSex());
                 intent.putExtra(Constant.SDEPARTMENTNAME, measureOrderInSQLite.getSDepartmentName());
                 intent.putExtra(Constant.ISDORDERMETERMSTID,measureOrderInSQLite.getISdOrderMeterMstId());
 //                intent.putExtra(Constant.SVALUENAME,measureOrderInSQLite.get.SVALUENAME);

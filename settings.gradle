@@ -1,1 +1,1 @@
-include ':app', ':Hslibrary', ':libshot'
+include ':app', ':Hslibrary', ':libshot', ':xnumberkeyboard'

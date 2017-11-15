@@ -1,70 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_height="40dp"
+              android:layout_width="match_parent"
+              android:layout_height="40dp"
+              android:layout_marginTop="0.5dp"
+              android:background="#25396a"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:orientation="horizontal"
     >
+
     <TextView
         android:id="@+id/tvCustomerName"
-        style="@style/new_measure_style"/>
+        style="@style/new_measure_style"
+        android:layout_marginLeft="10dp"/>
+
     <AutoCompleteTextView
         android:id="@+id/actAreaName"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
+        style="@style/new_measure_style"
         android:completionThreshold="1"
-        style="@style/new_measure_style"/>
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
     <AutoCompleteTextView
         android:id="@+id/actCityName"
+        style="@style/new_measure_style"
         android:completionThreshold="1"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-        style="@style/new_measure_style"/>
+        android:focusableInTouchMode="false"/>
+
     <AutoCompleteTextView
         android:id="@+id/actCountyName"
+        style="@style/new_measure_style"
         android:completionThreshold="1"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-        style="@style/new_measure_style"/>
+        android:focusableInTouchMode="false"/>
+
     <AutoCompleteTextView
         android:id="@+id/actDepartmentName"
+        style="@style/new_measure_style"
         android:completionThreshold="1"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-        style="@style/new_measure_style"/>
+        android:focusableInTouchMode="false"/>
+
     <AutoCompleteTextView
         android:id="@+id/actJobName"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
+        style="@style/new_measure_style"
         android:completionThreshold="1"
-        style="@style/new_measure_style"/>
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 
     <EditText
         android:id="@+id/etPerson"
-        android:text=""
-        style="@style/new_measure_style"/>
+        style="@style/new_measure_style"
+        android:text=""/>
+
     <Spinner
         android:id="@+id/spSex"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
         android:layout_weight="1"
-        android:background="#AB9F9D"
+        android:background="#25396a"
         android:gravity="center"/>
 
     <Spinner
         android:id="@+id/spClothStyle"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
         android:layout_weight="1.5"
-        android:background="#AB9F9D"
+        android:background="#25396a"
         android:gravity="center"/>
 
     <EditText
-        android:inputType="number"
         android:id="@+id/etCount"
-        android:text="1"
-        style="@style/new_measure_style"/>
+        style="@style/new_measure_style"
+        android:inputType="number"
+        android:text="1"/>
 </LinearLayout>

@@ -21,7 +21,7 @@
             android:textSize="20sp"/>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cardview1"
+            android:id="@+id/cvMeasureDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
@@ -32,6 +32,7 @@
             card_view:cardElevation="5dp"
             card_view:contentPadding="8dp">
             <LinearLayout
+                android:id="@+id/llClothTypeDetail"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -41,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp">
                     <ScrollView
+                        android:id="@+id/svClothTypeDetail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <LinearLayout

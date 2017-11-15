@@ -37,5 +37,8 @@ public class StartMeasureBean extends WsData {
 
     public String SVALUENAME="";//款式的ID
     public String SBILLNO="";//清单的ID
+    public String SSEX="男";
+
+
     public String IORDERTYPE="0";//区分是从哪个界面跳转的
 }
