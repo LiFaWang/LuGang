@@ -37,4 +37,7 @@
     <color name="colorMainBackgroundText">#D1BEB0</color>
     <color name="colorCheck">#7A7D91</color>
     <color name="colorCostorm">#AB9F9D</color>
+
+
+    <color name="custom_board_selected">#b8bcc0</color>
 </resources>

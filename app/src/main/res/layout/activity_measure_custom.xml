@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
 
     <LinearLayout
@@ -65,12 +64,4 @@
         </HorizontalScrollView>
 
     </LinearLayout>
-        <lugang.app.huansi.net.widget.VirtualKeyboardView
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:id="@+id/virtualKeyboardView"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
-    </RelativeLayout>
 </layout>

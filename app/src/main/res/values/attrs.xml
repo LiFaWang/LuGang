@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--自定义键盘-->
+    <declare-styleable name="custom_Keyboard">
+        <attr name="xml" format="reference"/>
+        <attr name="random_keys" format="reference|boolean"/>
+    </declare-styleable>
+</resources>
