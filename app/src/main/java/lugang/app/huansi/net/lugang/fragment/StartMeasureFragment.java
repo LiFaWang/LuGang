@@ -30,6 +30,7 @@ import huansi.net.qianjingapp.fragment.BaseFragment;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
 import huansi.net.qianjingapp.utils.NetUtil;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
+import huansi.net.qianjingapp.utils.OthersUtil;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.db.MeasureOrderInSQLite;
 import lugang.app.huansi.net.greendao.MeasureOrderInSQLiteDao;
@@ -144,7 +145,25 @@ public class StartMeasureFragment extends BaseFragment {
         mStartMeasureFragmentBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadMeasureData();
+//                loadMeasureData();
+                List<MeasureOrderInSQLite> personList=new ArrayList<>();
+                String sSearch=mStartMeasureFragmentBinding.orderSearch.getText().toString();
+                String s = mStartMeasureFragmentBinding.tvCustomerSearch.getText().toString();
+                if (s.equals("单位")){
+                    OthersUtil.ToastMsg(getContext(),"请先选择要查询的人员所在单位");
+                }else {
+                    for (int i = 0; i < mCityList.size(); i++) {
+                       if( mCityList.get(i).getSPerson().equals(sSearch)){
+                           personList.add(mCityList.get(i));
+                       }
+                    }
+                    if (personList.isEmpty()||personList.size()==0){
+                        OthersUtil.ToastMsg(getContext(),"该单位没有您要查找到"+sSearch);
+                    }
+                    mStartAdapter.setList(personList);
+                    mStartAdapter.notifyDataSetChanged();
+                }
+
             }
         });
         /**

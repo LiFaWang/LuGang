@@ -29,12 +29,13 @@ import huansi.net.qianjingapp.fragment.BaseFragment;
 import huansi.net.qianjingapp.imp.SimpleHsWeb;
 import huansi.net.qianjingapp.utils.NetUtil;
 import huansi.net.qianjingapp.utils.NewRxjavaWebUtils;
+import huansi.net.qianjingapp.utils.OthersUtil;
 import huansi.net.qianjingapp.view.LoadProgressDialog;
 import lugang.app.huansi.net.db.MeasureOrderInSQLite;
 import lugang.app.huansi.net.greendao.MeasureOrderInSQLiteDao;
 import lugang.app.huansi.net.lugang.R;
-import lugang.app.huansi.net.lugang.adapter.LinkageSearchAdapter;
 import lugang.app.huansi.net.lugang.adapter.FinishAdapter;
+import lugang.app.huansi.net.lugang.adapter.LinkageSearchAdapter;
 import lugang.app.huansi.net.lugang.bean.FinishMeasureBean;
 import lugang.app.huansi.net.lugang.bean.MeasureOrderCustomerBean;
 import lugang.app.huansi.net.lugang.bean.MeasureOrderDepartmentBean;
@@ -142,8 +143,27 @@ public class FinishMeasureFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
+                List<MeasureOrderInSQLite> personList=new ArrayList<>();
+//                loadFinishMeasureData();
+            String sSearch = mFinishMeasureFragmentBinding.orderSearch.getText().toString();
+                String s = mFinishMeasureFragmentBinding.tvCustomerSearch.getText().toString();
+                if (s.equals("单位")){
+                    OthersUtil.ToastMsg(getContext(),"请先选择要查询的人员所在单位");
+                }else {
+                    for (int i = 0; i < mCityList.size(); i++) {
+                        if( mCityList.get(i).getSPerson().equals(sSearch)){
+                            personList.add(mCityList.get(i));
+                        }
+                    }
+                    if (personList.isEmpty()||personList.size()==0){
+                        OthersUtil.ToastMsg(getContext(),"该单位没有您要查找到"+sSearch);
+                    }
+                    mFinishAdapter.setList(personList);
+                    mFinishAdapter.notifyDataSetChanged();
+                }
 
-                loadFinishMeasureData();
+
+
             }
         });
 

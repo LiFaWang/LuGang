@@ -683,33 +683,35 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         if (finalMaxLength > 0 && number > finalMaxLength) number = finalMaxLength;
 
 //                        ((EditText) v).setText(String.valueOf(finalIsCanPoint?number:(int)number));
+                        if (!finalIsCanPoint){
+
+
                         //奇偶数
                         switch (finalEvenNo) {
-                            //奇数
-                            case 0:
-                                if ((int) number % 2 == 0) number = number + 1;
-                                break;
                             //偶数
-                            case 1:
+                            case 0:
                                 if ((int) number % 2 != 0) number = number + 1;
                                 break;
+                            //奇数
+                            case 1:
+                                if ((int) number % 2 == 0) number = number + 1;
+                                break;
+                        }
                         }
                         if (number < 0) number = 0;
                         if (number == 0) ((EditText) v).setText("");
 
                         else if (finalIsCanPoint) {
-                            java.text.DecimalFormat df = new java.text.DecimalFormat("#.0");
-                            String format = df.format(number);
-                            String[] split = format.split("\\.");
-                            if( Float.parseFloat(split[1])>3&&Float.parseFloat(split[1])<7){
+
+                            String[] split = String.valueOf(number).split("\\.");
+                            char c = split[1].charAt(0);
+                            if( Float.parseFloat(String.valueOf(c))>3&&Float.parseFloat(String.valueOf(c))<7){
                                 number=Float.parseFloat(split[0]+".5");
-                            }else if(Float.parseFloat(split[1])<4) {
+                            }else if(Float.parseFloat(String.valueOf(c))<4) {
                                 number=Float.parseFloat(split[0]+".0");
 
                             }else {
-                                int i0 = Integer.parseInt(split[0])+1;
-                                float i1 = Float.parseFloat(i0+".0");
-                                number=i1;
+                                number = Float.parseFloat((Integer.parseInt(split[0])+1)+".0");
                             }
                       ((EditText) v).setText(String.valueOf(number));
                         }
@@ -748,7 +750,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             } catch (Exception e) {
                 cbRemark.setChecked(false);
             }
-            mActivityMeasureCustomBinding.llCloth.addView(view, width / 4, height - 110);
+            mActivityMeasureCustomBinding.llCloth.addView(view, width / 4, height - 150);
         }
 
     }

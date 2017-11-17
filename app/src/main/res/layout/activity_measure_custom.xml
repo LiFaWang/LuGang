@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorMainBackground">
             <ImageView
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="10dp"
                 android:scaleType="centerCrop"
                 android:background="@drawable/palang"
                 android:layout_width="80dp"
@@ -27,15 +27,15 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:paddingLeft="10dp"
                 android:text="量体数据录入"
                 android:textColor="#D1BEB0"
                 android:textSize="24sp"/>
+
             <TextView
                 android:gravity="center"
+                android:layout_marginLeft="20dp"
                 android:id="@+id/customName"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_below="@id/dateRecord"
                 android:layout_marginTop="5dp"
@@ -49,7 +49,123 @@
                 android:background="@drawable/btn_buy_selector"
                 android:textSize="20sp"
                 android:text="保存"
-                android:textColor="#fff"/>
+                android:textColor="#D1BEB0"/>
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="身高:"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/dateRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                android:inputType="numberDecimal"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:gravity="center"
+                app:xml="@xml/custom_keyboard"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/dateRecord"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:text="体重:"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                android:inputType="numberDecimal"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:gravity="center"
+                app:xml="@xml/custom_keyboard"
+                android:layout_marginTop="5dp"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:text="净胸围:"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                android:inputType="numberDecimal"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                app:xml="@xml/custom_keyboard"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:text="净腰围:"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                android:inputType="numberDecimal"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_width="40dp"
+                app:xml="@xml/custom_keyboard"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:text="净臀围:"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                app:xml="@xml/custom_keyboard"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:text="尺寸来源:"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <CheckBox
+                android:text="自报"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <CheckBox
+                android:text="量体"
+                android:textColor="#000"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
         </LinearLayout>
         <HorizontalScrollView
             android:id="@+id/hsCloth"

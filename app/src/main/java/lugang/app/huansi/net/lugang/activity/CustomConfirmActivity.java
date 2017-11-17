@@ -2,10 +2,8 @@ package lugang.app.huansi.net.lugang.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,9 +36,11 @@ import lugang.app.huansi.net.lugang.bean.ConfirmTableBean;
 import lugang.app.huansi.net.lugang.bean.UpPictureBean;
 import lugang.app.huansi.net.lugang.databinding.CustomConfirmActivityBinding;
 import lugang.app.huansi.net.util.Base64BitmapUtils;
+import lugang.app.huansi.net.util.LGSPUtils;
 import rx.functions.Func1;
 
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
+import static lugang.app.huansi.net.util.LGSPUtils.USER_NAME;
 
 public class CustomConfirmActivity extends NotWebBaseActivity {
     private CustomConfirmActivityBinding mCustomConfirmActivityBinding;
@@ -103,6 +103,7 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                 e.printStackTrace();
             }
         mCustomConfirmActivityBinding = (CustomConfirmActivityBinding) viewDataBinding;
+
         final Intent intent = getIntent();
         final String orderId = intent.getStringExtra("iordermetermstid");
         final String gpicture = intent.getStringExtra("gpicture");
@@ -252,9 +253,6 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
     }
 
 
-
-
-
     /**
      * 获取确认函的数据
      *
@@ -277,9 +275,8 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
                     public void success(HsWebInfo hsWebInfo) {
                         List<WsEntity> listwsdata = hsWebInfo.wsData.LISTWSDATA;
                         ConfirmTableBean confirmTableBean = (ConfirmTableBean) listwsdata.get(0);
+                        confirmTableBean.SPERSON= LGSPUtils.getLocalData(CustomConfirmActivity.this,USER_NAME,String.class.getName(),"").toString();
                         mCustomConfirmActivityBinding.tvMeasureCompany.setText(confirmTableBean.SCUSTOMERNAME);
-                        SharedPreferences sp = CustomConfirmActivity.this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
-                        confirmTableBean.SPERSON=sp.getString("name", "");
                         mCustomConfirmActivityBinding.tvMeasurePerson.setText(confirmTableBean.SPERSON);
                         mCustomConfirmActivityBinding.maleMeasuredCount.setText(confirmTableBean.IMALEMEASUREDQTY);
                         mCustomConfirmActivityBinding.maleWaitMeasureCount.setText(confirmTableBean.INOTMALEMEASUREDQTY);
