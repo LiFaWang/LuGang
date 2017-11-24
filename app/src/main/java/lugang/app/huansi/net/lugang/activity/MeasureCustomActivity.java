@@ -5,6 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -47,6 +48,7 @@ import lugang.app.huansi.net.greendao.MeasureDataInSQLiteDao;
 import lugang.app.huansi.net.greendao.MeasureOrderInSQLiteDao;
 import lugang.app.huansi.net.greendao.MeasureRemarkDataInSQLiteDao;
 import lugang.app.huansi.net.lugang.R;
+import lugang.app.huansi.net.lugang.bean.MeasureBaseBean;
 import lugang.app.huansi.net.lugang.bean.MeasureCustomBean;
 import lugang.app.huansi.net.lugang.bean.MeasureDateBean;
 import lugang.app.huansi.net.lugang.bean.RemarkSavedBean;
@@ -80,11 +82,14 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     private List<List<MeasureDataInSQLite>> mMeasureCustomLists;
     private List<List<MeasureRemarkDataInSQLite>> remarkAllList;//备注列表
     private LoadProgressDialog dialog;
+    long mLastTime = 0;
+    long mCurTime = 0;
 
     private String person = "";//被量体人
     private String orderId = "";//订单ID
     private int orderType = 0;//0待量体 1已量体 2返修
-    private String sex="男";//性别
+    private String sex = "男";//性别
+
 
     @Override
     protected int getLayoutId() {
@@ -96,17 +101,17 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         OthersUtil.hideInputFirst(this);//默认自动跳出软键盘
         mActivityMeasureCustomBinding = (ActivityMeasureCustomBinding) viewDataBinding;
         OthersUtil.registerEvent(this);
-        dialog=new LoadProgressDialog(this);
+        dialog = new LoadProgressDialog(this);
         remarkAllList = new ArrayList<>();
         mMeasureCustomLists = new ArrayList<>();
         Intent intent = getIntent();
         person = intent.getStringExtra(SPERSON);
-        sex=intent.getStringExtra(SEX);
-        if(TextUtils.isEmpty(sex)) sex="男";
+        sex = intent.getStringExtra(SEX);
+//        if(TextUtils.isEmpty(sex)) sex="男";
         String departmentName = intent.getStringExtra(Constant.SDEPARTMENTNAME);
         orderId = intent.getStringExtra(Constant.ISDORDERMETERMSTID);//订单头表id
-        orderType= intent.getIntExtra(Constant.IORDERTYPE,0);
-        mActivityMeasureCustomBinding.customName.setText(departmentName + ": " + person+"   性别:"+sex);
+        orderType = intent.getIntExtra(Constant.IORDERTYPE, 0);
+        mActivityMeasureCustomBinding.customName.setText(departmentName + ": " + person + "   性别:" + sex);
         mActivityMeasureCustomBinding.btnSaveMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,9 +127,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         .setPositiveButton("是的", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if(NetUtil.isNetworkAvailable(getApplicationContext())){
+                                if (NetUtil.isNetworkAvailable(getApplicationContext())) {
                                     submitMeasureData();
-                                }else {
+                                } else {
                                     saveToSQLite();
                                 }
                             }
@@ -146,7 +151,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //                AlertDialog dialog = builder.create();
 //                dialog.show();
 
-                
+
 //                new AlertDialog.Builder(MeasureCustomActivity.this)
 //                        .setItems(new String[]{"保存数据", "本地保存"}, new DialogInterface.OnClickListener() {
 //                            @Override
@@ -173,11 +178,228 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //            }
 //        });
 
-        if(NetUtil.isNetworkAvailable(getApplicationContext())){
+        if (NetUtil.isNetworkAvailable(getApplicationContext())) {
             initDataFromInternet();
-        }else {
+        } else {
             initDataFromSQLite();
         }
+        //尺寸录入
+        fillInMeasureDate();
+
+    }
+
+    /**
+     * 尺寸录入
+     */
+    private void fillInMeasureDate() {
+
+
+        mActivityMeasureCustomBinding.btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLastTime = mCurTime;
+                mCurTime = System.currentTimeMillis();
+                if (mCurTime - mLastTime < 300) {//双击事件
+                    mCurTime = 0;
+                    mLastTime = 0;
+
+                    //获得净胸围的值
+                    String etChest = mActivityMeasureCustomBinding.etChest.getText().toString();
+                    //获得净腰围的值
+                    String etWaistline = mActivityMeasureCustomBinding.etWaistline.getText().toString();
+                    //获得净臀围的值
+                    String etHips = mActivityMeasureCustomBinding.etHips.getText().toString();
+                    //获得春秋装衣长的值
+                    String etClothLength = mActivityMeasureCustomBinding.etClothLength.getText().toString();
+                    //获得春秋装肩宽的值
+                    String etShoulder = mActivityMeasureCustomBinding.etShoulder.getText().toString();
+                    //获得袖长的值
+                    String etSleeve = mActivityMeasureCustomBinding.etSleeve.getText().toString();
+                    //获得春秋裤长的值
+                    String etKuchang = mActivityMeasureCustomBinding.etKuchang.getText().toString();
+                    //获得春秋腰围的值
+                    String etYaowei = mActivityMeasureCustomBinding.etYaowei.getText().toString();
+                    //获得号的值
+                    String etNO = mActivityMeasureCustomBinding.etNO.getText().toString();
+                    //获得型的值
+                    String etStyle = mActivityMeasureCustomBinding.etStyle.getText().toString();
+                    if (TextUtils.isEmpty(etChest) || TextUtils.isEmpty(etHips) || TextUtils.isEmpty(etClothLength) ||
+                            TextUtils.isEmpty(etShoulder) || TextUtils.isEmpty(etSleeve) || TextUtils.isEmpty(etKuchang) ||
+                            TextUtils.isEmpty(etYaowei)) {
+                        OthersUtil.ToastMsg(MeasureCustomActivity.this, "请将输入信息填写完整");
+                        return;
+                    }
+                    for (int i = 0; i < mMeasureCustomLists.size(); i++) {
+                        List<MeasureDataInSQLite> measureDataInSQLiteList = mMeasureCustomLists.get(i);
+                        //添加款式每条量体信息
+                        for (int j = 0; j < measureDataInSQLiteList.size(); j++) {
+                            MeasureDataInSQLite measureDataInSQLite = measureDataInSQLiteList.get(j);
+
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1072")) {//春秋上衣胸围
+                                if (sex.equals("女"))
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 8));
+                                else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 14));
+
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1079")) {//大衣胸围
+                                if (sex.equals("女")) {
+
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 10));
+                                } else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 16));
+
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1056")) {//夏装上衣胸围
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 6));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1045")) {//冬装上衣胸围
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 10));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1019")) {//夹克胸围
+                                if (sex.equals("女"))
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 8));
+                                else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 18));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1023")) {//长袖衬衫胸围
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 8));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1030")) {//短袖衬衫胸围
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 8));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1016")) {//马甲胸围
+                                if (sex.equals("女")) {
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 4));
+                                } else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 10));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1074")) {//春秋上衣中腰
+                                if (sex.equals("女")) {
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) - 5));
+                                } else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 4));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1058")) {//夏装上衣中腰
+                                if (sex.equals("女")) {
+
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) - 7));
+                                } else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 2));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1047")) {//冬装上衣中腰
+                                if (sex.equals("女")) {
+
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) - 3));
+                                } else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etChest)) + 6));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1040")) {//春秋裤子臀围
+                                if (sex.equals("女")) {
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 5));
+                                } else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 12));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1062")) {//夏装裤子臀围
+                                if (sex.equals("女")) {
+
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 3));
+                                } else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 10));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1051")) {//冬装裤子臀围
+                                if (sex.equals("女")) {
+
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 7));
+                                } else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 14));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1071")) {//女裙臀围
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 3));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1001")) {//春秋上衣长
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength))));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1052")) {//夏装衣长
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength)) - 2));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1041")) {//冬装衣长
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength)) - 2));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1015")) {//马甲衣长
+                                if (sex.equals("女"))
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength)) - 6));
+                                else
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength)) - 12));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1002")) {//春秋上衣肩宽
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etShoulder))));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1052")) {//夏衣肩宽
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etShoulder)) - 0.5));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1042")) {//冬衣肩宽
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etShoulder)) + 0.5));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1007")) {//大衣肩宽
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etShoulder)) + 0.5));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1003") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1054") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1043")) {//春秋衣袖长,夏装袖长，冬装袖长
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etSleeve))));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1008")) {//大衣袖长
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etSleeve)) + 1));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1035") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1059") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1048")) {//春秋裤长,夏裤长，冬裤长
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etKuchang))));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1036")) {//春秋裤腰围
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etYaowei))));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1060")) {//夏裤腰围
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etYaowei)) - 1));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1049")) {//冬裤腰围
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etYaowei)) + 1));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1088")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1090") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1092") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1094") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1096") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1084")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1100")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1104")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1110")
+                                    ) {//春秋装号 大衣 夹克 马甲 长袖衬衫 短袖衬衫 冬装上衣 夏装上衣 女裙
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etNO))));
+                            }
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1089") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1091") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1093") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1095") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1097") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1085")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1101")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1105")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1111")
+                                    ) {//春秋装型 大衣 夹克 马甲 长袖衬衫 短袖衬衫 冬装上衣 夏装上衣 女裙
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etStyle))));
+                            }
+
+
+                        }
+                    }
+                    showData();
+                }
+            }
+        });
+
+
     }
 
     //    public void init() {
@@ -234,121 +456,130 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //        initData(orderDtlId);
 //    }
 //
+
     /**
      * 保存到本地数据库中
      */
-    private void saveToSQLite(){
+    private void saveToSQLite() {
         OthersUtil.showLoadDialog(dialog);
         //查询输入框的数据，并保存到数组中
-        for(int i=0;i<mMeasureCustomLists.size();i++){
-            List<MeasureDataInSQLite> subList=mMeasureCustomLists.get(i);
-            View item=mActivityMeasureCustomBinding.llCloth.getChildAt(i);
+        for (int i = 0; i < mMeasureCustomLists.size(); i++) {
+            List<MeasureDataInSQLite> subList = mMeasureCustomLists.get(i);
+            View item = mActivityMeasureCustomBinding.llCloth.getChildAt(i);
             LinearLayout linearLayout = (LinearLayout) item.findViewById(R.id.llClothTypeList);
-            for(int j=0;j<subList.size();j++){
-                MeasureDataInSQLite measureDataInSQLite=subList.get(j);
-                View subItem=linearLayout.getChildAt(j);
+            for (int j = 0; j < subList.size(); j++) {
+                MeasureDataInSQLite measureDataInSQLite = subList.get(j);
+                View subItem = linearLayout.getChildAt(j);
                 EditText editText = (EditText) subItem.findViewById(R.id.etParameter);
                 editText.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
                     @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
 
                     @Override
-                    public void afterTextChanged(Editable s) {}
+                    public void afterTextChanged(Editable s) {
+                    }
                 });
-                String size=editText.getText().toString().trim();
-                if(size.isEmpty()) size="0";
+                String size = editText.getText().toString().trim();
+                if (size.isEmpty()) size = "0";
                 measureDataInSQLite.setISMeterSize(size);
-                subList.set(j,measureDataInSQLite);
+                subList.set(j, measureDataInSQLite);
             }
-            mMeasureCustomLists.set(i,subList);
+            mMeasureCustomLists.set(i, subList);
         }
 
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
                     public HsWebInfo call(String s) {
-                        DaoSession daoSession= GreenDaoUtil.getGreenDaoSession(getApplicationContext());
-                        String userGUID=LGSPUtils.getLocalData(getApplicationContext(),USER_GUID,String.class.getName(),"").toString();
+                        DaoSession daoSession = GreenDaoUtil.getGreenDaoSession(getApplicationContext());
+                        String userGUID = LGSPUtils.getLocalData(getApplicationContext(), USER_GUID, String.class.getName(), "").toString();
                         //判断这个里面是否写过数据 如果没有输入值或者添加过备注，则为待量体 否则为已量体 返修的单独算
-                        int saveType=0;//0待量体 1已量体 2返修
-                        if(orderType==2) saveType=2;
+                        int saveType = 0;//0待量体 1已量体 2返修
+                        if (orderType == 2) saveType = 2;
                         else {
                             for (List<MeasureDataInSQLite> subList : mMeasureCustomLists) {
                                 if (subList.isEmpty()) continue;
-                                for(MeasureDataInSQLite measureDataInSQLite:subList){
-                                    String size=measureDataInSQLite.getISMeterSize();
-                                    if(size==null||size.isEmpty()||size.equalsIgnoreCase("0"))continue;
-                                    saveType=1;
+                                for (MeasureDataInSQLite measureDataInSQLite : subList) {
+                                    String size = measureDataInSQLite.getISMeterSize();
+                                    if (size == null || size.isEmpty() || size.equalsIgnoreCase("0"))
+                                        continue;
+                                    saveType = 1;
                                     break;
                                 }
-                                if(saveType==1) break;
+                                if (saveType == 1) break;
                             }
-                            if(saveType!=1){
+                            if (saveType != 1) {
                                 for (List<MeasureRemarkDataInSQLite> subList : remarkAllList) {
                                     if (subList.isEmpty()) continue;
-                                    saveType=1;
+                                    saveType = 1;
                                     break;
                                 }
                             }
                         }
 
                         //先保存量体数据
-                        MeasureDataInSQLiteDao measureDataInSQLiteDao=daoSession.getMeasureDataInSQLiteDao();
+                        MeasureDataInSQLiteDao measureDataInSQLiteDao = daoSession.getMeasureDataInSQLiteDao();
 
-                        for(int i=0;i<mMeasureCustomLists.size();i++){
-                            List<MeasureDataInSQLite> subList=mMeasureCustomLists.get(i);
-                            if(subList.isEmpty())continue;
-                            for(int j=0;j<subList.size();j++){
-                                MeasureDataInSQLite measureDataInSQLite=subList.get(j);
+                        for (int i = 0; i < mMeasureCustomLists.size(); i++) {
+                            List<MeasureDataInSQLite> subList = mMeasureCustomLists.get(i);
+                            if (subList.isEmpty()) continue;
+                            for (int j = 0; j < subList.size(); j++) {
+                                MeasureDataInSQLite measureDataInSQLite = subList.get(j);
                                 measureDataInSQLite.setType(saveType);
-                                subList.set(j,measureDataInSQLite);
+                                subList.set(j, measureDataInSQLite);
                             }
                             measureDataInSQLiteDao.insertOrReplaceInTx(subList);
                         }
 
                         //其次保存备注数据
-                        MeasureRemarkDataInSQLiteDao measureRemarkDataInSQLiteDao=daoSession.getMeasureRemarkDataInSQLiteDao();
-                        List<MeasureRemarkDataInSQLite> beforeRemarkDataInList=null;
+                        MeasureRemarkDataInSQLiteDao measureRemarkDataInSQLiteDao = daoSession.getMeasureRemarkDataInSQLiteDao();
+                        List<MeasureRemarkDataInSQLite> beforeRemarkDataInList = null;
                         try {
-                            beforeRemarkDataInList=measureRemarkDataInSQLiteDao.queryBuilder()
+                            beforeRemarkDataInList = measureRemarkDataInSQLiteDao.queryBuilder()
                                     .where(MeasureRemarkDataInSQLiteDao.Properties.Type.eq(orderType))
                                     .where(MeasureRemarkDataInSQLiteDao.Properties.UserGUID.eq(userGUID))
                                     .where(MeasureRemarkDataInSQLiteDao.Properties.Person.eq(person))
                                     .where(MeasureRemarkDataInSQLiteDao.Properties.OrderId.eq(orderId))
                                     .list();
-                        }catch (Exception e){}
-                        if(beforeRemarkDataInList==null) beforeRemarkDataInList=new ArrayList<>();
+                        } catch (Exception e) {
+                        }
+                        if (beforeRemarkDataInList == null)
+                            beforeRemarkDataInList = new ArrayList<>();
                         measureRemarkDataInSQLiteDao.deleteInTx(beforeRemarkDataInList);
 
-                        for(List<MeasureRemarkDataInSQLite> subList:remarkAllList){
-                            if(subList.isEmpty())continue;
-                            for(int j=0;j<subList.size();j++){
-                                MeasureRemarkDataInSQLite measureRemarkDataInSQLite=subList.get(j);
+                        for (List<MeasureRemarkDataInSQLite> subList : remarkAllList) {
+                            if (subList.isEmpty()) continue;
+                            for (int j = 0; j < subList.size(); j++) {
+                                MeasureRemarkDataInSQLite measureRemarkDataInSQLite = subList.get(j);
                                 measureRemarkDataInSQLite.setType(saveType);
                                 measureRemarkDataInSQLite.setId(null);
-                                subList.set(j,measureRemarkDataInSQLite);
+                                subList.set(j, measureRemarkDataInSQLite);
                             }
                             measureRemarkDataInSQLiteDao.insertOrReplaceInTx(subList);
                         }
                         //说明已量体->待量体 or 待量体->已量体 更改之前界面的状态
-                        if(saveType!=orderType){
-                            MeasureOrderInSQLite measureOrderInSQLite=null;
-                            MeasureOrderInSQLiteDao measureOrderInSQLiteDao=daoSession.getMeasureOrderInSQLiteDao();
+                        if (saveType != orderType) {
+                            MeasureOrderInSQLite measureOrderInSQLite = null;
+                            MeasureOrderInSQLiteDao measureOrderInSQLiteDao = daoSession.getMeasureOrderInSQLiteDao();
 
                             try {
-                                List<MeasureOrderInSQLite> measureOrderInSQLiteList=measureOrderInSQLiteDao
+                                List<MeasureOrderInSQLite> measureOrderInSQLiteList = measureOrderInSQLiteDao
                                         .queryBuilder()
                                         .where(MeasureOrderInSQLiteDao.Properties.OrderType.eq(orderType))
                                         .where(MeasureOrderInSQLiteDao.Properties.UserGUID.eq(userGUID))
                                         .where(MeasureOrderInSQLiteDao.Properties.ISdOrderMeterMstId.eq(orderId))
                                         .where(MeasureOrderInSQLiteDao.Properties.SPerson.eq(person))
                                         .list();
-                                measureOrderInSQLite=measureOrderInSQLiteList.get(0);
-                            }catch (Exception e){}
-                            if(measureOrderInSQLite!=null){
+                                measureOrderInSQLite = measureOrderInSQLiteList.get(0);
+                            } catch (Exception e) {
+
+                            }
+                            if (measureOrderInSQLite != null) {
                                 measureOrderInSQLite.setOrderType(saveType);
                                 measureOrderInSQLiteDao.insertOrReplace(measureOrderInSQLite);
                             }
@@ -358,74 +589,113 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 }), getApplicationContext(), dialog, new SimpleHsWeb() {
             @Override
             public void success(HsWebInfo hsWebInfo) {
-                OthersUtil.ToastMsg(getApplicationContext(),"保存成功");
+                OthersUtil.ToastMsg(getApplicationContext(), "保存成功");
                 finish();
             }
 
             @Override
             public void error(HsWebInfo hsWebInfo, Context context) {
-                OthersUtil.ToastMsg(getApplicationContext(),"保存失败");
+                OthersUtil.ToastMsg(getApplicationContext(), "保存失败");
             }
         });
     }
 
 
-
-
     //保存录入信息
     private void submitMeasureData() {
+        //获得身高
+        final String etHeight = mActivityMeasureCustomBinding.etHeight.getText().toString();
+        //获得体重
+        final String etWeight = mActivityMeasureCustomBinding.etWeight.getText().toString();
+        //获得净胸围的值
+        final String etChest = mActivityMeasureCustomBinding.etChest.getText().toString();
+        //获得净腰围的值
+        final String etWaistline = mActivityMeasureCustomBinding.etWaistline.getText().toString();
+        //获得净臀围的值
+        final String etHips = mActivityMeasureCustomBinding.etHips.getText().toString();
+        //获得春秋装衣长的值
+        final String etClothLength = mActivityMeasureCustomBinding.etClothLength.getText().toString();
+        //获得春秋装肩宽的值
+        final String etShoulder = mActivityMeasureCustomBinding.etShoulder.getText().toString();
+        //获得袖长的值
+        final String etSleeve = mActivityMeasureCustomBinding.etSleeve.getText().toString();
+        //获得春秋裤长的值
+        final String etKuchang = mActivityMeasureCustomBinding.etKuchang.getText().toString();
+        //获得春秋腰围的值
+        final String etYaowei = mActivityMeasureCustomBinding.etYaowei.getText().toString();
+        //获得号的值
+        final String etNO = mActivityMeasureCustomBinding.etNO.getText().toString();
+        //获得型的值
+        final String etStyle = mActivityMeasureCustomBinding.etStyle.getText().toString();
         OthersUtil.showLoadDialog(mDialog);
         //查询输入框的数据，并保存到数组中
-        for(int i=0;i<mMeasureCustomLists.size();i++){
-            List<MeasureDataInSQLite> subList=mMeasureCustomLists.get(i);
-            View item=mActivityMeasureCustomBinding.llCloth.getChildAt(i);
+        for (int i = 0; i < mMeasureCustomLists.size(); i++) {
+            List<MeasureDataInSQLite> subList = mMeasureCustomLists.get(i);
+            View item = mActivityMeasureCustomBinding.llCloth.getChildAt(i);
             LinearLayout linearLayout = (LinearLayout) item.findViewById(R.id.llClothTypeList);
-            for(int j=0;j<subList.size();j++){
-                MeasureDataInSQLite measureDataInSQLite=subList.get(j);
-                View subItem=linearLayout.getChildAt(j);
+            for (int j = 0; j < subList.size(); j++) {
+                MeasureDataInSQLite measureDataInSQLite = subList.get(j);
+                View subItem = linearLayout.getChildAt(j);
                 EditText editText = (EditText) subItem.findViewById(R.id.etParameter);
-                String size=editText.getText().toString().trim();
-                if(size.isEmpty()) size="0";
+                String size = editText.getText().toString().trim();
+                if (size.isEmpty()) size = "0";
                 measureDataInSQLite.setISMeterSize(size);
-                subList.set(j,measureDataInSQLite);
+                subList.set(j, measureDataInSQLite);
             }
-            mMeasureCustomLists.set(i,subList);
+            mMeasureCustomLists.set(i, subList);
         }
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
                             public HsWebInfo call(String s) {
-                                String userGUID=LGSPUtils.getLocalData(getApplicationContext(),USER_GUID,String.class.getName(),"").toString();
+                                String userGUID = LGSPUtils.getLocalData(getApplicationContext(), USER_GUID, String.class.getName(), "").toString();
                                 StringBuilder sbStr = new StringBuilder();
                                 for (int i = 0; i < mMeasureCustomLists.size(); i++) {
                                     List<MeasureDataInSQLite> subList = mMeasureCustomLists.get(i);
                                     for (int j = 0; j < subList.size(); j++) {
                                         MeasureDataInSQLite measureDataInSQLite = subList.get(j);
                                         sbStr.append("EXEC spappMeasureSaveMeasureData ")
-                                                .append("@uHrEmployeeGUID='").append(userGUID ).append("'")
+                                                .append("@uHrEmployeeGUID='").append(userGUID).append("'")
                                                 .append(",@isdOrderMeterDtlid=").append(measureDataInSQLite.getISdOrderMeterDtlId())
                                                 .append(",@isMeterSize=").append(measureDataInSQLite.getISMeterSize())
                                                 .append(",@isdStyleTypeItemDtlid=").append(measureDataInSQLite.getSdStyleTypeItemDtlId())
                                                 .append(";");
+                                        sbStr.append("EXEC spappMeasureSaveBWHData ")
+                                                .append("@iOrderDtlId=").append(measureDataInSQLite.getISdOrderMeterDtlId())
+                                                .append(",@iHeight=").append(etHeight)
+                                                .append(",@iWeight=").append(etWeight)
+                                                .append(",@iPureChest=").append(etChest)
+                                                .append(",@iPureWaist=").append(etWaistline)
+                                                .append(",@iPureHips=").append(etHips)
+                                                .append(",@iClothLenth=").append(etClothLength)
+                                                .append(",@sShouderWidth=").append(etShoulder)
+                                                .append(",@sSleeveLenth=").append(etSleeve)
+                                                .append(",@iTrousersLenth=").append(etKuchang)
+                                                .append(",@iWaistLenth=").append(etYaowei)
+                                                .append(",@iHaoNo=").append(etNO)
+                                                .append(",@iXingNo=").append(etStyle)
+                                                .append("; ");
                                     }
                                 }
 
                                 for (int i = 0; i < remarkAllList.size(); i++) {
-                                    StringBuilder sbRemarkId=new StringBuilder();
+                                    StringBuilder sbRemarkId = new StringBuilder();
                                     List<MeasureRemarkDataInSQLite> subList = remarkAllList.get(i);
                                     if (subList == null) subList = new ArrayList<>();
-                                    String orderDtlId="";
-                                    for (int j=0;j<subList.size();j++) {
-                                        MeasureRemarkDataInSQLite measureRemarkDataInSQLite=subList.get(j);
-                                        orderDtlId=measureRemarkDataInSQLite.getIOrderDtlId();
+                                    String orderDtlId = "";
+                                    for (int j = 0; j < subList.size(); j++) {
+                                        MeasureRemarkDataInSQLite measureRemarkDataInSQLite = subList.get(j);
+                                        orderDtlId = measureRemarkDataInSQLite.getIOrderDtlId();
                                         sbRemarkId.append(measureRemarkDataInSQLite.getIId());
-                                        if(j!=subList.size()-1) sbRemarkId.append("@");
+                                        if (j != subList.size() - 1) sbRemarkId.append("@");
                                     }
-                                    if(!orderDtlId.isEmpty())
+                                    if (!orderDtlId.isEmpty()){
                                         sbStr.append("EXEC spappMeasureSaveMeasureRemark ")
                                                 .append("@sSdMeterMarkDtlid='").append(sbRemarkId.toString()).append("'")
                                                 .append(",@isdOrderMeterDtlid=").append(orderDtlId)
                                                 .append("; ");
+
+                                    }
                                 }
                                 return getJsonData(getApplicationContext(), CUS_SERVICE,
                                         sbStr.toString(), "", MeasureCustomBean.class.getName(), true,
@@ -453,7 +723,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
                     public HsWebInfo call(String s) {
-                        String userGUID= LGSPUtils.getLocalData(getApplicationContext(), USER_GUID,String.class.getName(),"").toString();
+                        String userGUID = LGSPUtils.getLocalData(getApplicationContext(), USER_GUID, String.class.getName(), "").toString();
                         DaoSession daoSession = GreenDaoUtil.getGreenDaoSession(getApplicationContext());
                         //先从数据库中获取量体数据
                         MeasureDataInSQLiteDao measureDataInSQLiteDao = daoSession.getMeasureDataInSQLiteDao();
@@ -463,61 +733,63 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 .where(MeasureDataInSQLiteDao.Properties.UserGUID.eq(userGUID))
                                 .where(MeasureDataInSQLiteDao.Properties.Type.eq(orderType))
                                 .list();
-                        if(measureDataInSQLiteList==null) measureDataInSQLiteList=new ArrayList<>();
+                        if (measureDataInSQLiteList == null)
+                            measureDataInSQLiteList = new ArrayList<>();
 
-                        MeasureRemarkDataInSQLiteDao measureRemarkDataInSQLiteDao=daoSession.getMeasureRemarkDataInSQLiteDao();
+                        MeasureRemarkDataInSQLiteDao measureRemarkDataInSQLiteDao = daoSession.getMeasureRemarkDataInSQLiteDao();
                         List<MeasureRemarkDataInSQLite> measureRemarkDataInSQLiteList = measureRemarkDataInSQLiteDao.queryBuilder()
                                 .where(MeasureRemarkDataInSQLiteDao.Properties.Person.eq(person))
                                 .where(MeasureRemarkDataInSQLiteDao.Properties.OrderId.eq(orderId))
                                 .where(MeasureRemarkDataInSQLiteDao.Properties.UserGUID.eq(userGUID))
                                 .where(MeasureRemarkDataInSQLiteDao.Properties.Type.eq(orderType))
                                 .list();
-                        if(measureRemarkDataInSQLiteList==null) measureRemarkDataInSQLiteList=new ArrayList<>();
-                        HsWebInfo info=new HsWebInfo();
-                        Map<String,Object> map=new HashMap<>();
-                        map.put("measureDataInSQLiteList",measureDataInSQLiteList);
-                        map.put("measureRemarkDataInSQLiteList",measureRemarkDataInSQLiteList);
-                        info.object=map;
+                        if (measureRemarkDataInSQLiteList == null)
+                            measureRemarkDataInSQLiteList = new ArrayList<>();
+                        HsWebInfo info = new HsWebInfo();
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("measureDataInSQLiteList", measureDataInSQLiteList);
+                        map.put("measureRemarkDataInSQLiteList", measureRemarkDataInSQLiteList);
+                        info.object = map;
                         return info;
                     }
                 }), getApplicationContext(), dialog, new SimpleHsWeb() {
             @Override
             public void success(HsWebInfo hsWebInfo) {
-                Map<String,Object> map= (Map<String, Object>) hsWebInfo.object;
+                Map<String, Object> map = (Map<String, Object>) hsWebInfo.object;
                 //量体数据
-                List<MeasureDataInSQLite> measureDataInSQLiteList= (List<MeasureDataInSQLite>) map.get("measureDataInSQLiteList");
+                List<MeasureDataInSQLite> measureDataInSQLiteList = (List<MeasureDataInSQLite>) map.get("measureDataInSQLiteList");
                 //备注数据
-                List<MeasureRemarkDataInSQLite> measureRemarkDataInSQLiteList= (List<MeasureRemarkDataInSQLite>) map.get("measureRemarkDataInSQLiteList");
+                List<MeasureRemarkDataInSQLite> measureRemarkDataInSQLiteList = (List<MeasureRemarkDataInSQLite>) map.get("measureRemarkDataInSQLiteList");
 
                 //整理量体数据
-                Map<String,List<MeasureDataInSQLite>> filterMap=new HashMap<>();
-                for(MeasureDataInSQLite measureDataInSQLite:measureDataInSQLiteList){
-                    String key=measureDataInSQLite.getISdStyleTypeMstId();
-                    List<MeasureDataInSQLite> subList=filterMap.get(key);
-                    if(subList==null) subList=new ArrayList<>();
+                Map<String, List<MeasureDataInSQLite>> filterMap = new HashMap<>();
+                for (MeasureDataInSQLite measureDataInSQLite : measureDataInSQLiteList) {
+                    String key = measureDataInSQLite.getISdStyleTypeMstId();
+                    List<MeasureDataInSQLite> subList = filterMap.get(key);
+                    if (subList == null) subList = new ArrayList<>();
                     subList.add(measureDataInSQLite);
-                    filterMap.put(key,subList);
+                    filterMap.put(key, subList);
                 }
-                Iterator<Entry<String,List<MeasureDataInSQLite>>> itData=filterMap.entrySet().iterator();
-                while (itData.hasNext()){
-                    Entry<String,List<MeasureDataInSQLite>> entry=itData.next();
+                Iterator<Entry<String, List<MeasureDataInSQLite>>> itData = filterMap.entrySet().iterator();
+                while (itData.hasNext()) {
+                    Entry<String, List<MeasureDataInSQLite>> entry = itData.next();
                     mMeasureCustomLists.add(entry.getValue());
                 }
 
-                Map<String,List<MeasureRemarkDataInSQLite>> remarkMap=new HashMap<>();
-                for(MeasureRemarkDataInSQLite measureRemarkDataInSQLite:measureRemarkDataInSQLiteList){
-                    List<MeasureRemarkDataInSQLite> subList=remarkMap.get(measureRemarkDataInSQLite.getStyleId());
-                    if(subList==null) subList=new ArrayList<>();
+                Map<String, List<MeasureRemarkDataInSQLite>> remarkMap = new HashMap<>();
+                for (MeasureRemarkDataInSQLite measureRemarkDataInSQLite : measureRemarkDataInSQLiteList) {
+                    List<MeasureRemarkDataInSQLite> subList = remarkMap.get(measureRemarkDataInSQLite.getStyleId());
+                    if (subList == null) subList = new ArrayList<>();
                     subList.add(measureRemarkDataInSQLite);
-                    remarkMap.put(measureRemarkDataInSQLite.getStyleId(),subList);
+                    remarkMap.put(measureRemarkDataInSQLite.getStyleId(), subList);
                 }
 
 
                 //整理备注数据
-                for(List<MeasureDataInSQLite> subList:mMeasureCustomLists){
-                    String styleId=subList.get(0).getISdStyleTypeMstId();
-                    List<MeasureRemarkDataInSQLite> remarkSubList=remarkMap.get(styleId);
-                    if(remarkSubList==null) remarkSubList=new ArrayList<>();
+                for (List<MeasureDataInSQLite> subList : mMeasureCustomLists) {
+                    String styleId = subList.get(0).getISdStyleTypeMstId();
+                    List<MeasureRemarkDataInSQLite> remarkSubList = remarkMap.get(styleId);
+                    if (remarkSubList == null) remarkSubList = new ArrayList<>();
                     remarkAllList.add(remarkSubList);
                 }
                 showData();
@@ -530,6 +802,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
      * 进行对数据的显示作用
      */
     private void showData() {
+        mActivityMeasureCustomBinding.llCloth.removeAllViews();
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         //添加View 即每个款式
         for (int i = 0; i < mMeasureCustomLists.size(); i++) {
@@ -575,14 +848,13 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //                }
 //            });
 
-            for (MeasureDataInSQLite measureDataInSQLite : measureDataInSQLiteList) {
-                View convertView = layoutInflater.inflate( R.layout.ll_parameter, null);
+            for (final MeasureDataInSQLite measureDataInSQLite : measureDataInSQLiteList) {
+                View convertView = layoutInflater.inflate(R.layout.ll_parameter, null);
                 TextView tvParameter = (TextView) convertView.findViewById(R.id.tvParameter);
                 tvParameter.setText(measureDataInSQLite.getSMeterName());
 //                MeasureDateBean measureDateBean=measureDataMap.get(measureCustom.SDSTYLETYPEITEMDTLID+"_"+measureCustom.ISDORDERMETERDTLID);
 //                measureCustom.ISMETERSIZE=measureDateBean==null?"":measureDateBean.ISMETERSIZE;
-                CustomKeyboardEditText editText = (CustomKeyboardEditText) convertView.findViewById(R.id.etParameter);
-
+                final CustomKeyboardEditText editText = (CustomKeyboardEditText) convertView.findViewById(R.id.etParameter);
 
                 int evenNo = -1;//奇偶数  1奇数 0偶数 -1不限制
                 try {
@@ -598,22 +870,22 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (!isCanPoint){
+                if (!isCanPoint) {
                     editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-                }else{
-                 editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                } else {
+                    editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 //
 
                 }
                 float minLength = -1;//最小的尺寸
                 try {
                     switch (sex) {
-                        case "男":
+                        case "女":
                         default:
                             minLength = Float.parseFloat(measureDataInSQLite.getSFemaleMinLenth());
                             break;
-                        case "女":
+                        case "男":
                             minLength = Float.parseFloat(measureDataInSQLite.getSMaleMinLenth());
                             break;
 
@@ -624,11 +896,11 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 float maxLength = -1; //最大的尺寸
                 try {
                     switch (sex) {
-                        case "男":
+                        case "女":
                         default:
                             maxLength = Float.parseFloat(measureDataInSQLite.getSFemaleMaxLenth());
                             break;
-                        case "女":
+                        case "男":
                             maxLength = Float.parseFloat(measureDataInSQLite.getSMaleMaxLenth());
                             break;
 
@@ -639,38 +911,22 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //                valueList = virtualKeyboardView.getValueList();
                 //不允许最大值小于最小值
                 if (maxLength < minLength) maxLength = -1;
-
-
                 final float finalMaxLength = maxLength;
                 final float finalMinLength = minLength;
                 final boolean finalIsCanPoint = isCanPoint;
 //                editText.setOnKeyListener(new View.OnKeyListener() {
 //                    @Override
 //                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
+//                        editText.setTextColor(Color.RED);
 //                        return false;
 //                    }
 //                });
-
-//                editText.addTextChangedListener(new TextWatcher() {
-//                    @Override
-//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-//
-//                    @Override
-//                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
-//
-//                    @Override
-//                    public void afterTextChanged(Editable s) {
-//
-//                    }
-//                });
+                editText.setTextColor(Color.WHITE);
                 final int finalEvenNo = evenNo;
                 editText.setOnEditFocusListener(new OnEditFocusListener() {
                     @Override
                     public void onFocus(View v, boolean hasFocus) {
                         if (hasFocus) return;
-
-
                         float number = 0;
                         try {
                             number = Float.parseFloat(((EditText) v).getText().toString().trim());
@@ -678,25 +934,51 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                             e.printStackTrace();
                         }
                         //最小值限制
-                        if (finalMinLength > 0 && number < finalMinLength) number = finalMinLength;
+                        if (finalMinLength > 0 && number < finalMinLength) {
+                            ((EditText) v).setText("");
+                            OthersUtil.ToastMsg(MeasureCustomActivity.this, "你输入的尺寸已经低于该测量项的最小值" + finalMinLength + ",请确认");
+                        }
                         //最大值限制
-                        if (finalMaxLength > 0 && number > finalMaxLength) number = finalMaxLength;
+                        if (finalMaxLength > 0 && number > finalMaxLength) {
+                            ((EditText) v).setText("");
+                            OthersUtil.ToastMsg(MeasureCustomActivity.this, "你输入的尺寸已经低于该测量项的最小值" + finalMaxLength + ",请确认");
+                        }
 
 //                        ((EditText) v).setText(String.valueOf(finalIsCanPoint?number:(int)number));
-                        if (!finalIsCanPoint){
+                        if (!finalIsCanPoint) {
 
 
-                        //奇偶数
-                        switch (finalEvenNo) {
-                            //偶数
-                            case 0:
-                                if ((int) number % 2 != 0) number = number + 1;
-                                break;
-                            //奇数
-                            case 1:
-                                if ((int) number % 2 == 0) number = number + 1;
-                                break;
-                        }
+                            //奇偶数
+                            switch (finalEvenNo) {
+
+//                            //奇数
+//                            case 1:
+//                                if (sex.equals("男")){
+//
+//                                }
+//                                if ((int) number % 2 == 0) number = number + 1;
+//                                break;
+                                //偶数
+                                case 0:
+                                    if (sex.equals("男")) {
+                                        if (measureDataInSQLite.getSMeterName().equals("胸围") || measureDataInSQLite.getSMeterName().equals("臀围")) {
+                                            if ((int) number % 2 != 0) number = number + 1;
+                                        } else {
+
+                                            if ((int) number % 2 == 0) number = number + 1;
+                                        }
+                                    } else {
+
+                                        if (measureDataInSQLite.getSMeterName().equals("胸围")) {
+                                            if ((int) number % 2 != 0) number = number + 1;
+                                        } else {
+
+                                            if ((int) number % 2 != 0) number = number + 1;
+                                        }
+                                    }
+                                    break;
+
+                            }
                         }
                         if (number < 0) number = 0;
                         if (number == 0) ((EditText) v).setText("");
@@ -705,17 +987,16 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
                             String[] split = String.valueOf(number).split("\\.");
                             char c = split[1].charAt(0);
-                            if( Float.parseFloat(String.valueOf(c))>3&&Float.parseFloat(String.valueOf(c))<7){
-                                number=Float.parseFloat(split[0]+".5");
-                            }else if(Float.parseFloat(String.valueOf(c))<4) {
-                                number=Float.parseFloat(split[0]+".0");
+                            if (Float.parseFloat(String.valueOf(c)) > 3 && Float.parseFloat(String.valueOf(c)) < 7) {
+                                number = Float.parseFloat(split[0] + ".5");
+                            } else if (Float.parseFloat(String.valueOf(c)) < 4) {
+                                number = Float.parseFloat(split[0] + ".0");
 
-                            }else {
-                                number = Float.parseFloat((Integer.parseInt(split[0])+1)+".0");
+                            } else {
+                                number = Float.parseFloat((Integer.parseInt(split[0]) + 1) + ".0");
                             }
-                      ((EditText) v).setText(String.valueOf(number));
-                        }
-                        else ((EditText) v).setText(String.valueOf((int) number));
+                            ((EditText) v).setText(String.valueOf(number));
+                        } else ((EditText) v).setText(String.valueOf((int) number));
                     }
                 });
 
@@ -750,11 +1031,10 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             } catch (Exception e) {
                 cbRemark.setChecked(false);
             }
-            mActivityMeasureCustomBinding.llCloth.addView(view, width / 4, height - 150);
+            mActivityMeasureCustomBinding.llCloth.addView(view, width / 4, height - 180);
         }
 
     }
-
 
 
     /**
@@ -772,9 +1052,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 HsWebInfo hsWebInfo = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
                                         "spappMeasureStyleTypeList",
                                         "iIndex=0"
-                                                +",iOrderType="+ orderType+
-                                                ",iSdOrderMeterMstId=" + orderId+
-                                                ",sPerson="+person,
+                                                + ",iOrderType=" + orderType +
+                                                ",iSdOrderMeterMstId=" + orderId +
+                                                ",sPerson=" + person,
                                         MeasureCustomBean.class.getName(),
                                         true, "待量体款式信息未获取到，请重试！");
                                 Map<String, Object> map = new HashMap<>();
@@ -791,15 +1071,34 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 HsWebInfo hsInfo = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
                                         "spappMeasureStyleTypeList",
                                         "iIndex=1" +
-                                                ",iOrderType="+ orderType+
-                                                ",iSdOrderMeterMstId=" + orderId+
-                                                ",sPerson="+person,
+                                                ",iOrderType=" + orderType +
+                                                ",iSdOrderMeterMstId=" + orderId +
+                                                ",sPerson=" + person,
                                         MeasureDateBean.class.getName(),
                                         true, "已量体款式信息未获取到，请重试！");
                                 map.put("measureStyleData", !hsInfo.success ? new ArrayList<WsEntity>() : hsInfo.wsData.LISTWSDATA);
                                 hsWebInfo.object = map;
                                 return hsWebInfo;
                             }
+
+                        })
+                        .map(new Func1<HsWebInfo, HsWebInfo>() {
+                            @Override
+                            public HsWebInfo call(HsWebInfo hsWebInfo) {
+                                Map<String, Object> map = (Map<String, Object>) hsWebInfo.object;
+                                HsWebInfo hsInfo = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
+                                        "spappMeasureStyleTypeList",
+                                        "iIndex=3" +
+                                                ",iOrderType=" + orderType +
+                                                ",iSdOrderMeterMstId=" + orderId +
+                                                ",sPerson=" + person,
+                                        MeasureBaseBean.class.getName(),
+                                        true, "已量体款式信息未获取到，请重试！");
+                                map.put("measureBase", !hsInfo.success ? new ArrayList<WsEntity>() : hsInfo.wsData.LISTWSDATA);
+                                hsWebInfo.object = map;
+                                return hsWebInfo;
+                            }
+
                         })
                 , this, mDialog, new SimpleHsWeb() {
                     @Override
@@ -810,28 +1109,44 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         sortMeasureType(measureStyleList);
                         //获取量体款式的数据
                         List<WsEntity> measureDateList = (List<WsEntity>) map.get("measureStyleData");
+                        //获取量体计算的基础数据
+                        List<WsEntity> measureBaseList = (List<WsEntity>) map.get("measureBase");
+                        //整理基础量体的数据
+                            MeasureBaseBean measureBaseBean = (MeasureBaseBean) measureBaseList.get(0);
+                        mActivityMeasureCustomBinding.etHeight.setText(measureBaseBean.IHEIGHT);
+                        mActivityMeasureCustomBinding.etWeight.setText(measureBaseBean.IWEIGHT);
+                        mActivityMeasureCustomBinding.etChest.setText(measureBaseBean.IPURECHEST);
+                        mActivityMeasureCustomBinding.etWaistline.setText(measureBaseBean.IPUREWAIST);
+                        mActivityMeasureCustomBinding.etHips.setText(measureBaseBean.IPUREHIPS);
+                        mActivityMeasureCustomBinding.etClothLength.setText(measureBaseBean.ICLOTHLENTH);
+                        mActivityMeasureCustomBinding.etShoulder.setText(measureBaseBean.SSHOUDERWIDTH);
+                        mActivityMeasureCustomBinding.etSleeve.setText(measureBaseBean.SSLEEVELENTH);
+                        mActivityMeasureCustomBinding.etKuchang.setText(measureBaseBean.ITROUSERSLENTH);
+                        mActivityMeasureCustomBinding.etYaowei.setText(measureBaseBean.IHEIGHT);
+                        mActivityMeasureCustomBinding.etNO.setText(measureBaseBean.IHAONO);
+                        mActivityMeasureCustomBinding.etStyle.setText(measureBaseBean.IXINGNO);
                         //整理填充的量体数字
-                        Map<String,MeasureDateBean> measureDataMap=new HashMap<>();
-                        for (int i = 0; i <measureDateList.size() ; i++) {
+                        Map<String, MeasureDateBean> measureDataMap = new HashMap<>();
+                        for (int i = 0; i < measureDateList.size(); i++) {
                             MeasureDateBean measureDateBean = (MeasureDateBean) measureDateList.get(i);
-                            String key=measureDateBean.ISDSTYLETYPEMSTID+"_"+measureDateBean.ISDSTYLETYPEITEMDTLID;
-                            measureDataMap.put(key,measureDateBean);
+                            String key = measureDateBean.ISDSTYLETYPEMSTID + "_" + measureDateBean.ISDSTYLETYPEITEMDTLID;
+                            measureDataMap.put(key, measureDateBean);
                         }
-
+                        //TODO 为什么没添加任何数据mMeasureCustomLists.size=8
                         for (int i = 0; i < mMeasureCustomLists.size(); i++) {
                             List<MeasureDataInSQLite> measureDataInSQLiteList = mMeasureCustomLists.get(i);
-                            //添加咩咯款式每条量体信息
-                            for (int j=0;j<measureDataInSQLiteList.size();j++) {
-                                MeasureDataInSQLite measureDataInSQLite =measureDataInSQLiteList.get(j);
-                                String key=measureDataInSQLite.getISdStyleTypeMstId()
+                            //添加款式每条量体信息
+                            for (int j = 0; j < measureDataInSQLiteList.size(); j++) {
+                                MeasureDataInSQLite measureDataInSQLite = measureDataInSQLiteList.get(j);
+                                String key = measureDataInSQLite.getISdStyleTypeMstId()
                                         + "_" + measureDataInSQLite.getSdStyleTypeItemDtlId();
 
                                 MeasureDateBean measureDateBean = measureDataMap.get(key);
 
                                 measureDataInSQLite.setISMeterSize(measureDateBean == null ? "" : measureDateBean.ISMETERSIZE);
-                                measureDataInSQLiteList.set(j,measureDataInSQLite);
+                                measureDataInSQLiteList.set(j, measureDataInSQLite);
                             }
-                            mMeasureCustomLists.set(i,measureDataInSQLiteList);
+                            mMeasureCustomLists.set(i, measureDataInSQLiteList);
                         }
                         initRemarkSaved(measureDateList);
 
@@ -842,37 +1157,38 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     /**
      * 查询已保存备注的信息
      */
-    private void initRemarkSaved(List<WsEntity> measureDateList){
+    private void initRemarkSaved(List<WsEntity> measureDateList) {
         OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, measureDateList)
                 .map(new Func1<List<WsEntity>, HsWebInfo>() {
                     @Override
                     public HsWebInfo call(List<WsEntity> measureDateList) {
-                        String userGUID=LGSPUtils.getLocalData(getApplicationContext(),USER_GUID,String.class.getName(),"").toString();
-                        for(List<MeasureDataInSQLite> subList:mMeasureCustomLists) {
+                        String userGUID = LGSPUtils.getLocalData(getApplicationContext(), USER_GUID, String.class.getName(), "").toString();
+                        for (List<MeasureDataInSQLite> subList : mMeasureCustomLists) {
                             if (subList == null || subList.isEmpty()) {
                                 remarkAllList.add(new ArrayList<MeasureRemarkDataInSQLite>());
                                 continue;
                             }
                             try {
-                                MeasureDataInSQLite measureDataInSQLite=subList.get(0);
+                                MeasureDataInSQLite measureDataInSQLite = subList.get(0);
                                 HsWebInfo info = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
                                         "spappMeasureStyleTypeList",
-                                        "iIndex=2" +",iOrderType="+ orderType+
-                                                ",iSdOrderMeterMstId="+orderId+
+                                        "iIndex=2" + ",iOrderType=" + orderType +
+                                                ",iSdOrderMeterMstId=" + orderId +
                                                 ",iSdOrderMeterDtlId=" + measureDataInSQLite.getISdOrderMeterDtlId() +
-                                                ",sPerson="+person+
+                                                ",sPerson=" + person +
                                                 ",isdStyleTypeMstId=" + measureDataInSQLite.getISdStyleTypeMstId(),
                                         RemarkSavedBean.class.getName(),
                                         true,
                                         "");
-                                if(!info.success)remarkAllList.add(new ArrayList<MeasureRemarkDataInSQLite>());
+                                if (!info.success)
+                                    remarkAllList.add(new ArrayList<MeasureRemarkDataInSQLite>());
                                 else {
-                                    List<MeasureRemarkDataInSQLite> remarkList=new ArrayList<>();
-                                    List<WsEntity> entities=info.wsData.LISTWSDATA;
-                                    for(WsEntity entity:entities){
-                                        RemarkSavedBean bean= (RemarkSavedBean) entity;
-                                        MeasureRemarkDataInSQLite measureRemarkDataInSQLite=new MeasureRemarkDataInSQLite();
+                                    List<MeasureRemarkDataInSQLite> remarkList = new ArrayList<>();
+                                    List<WsEntity> entities = info.wsData.LISTWSDATA;
+                                    for (WsEntity entity : entities) {
+                                        RemarkSavedBean bean = (RemarkSavedBean) entity;
+                                        MeasureRemarkDataInSQLite measureRemarkDataInSQLite = new MeasureRemarkDataInSQLite();
                                         measureRemarkDataInSQLite.setPerson(person);
                                         measureRemarkDataInSQLite.setType(orderType);
                                         measureRemarkDataInSQLite.setIId(bean.ISMETERMARKDTLID);
@@ -890,7 +1206,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                     }
                                     remarkAllList.add(remarkList);
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 remarkAllList.add(new ArrayList<MeasureRemarkDataInSQLite>());
                             }
                         }
@@ -908,16 +1224,17 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
      * 整理量体款式以及数据
      */
     private void sortMeasureType(List<WsEntity> measureStyleList) {
-        String userGUID=LGSPUtils.getLocalData(getApplicationContext(),USER_GUID,String.class.getName(),"").toString();
+        String userGUID = LGSPUtils.getLocalData(getApplicationContext(), USER_GUID, String.class.getName(), "").toString();
         Map<String, List<MeasureDataInSQLite>> map = new HashMap<>();
         for (int i = 0; i < measureStyleList.size(); i++) {
             MeasureCustomBean bean = (MeasureCustomBean) measureStyleList.get(i);
-            MeasureDataInSQLite measureDataInSQLite=new MeasureDataInSQLite();
+            MeasureDataInSQLite measureDataInSQLite = new MeasureDataInSQLite();
             measureDataInSQLite.setOrderId(orderId);
             measureDataInSQLite.setISMeterSize(bean.ISMETERSIZE);
             measureDataInSQLite.setISdOrderMeterDtlId(bean.ISDORDERMETERDTLID);
             measureDataInSQLite.setISdStyleTypeMstId(bean.ISDSTYLETYPEMSTID);
             measureDataInSQLite.setISeq(bean.ISEQ);
+            measureDataInSQLite.setIStyleseq(bean.ISTYLESEQ);
             measureDataInSQLite.setPerson(person);
             measureDataInSQLite.setSBillNo(bean.SBILLNO);
             measureDataInSQLite.setSdStyleTypeItemDtlId(bean.SDSTYLETYPEITEMDTLID);
@@ -945,11 +1262,21 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         while (it.hasNext()) {
             Entry<String, List<MeasureDataInSQLite>> entry = it.next();
             List<MeasureDataInSQLite> subList = entry.getValue();
+//            Collections.sort(subList, new Comparator<MeasureDataInSQLite>() {
+//                @Override
+//                public int compare(MeasureDataInSQLite o1, MeasureDataInSQLite o2) {
+//                    try {
+//                        return Integer.parseInt(o1.getIStyleseq()) - Integer.parseInt(o2.getIStyleseq());
+//                    } catch (Exception e) {
+//                        return 0;
+//                    }
+//                }
+//            });
             Collections.sort(subList, new Comparator<MeasureDataInSQLite>() {
                 @Override
                 public int compare(MeasureDataInSQLite o1, MeasureDataInSQLite o2) {
                     try {
-                        return Integer.parseInt(o1.getISeq())-Integer.parseInt(o2.getISeq());
+                        return Integer.parseInt(o1.getISeq()) - Integer.parseInt(o2.getISeq());
                     } catch (Exception e) {
                         return 0;
                     }
@@ -961,43 +1288,45 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
     /**
      * 来自备注界面的数据
+     *
      * @param event
      */
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void receiveData(SecondToFirstActivityEvent event){
-        if(event.secondClass!=RemarkDetailActivity.class|| event.firstClass!=MeasureCustomActivity.class) return;
+    public void receiveData(SecondToFirstActivityEvent event) {
+        if (event.secondClass != RemarkDetailActivity.class || event.firstClass != MeasureCustomActivity.class)
+            return;
         switch (event.index) {
             //备注界面
             case REMARK_INTENT_KEY:
-                String userGUID=LGSPUtils.getLocalData(getApplicationContext(),USER_GUID,String.class.getName(),"").toString();
-                Map<String,Object> map= (Map<String, Object>) event.object;
-                if(map==null) return;
-                String styleId=map.get(STYLE_ID_KEY).toString();//款式ID
-                int position=-1;
-                for(int i=0;i<mMeasureCustomLists.size();i++){
-                    if(styleId.equalsIgnoreCase(mMeasureCustomLists.get(i).get(0).getISdStyleTypeMstId())){
-                        position=i;
+                String userGUID = LGSPUtils.getLocalData(getApplicationContext(), USER_GUID, String.class.getName(), "").toString();
+                Map<String, Object> map = (Map<String, Object>) event.object;
+                if (map == null) return;
+                String styleId = map.get(STYLE_ID_KEY).toString();//款式ID
+                int position = -1;
+                for (int i = 0; i < mMeasureCustomLists.size(); i++) {
+                    if (styleId.equalsIgnoreCase(mMeasureCustomLists.get(i).get(0).getISdStyleTypeMstId())) {
+                        position = i;
                         break;
                     }
                 }
-                if(position==-1) return;
-                List<MeasureRemarkDataInSQLite> remarkList= (List<MeasureRemarkDataInSQLite>) map.get(REMARK_RETURN_DATA);
-                for(int i=0;i<remarkList.size();i++){
-                    MeasureRemarkDataInSQLite measureRemarkDataInSQLite=remarkList.get(i);
+                if (position == -1) return;
+                List<MeasureRemarkDataInSQLite> remarkList = (List<MeasureRemarkDataInSQLite>) map.get(REMARK_RETURN_DATA);
+                for (int i = 0; i < remarkList.size(); i++) {
+                    MeasureRemarkDataInSQLite measureRemarkDataInSQLite = remarkList.get(i);
                     measureRemarkDataInSQLite.setType(orderType);
                     measureRemarkDataInSQLite.setPerson(person);
                     measureRemarkDataInSQLite.setUserGUID(userGUID);
                     measureRemarkDataInSQLite.setOrderId(orderId);
                     measureRemarkDataInSQLite.setStyleId(mMeasureCustomLists.get(position).get(0).getISdStyleTypeMstId());
-                    remarkList.set(i,measureRemarkDataInSQLite);
+                    remarkList.set(i, measureRemarkDataInSQLite);
                 }
-                remarkAllList.set(position,remarkList);
-                View view=mActivityMeasureCustomBinding.llCloth.getChildAt(position);
+                remarkAllList.set(position, remarkList);
+                View view = mActivityMeasureCustomBinding.llCloth.getChildAt(position);
                 final CheckBox cbRemark = (CheckBox) view.findViewById(R.id.cbRemark);
                 try {
-                    cbRemark.setChecked(remarkAllList.get(position)!=null&&!remarkAllList.get(position).isEmpty());
-                }catch (Exception e){
+                    cbRemark.setChecked(remarkAllList.get(position) != null && !remarkAllList.get(position).isEmpty());
+                } catch (Exception e) {
                     cbRemark.setChecked(false);
                 }
                 break;
@@ -1011,7 +1340,8 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         builder.setMessage("当前页面数据未保存保存，是否要确认退出");
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {}
+            public void onClick(DialogInterface dialog, int which) {
+            }
         });
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override

@@ -143,6 +143,14 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:textColor="@color/colorMainBackgroundText"
+            android:text="性别"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textColor="@color/colorMainBackgroundText"
             android:text="状态"
             android:textSize="20sp"
             android:gravity="center_horizontal"

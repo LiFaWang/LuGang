@@ -22,6 +22,7 @@
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_marginTop="50dp"
+                android:visibility="gone"
                 android:id="@+id/rl_ip"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -57,6 +58,7 @@
             </RelativeLayout>
 
             <View
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:listDivider"/>

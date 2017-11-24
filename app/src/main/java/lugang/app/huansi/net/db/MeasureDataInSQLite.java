@@ -28,6 +28,7 @@ public class MeasureDataInSQLite {
     private String sMeterCode;
     private String sMeterName;
     private String iSeq;
+    private String iStyleseq;
     private String iSMeterSize = "";//测量的数据
 
     /************************输入框的校验**开始**********************************/
@@ -47,14 +48,15 @@ public class MeasureDataInSQLite {
 
     private boolean isAdd=false;
 
-    @Generated(hash = 496986305)
+    @Generated(hash = 231679648)
     public MeasureDataInSQLite(Long id, int type, String person, String orderId,
             String userGUID, String iSdOrderMeterDtlId, String iSdStyleTypeMstId,
             String sBillNo, String sValueCode, String sValueGroup,
             String sdStyleTypeItemDtlId, String sMeterCode, String sMeterName,
-            String iSeq, String iSMeterSize, String sFemaleMinLenth,
-            String sFemaleMaxLenth, String sMaleMinLenth, String sMaleMaxLenth,
-            String bEvenNo, String bPoint, String sex, int count, boolean isAdd) {
+            String iSeq, String iStyleseq, String iSMeterSize,
+            String sFemaleMinLenth, String sFemaleMaxLenth, String sMaleMinLenth,
+            String sMaleMaxLenth, String bEvenNo, String bPoint, String sex,
+            int count, boolean isAdd) {
         this.id = id;
         this.type = type;
         this.person = person;
@@ -69,6 +71,7 @@ public class MeasureDataInSQLite {
         this.sMeterCode = sMeterCode;
         this.sMeterName = sMeterName;
         this.iSeq = iSeq;
+        this.iStyleseq = iStyleseq;
         this.iSMeterSize = iSMeterSize;
         this.sFemaleMinLenth = sFemaleMinLenth;
         this.sFemaleMaxLenth = sFemaleMaxLenth;
@@ -275,6 +278,14 @@ public class MeasureDataInSQLite {
 
     public void setSFemaleMinLenth(String sFemaleMinLenth) {
         this.sFemaleMinLenth = sFemaleMinLenth;
+    }
+
+    public String getIStyleseq() {
+        return this.iStyleseq;
+    }
+
+    public void setIStyleseq(String iStyleseq) {
+        this.iStyleseq = iStyleseq;
     }
 
    

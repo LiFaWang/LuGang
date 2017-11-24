@@ -32,6 +32,10 @@
         android:id="@+id/person"
         android:text="张三"
         style="@style/measure_item_style"/>
+    <TextView
+        android:id="@+id/sex"
+        android:text="男"
+        style="@style/measure_item_style"/>
     <Button
         android:layout_margin="5dp"
         android:gravity="center"

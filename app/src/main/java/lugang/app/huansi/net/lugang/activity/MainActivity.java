@@ -723,6 +723,7 @@ public class MainActivity  extends NotWebBaseActivity  {
                 measureDataInSQLite.setSdStyleTypeItemDtlId(bean.SDSTYLETYPEITEMDTLID);
                 measureDataInSQLite.setSBillNo(bean.SBILLNO);
                 measureDataInSQLite.setISeq(bean.ISEQ);
+                measureDataInSQLite.setIStyleseq(bean.ISTYLESEQ);
                 measureDataInSQLite.setISdStyleTypeMstId(bean.ISDSTYLETYPEMSTID);
                 measureDataInSQLite.setISdOrderMeterDtlId(bean.ISDORDERMETERDTLID);
 

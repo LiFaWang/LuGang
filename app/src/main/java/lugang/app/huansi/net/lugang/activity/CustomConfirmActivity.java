@@ -108,6 +108,8 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
         final String orderId = intent.getStringExtra("iordermetermstid");
         final String gpicture = intent.getStringExtra("gpicture");
         final String scustomername = intent.getStringExtra("scustomername");
+        mCustomConfirmActivityBinding.btnSavePng.setVisibility(View.VISIBLE);
+
         mCustomConfirmActivityBinding.tvDepartment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -311,8 +313,8 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
      * @param scustomername
      */
     private void screenShot(String orderId, String scustomername) {
-
-        mLayout = (LinearLayout) findViewById(R.id.llConfimBody);
+        mCustomConfirmActivityBinding.btnSavePng.setVisibility(View.INVISIBLE);
+        mLayout = (LinearLayout) findViewById(R.id.llConfirmScreen);
         //打开图像缓存
         mLayout.setDrawingCacheEnabled(true);
         //测量大小

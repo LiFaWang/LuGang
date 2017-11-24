@@ -36,13 +36,14 @@ public class FinishAdapter extends HsBaseAdapter<MeasureOrderInSQLite> {
         TextView countyName = ViewHolder.get(convertView,R.id.countyName);
         TextView departmentName =ViewHolder.get(convertView,R.id.departmentName);
         TextView person =ViewHolder.get(convertView,R.id.person);
+        TextView sex =ViewHolder.get(convertView,R.id.sex);
         Button btnMeasure =ViewHolder.get(convertView,R.id.btnMeasure);
         customerName.setText(measureOrderInSQLite.getSCustomerName());
         cityName.setText(measureOrderInSQLite.getSCityName());
         countyName.setText(measureOrderInSQLite.getSCountyName());
         departmentName.setText(measureOrderInSQLite.getSDepartmentName());
         person.setText(measureOrderInSQLite.getSPerson());
-
+        sex.setText(measureOrderInSQLite.getSex());
         btnMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

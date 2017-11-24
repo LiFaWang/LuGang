@@ -31,6 +31,10 @@
             android:id="@+id/person"
             android:text="张三"
             style="@style/measure_item_style"/>
+        <TextView
+            android:id="@+id/sex"
+            android:text="nan"
+            style="@style/measure_item_style"/>
         <Button
             android:id="@+id/btnMeasure"
             android:layout_margin="5dp"

@@ -5,21 +5,24 @@ import huansi.net.qianjingapp.entity.WsData;
 /**
  * Created by Tony on 2017/9/15.
  * 10:37
- * {
- "STATUS": "0",
- "DATA": [
- "ISDORDERMETERDTLID": "1001",订单明细id
+
+ {
+ "ISDORDERMETERDTLID": "1106",
  "ISDSTYLETYPEMSTID": "1006",
  "SBILLNO": "001",
  "SVALUECODE": "",
- "SVALUEGROUP": "西服",
- "SDSTYLETYPEITEMDTLID": "1004",
- "SMETERCODE": "00104",
- "SMETERNAME": "臀围",
- "ISEQ": "4"
- }
- ]
- }
+ "SVALUEGROUP": "春秋上衣",
+ "SDSTYLETYPEITEMDTLID": "1001",
+ "SMETERCODE": "00101",
+ "SMETERNAME": "衣长",
+ "ISEQ": "3",
+ "SFEMALEMINLENTH": "50.0",
+ "SFEMALEMAXLENTH": "80.0",
+ "SMALEMINLENTH": "65.0",
+ "SMALEMAXLENTH": "90.0",
+ "BEVENNO": "True",
+ "BPOINT": ""
+ },
  */
 
 /*B.sFemaleMinLenth,--女最小值 空就不判断
@@ -39,6 +42,7 @@ public class MeasureCustomBean extends WsData {
     public String SMETERCODE="";
     public String SMETERNAME="";
     public String ISEQ="0";
+    public String ISTYLESEQ="0";
     public String ISMETERSIZE="0";//测量的数据
 
     /************************输入框的校验**开始**********************************/

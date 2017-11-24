@@ -13,7 +13,7 @@ import java.util.Map;
 public class WebServices {
 //    public static final String CUSTOMER_SERVICE_IP="http://192.168.23.6/RLFP/APPWS.asmx";
 //    public static final String CUSTOMER_SERVICE_IP="http://192.168.0.54/RLFP/APPWS.asmx";
-    public static final String CUSTOMER_SERVICE_IP="http://192.168.0.54/RLFP/APPWS.asmx";
+    public static final String CUSTOMER_SERVICE_IP="http://218.4.136.242:8089/LGMeasureAppWS/APPWS.asmx";
     public static final String CUS_SERVICE_CHECK_CODE="4A8D54D1-C7A1-48DC-AD7E-8CA1686FBF85";
     //环思的服务器ip
 
@@ -40,9 +40,10 @@ public class WebServices {
 		switch (serviceTpe){
 			//环思服务器
 			case CUS_SERVICE:
-				String ip = SPUtils.readMacIp(context);
-				FEndPoint  = "http://"+ip+"/LGMeasureAppWS/APPWS.asmx";
-//				FEndPoint  = CUSTOMER_SERVICE_IP;
+//				String ip = SPUtils.readMacIp(context);
+//				FEndPoint  = "http://"+ip+"/LGMeasureAppWS/APPWS.asmx";
+//				FEndPoint  = "http://"+ip+"/LGMeasureAppWS/APPWS.asmx";
+				FEndPoint  = CUSTOMER_SERVICE_IP;
 				FCheckCode = CUS_SERVICE_CHECK_CODE;
 				break;
 			case HS_SERVICE_LATER:
