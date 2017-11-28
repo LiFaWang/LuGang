@@ -7,15 +7,13 @@ import huansi.net.qianjingapp.entity.WsData;
  * 16:07
  * {
  "STATUS": "0",
- "DATA": [
  {
- "ISDORDERMETERDTLID":1001
+ "ISDORDERMETERDTLID": "271",
  "ISDSTYLETYPEMSTID": "1006",
- "ISMETERSIZE": "55",
- "ISDSTYLETYPEITEMDTLID": "1004",
- "ISDORDERMETERDTLDETAILID": "1004"
- }
- ]
+ "ISMETERSIZE": "48",
+ "ISDSTYLETYPEITEMDTLID": "1002",
+ "ISDORDERMETERDTLDETAILID": "1002",
+ "BUPDATED": "False"
  }
  */
 
@@ -25,4 +23,5 @@ public class MeasureDateBean extends WsData {
     public String ISMETERSIZE="";//尺寸
     public String ISDSTYLETYPEITEMDTLID="";//款式明细ID
     public String ISDORDERMETERDTLDETAILID=""; //订单款式明细中的ID
+    public boolean BUPDATED=false; //订单款式明细中数据是否有修改
 }

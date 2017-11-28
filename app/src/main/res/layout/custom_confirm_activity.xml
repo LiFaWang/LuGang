@@ -366,7 +366,8 @@
 
                             <TextView
                                 style="@style/customConfirm"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.217"
                                 android:layout_height="wrap_content"
                                 android:text="添加人数结算方式"/>
 
@@ -384,7 +385,8 @@
 
                             <TextView
                                 style="@style/customConfirm"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.217"
                                 android:layout_height="match_parent"
                                 android:text="未量人员处理方式"/>
 
@@ -397,135 +399,173 @@
                         </TableRow>
 
 
-                        <TableRow
-                            android:background="@drawable/table_frame_gray"
-                            >
 
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:background="@drawable/table_frame_gray">
                             <TextView
                                 style="@style/customConfirm"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="客户对量体师的评价"/>
-
-                            <TextView
-                                style="@style/customConfirm"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:paddingLeft="3dp"
-                                android:paddingRight="3dp"
-                                android:text="佩戴胸牌"/>
-
-                            <RadioGroup
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="是"/>
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="否"/>
-                            </RadioGroup>
-
-                            <!--<CheckBox-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="是"/>-->
-
-                            <!--<CheckBox-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="否"/>-->
-
-                            <TextView
-                                style="@style/customConfirm"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:paddingLeft="3dp"
-                                android:paddingRight="3dp"
-                                android:text="服务态度"/>
-
-                            <RadioGroup
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="非常满意"/>
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="满意"/>
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="不太满意"/>
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="不满意"/>
-                            </RadioGroup>
-
-                            <!--<CheckBox-->
-
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="非常满意"/>-->
-
-                            <!--<CheckBox-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="满意"/>-->
-
-                            <!--<CheckBox-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="不太满意"/>-->
-
-                            <!--<CheckBox-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="不满意"/>-->
-                        </TableRow>
-
-
-                    </TableLayout>
-
-                    <TableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/table_frame_gray">
-
-                        <TableRow
-                            android:background="@drawable/table_frame_gray"
-                            >
-
-                            <TextView
-                                style="@style/customConfirm"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:paddingLeft="5dp"
-                                android:paddingRight="5dp"
-                                android:text="备注"/>
-
-                            <EditText
-                                android:id="@+id/etRemark"
-                                style="@style/customConfirm"
+                                android:text="客户对量体师的评价"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text=""/>
-                        </TableRow>
+                                android:layout_weight="1.79"
+
+                                android:layout_height="match_parent"/>
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="0dp"
+                                android:layout_weight="8.21"
+                                android:layout_height="match_parent">
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/table_frame_gray"
+                                    >
+
+                                    <TextView
+                                        style="@style/customConfirm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:paddingLeft="5dp"
+                                        android:paddingRight="5dp"
+                                        android:text="佩戴胸牌:"/>
+
+                                    <RadioGroup
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="是"/>
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="否"/>
+                                    </RadioGroup>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/table_frame_gray"
+                                    >
+
+                                    <TextView
+                                        style="@style/customConfirm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:paddingLeft="5dp"
+                                        android:paddingRight="5dp"
+                                        android:text="服务态度:"/>
+
+                                    <RadioGroup
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="非常满意"/>
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="满意"/>
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="不太满意"/>
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="不满意"/>
+                                    </RadioGroup>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/table_frame_gray"
+                                    >
+
+                                    <TextView
+                                        style="@style/customConfirm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:paddingLeft="5dp"
+                                        android:paddingRight="5dp"
+                                        android:text="量体水平:"/>
+
+                                    <RadioGroup
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="非常满意"/>
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="满意"/>
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="不太满意"/>
+
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="不满意"/>
+                                    </RadioGroup>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
                     </TableLayout>
+
+                    <!--<TableLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="@drawable/table_frame_gray">-->
+
+                        <!--<TableRow-->
+                            <!--android:background="@drawable/table_frame_gray"-->
+                            <!--&gt;-->
+
+                            <!--<TextView-->
+                                <!--style="@style/customConfirm"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:paddingLeft="5dp"-->
+                                <!--android:paddingRight="5dp"-->
+                                <!--android:text="备注"/>-->
+
+                            <!--<EditText-->
+                                <!--android:id="@+id/etRemark"-->
+                                <!--style="@style/customConfirm"-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:text=""/>-->
+                        <!--</TableRow>-->
+                    <!--</TableLayout>-->
 
                     <TableLayout
                         android:layout_width="match_parent"
@@ -575,7 +615,8 @@
 
                             <TextView
                                 style="@style/customConfirm"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.217"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:paddingLeft="5dp"
@@ -596,7 +637,8 @@
 
                             <TextView
                                 style="@style/customConfirm"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.217"
                                 android:layout_height="match_parent"
                                 android:text="发货地址"/>
 

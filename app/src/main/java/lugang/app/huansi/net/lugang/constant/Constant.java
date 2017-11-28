@@ -29,6 +29,12 @@ public final class Constant {
     public final static String STATUS="STATUS";//订单的状态
     public final static String SUSERID="SUSERID";//员工的id
     public final static String IORDERTYPE="IORDERTYPE";//区分从哪个界面跳转
+    public static final String AREANAME ="AREANAME" ;//区域名字
+    public static final String CITYNAME ="CITYNAME" ;//城市名字
+    public static final String COUNTYNAME = "COUNTYNAME";//县市名字
+    public static final String CUSTOMERNAME = "CUSTOMERNAME";//单位名字
+    public static final String DEPARTMENTNAME = "DEPARTMENTNAME";//部门名字
+
 
     /**
      * MeasureCustomActivity的常量

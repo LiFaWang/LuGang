@@ -53,7 +53,13 @@ public class StartAdapter extends HsBaseAdapter<MeasureOrderInSQLite> {
                 intent.putExtra(Constant.SDEPARTMENTNAME, measureOrderInSQLite.getSDepartmentName());
                 intent.putExtra(Constant.ISDORDERMETERMSTID,measureOrderInSQLite.getISdOrderMeterMstId());
                 intent.putExtra(Constant.IORDERTYPE,measureOrderInSQLite.getOrderType());
-               mContext.startActivity(intent);
+                intent.putExtra(Constant.AREANAME,measureOrderInSQLite.getSAreaName());
+                intent.putExtra(Constant.CITYNAME,measureOrderInSQLite.getSCityName());
+                intent.putExtra(Constant.COUNTYNAME,measureOrderInSQLite.getSCountyName());
+                intent.putExtra(Constant.CUSTOMERNAME,measureOrderInSQLite.getSCustomerName());
+                intent.putExtra(Constant.DEPARTMENTNAME,measureOrderInSQLite.getSDepartmentName());
+
+                mContext.startActivity(intent);
             }
         });
         return convertView;

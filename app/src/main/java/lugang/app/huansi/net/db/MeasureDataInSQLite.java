@@ -42,21 +42,21 @@ public class MeasureDataInSQLite {
     /*************************输入框的校验**结束*****************************/
 
 
-
+    private boolean bupdated ;//是不是修改过
     private String sex;//性别
     private int count;//数量
 
     private boolean isAdd=false;
 
-    @Generated(hash = 231679648)
+    @Generated(hash = 73587977)
     public MeasureDataInSQLite(Long id, int type, String person, String orderId,
             String userGUID, String iSdOrderMeterDtlId, String iSdStyleTypeMstId,
             String sBillNo, String sValueCode, String sValueGroup,
             String sdStyleTypeItemDtlId, String sMeterCode, String sMeterName,
             String iSeq, String iStyleseq, String iSMeterSize,
             String sFemaleMinLenth, String sFemaleMaxLenth, String sMaleMinLenth,
-            String sMaleMaxLenth, String bEvenNo, String bPoint, String sex,
-            int count, boolean isAdd) {
+            String sMaleMaxLenth, String bEvenNo, String bPoint, boolean bupdated,
+            String sex, int count, boolean isAdd) {
         this.id = id;
         this.type = type;
         this.person = person;
@@ -79,6 +79,7 @@ public class MeasureDataInSQLite {
         this.sMaleMaxLenth = sMaleMaxLenth;
         this.bEvenNo = bEvenNo;
         this.bPoint = bPoint;
+        this.bupdated = bupdated;
         this.sex = sex;
         this.count = count;
         this.isAdd = isAdd;
@@ -286,6 +287,14 @@ public class MeasureDataInSQLite {
 
     public void setIStyleseq(String iStyleseq) {
         this.iStyleseq = iStyleseq;
+    }
+
+    public boolean getBupdated() {
+        return this.bupdated;
+    }
+
+    public void setBupdated(boolean bupdated) {
+        this.bupdated = bupdated;
     }
 
    

@@ -63,6 +63,11 @@ import rx.functions.Func1;
 
 import static huansi.net.qianjingapp.utils.NewRxjavaWebUtils.getJsonData;
 import static huansi.net.qianjingapp.utils.WebServices.WebServiceType.CUS_SERVICE;
+import static lugang.app.huansi.net.lugang.constant.Constant.AREANAME;
+import static lugang.app.huansi.net.lugang.constant.Constant.CITYNAME;
+import static lugang.app.huansi.net.lugang.constant.Constant.COUNTYNAME;
+import static lugang.app.huansi.net.lugang.constant.Constant.CUSTOMERNAME;
+import static lugang.app.huansi.net.lugang.constant.Constant.DEPARTMENTNAME;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.ORDER_DTL_ID_INTENT;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_INTENT_DATA;
 import static lugang.app.huansi.net.lugang.constant.Constant.MeasureCustomActivityConstant.REMARK_INTENT_KEY;
@@ -89,6 +94,11 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     private String orderId = "";//订单ID
     private int orderType = 0;//0待量体 1已量体 2返修
     private String sex = "男";//性别
+    private String mAreaname;
+    private String mCityname;
+    private String mCountyname;
+    private String mCustomername;
+    private String mDepartmentname;
 
 
     @Override
@@ -107,6 +117,11 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         Intent intent = getIntent();
         person = intent.getStringExtra(SPERSON);
         sex = intent.getStringExtra(SEX);
+        mAreaname = intent.getStringExtra(AREANAME);
+        mCityname = intent.getStringExtra(CITYNAME);
+        mCountyname = intent.getStringExtra(COUNTYNAME);
+        mCustomername = intent.getStringExtra(CUSTOMERNAME);
+        mDepartmentname = intent.getStringExtra(DEPARTMENTNAME);
 //        if(TextUtils.isEmpty(sex)) sex="男";
         String departmentName = intent.getStringExtra(Constant.SDEPARTMENTNAME);
         orderId = intent.getStringExtra(Constant.ISDORDERMETERMSTID);//订单头表id
@@ -211,6 +226,18 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     String etHips = mActivityMeasureCustomBinding.etHips.getText().toString();
                     //获得春秋装衣长的值
                     String etClothLength = mActivityMeasureCustomBinding.etClothLength.getText().toString();
+                    int clothLength = Integer.valueOf(etClothLength);
+                    if (sex.equals("男")) {
+
+                        if (clothLength % 2 == 0) {
+                            clothLength = clothLength + 1;
+                        }
+
+                    } else if (sex.equals("女")) {
+                        if (clothLength % 2 != 0) {
+                            clothLength = clothLength + 1;
+                        }
+                    }
                     //获得春秋装肩宽的值
                     String etShoulder = mActivityMeasureCustomBinding.etShoulder.getText().toString();
                     //获得袖长的值
@@ -318,39 +345,39 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 3));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1001")) {//春秋上衣长
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength))));
+                                measureDataInSQLite.setISMeterSize(String.valueOf(clothLength));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1052")) {//夏装衣长
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength)) - 2));
+                                measureDataInSQLite.setISMeterSize(String.valueOf(clothLength - 2));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1041")) {//冬装衣长
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength)) - 2));
+                                measureDataInSQLite.setISMeterSize(String.valueOf(clothLength - 2));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1015")) {//马甲衣长
                                 if (sex.equals("女"))
-                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength)) - 6));
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(clothLength - 6));
                                 else
-                                    measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etClothLength)) - 12));
+                                    measureDataInSQLite.setISMeterSize(String.valueOf(clothLength - 12));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1002")) {//春秋上衣肩宽
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etShoulder))));
+                                measureDataInSQLite.setISMeterSize(String.valueOf(Float.parseFloat(String.valueOf(etShoulder))));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1052")) {//夏衣肩宽
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etShoulder)) - 0.5));
+                                measureDataInSQLite.setISMeterSize(String.valueOf((Float.parseFloat(String.valueOf(etShoulder)) - 0.5)));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1042")) {//冬衣肩宽
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etShoulder)) + 0.5));
+                                measureDataInSQLite.setISMeterSize(String.valueOf((Float.parseFloat(String.valueOf(etShoulder)) + 0.5)));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1007")) {//大衣肩宽
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etShoulder)) + 0.5));
+                                measureDataInSQLite.setISMeterSize(String.valueOf((Float.parseFloat(String.valueOf(etShoulder)) + 0.5)));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1003") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1054") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1043")) {//春秋衣袖长,夏装袖长，冬装袖长
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etSleeve))));
+                                measureDataInSQLite.setISMeterSize(String.valueOf((Float.parseFloat(String.valueOf(etSleeve)))));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1008")) {//大衣袖长
-                                measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etSleeve)) + 1));
+                                measureDataInSQLite.setISMeterSize(String.valueOf((Float.parseFloat(String.valueOf(etSleeve)) + 1)));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1035") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1059") ||
@@ -366,14 +393,14 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1049")) {//冬裤腰围
                                 measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etYaowei)) + 1));
                             }
-                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1088")||
+                            if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1088") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1090") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1092") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1094") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1096") ||
-                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1084")||
-                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1100")||
-                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1104")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1084") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1100") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1104") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1110")
                                     ) {//春秋装号 大衣 夹克 马甲 长袖衬衫 短袖衬衫 冬装上衣 夏装上衣 女裙
                                 measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etNO))));
@@ -383,9 +410,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1093") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1095") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1097") ||
-                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1085")||
-                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1101")||
-                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1105")||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1085") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1101") ||
+                                    measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1105") ||
                                     measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1111")
                                     ) {//春秋装型 大衣 夹克 马甲 长袖衬衫 短袖衬衫 冬装上衣 夏装上衣 女裙
                                 measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etStyle))));
@@ -659,6 +686,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                                 .append(",@isdOrderMeterDtlid=").append(measureDataInSQLite.getISdOrderMeterDtlId())
                                                 .append(",@isMeterSize=").append(measureDataInSQLite.getISMeterSize())
                                                 .append(",@isdStyleTypeItemDtlid=").append(measureDataInSQLite.getSdStyleTypeItemDtlId())
+                                                .append(",@bUpdated=").append(measureDataInSQLite.getBupdated())
                                                 .append(";");
                                         sbStr.append("EXEC spappMeasureSaveBWHData ")
                                                 .append("@iOrderDtlId=").append(measureDataInSQLite.getISdOrderMeterDtlId())
@@ -689,7 +717,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         sbRemarkId.append(measureRemarkDataInSQLite.getIId());
                                         if (j != subList.size() - 1) sbRemarkId.append("@");
                                     }
-                                    if (!orderDtlId.isEmpty()){
+                                    if (!orderDtlId.isEmpty()) {
                                         sbStr.append("EXEC spappMeasureSaveMeasureRemark ")
                                                 .append("@sSdMeterMarkDtlid='").append(sbRemarkId.toString()).append("'")
                                                 .append(",@isdOrderMeterDtlid=").append(orderDtlId)
@@ -921,7 +949,39 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //                        return false;
 //                    }
 //                });
-                editText.setTextColor(Color.WHITE);
+                if (measureDataInSQLite.getBupdated()){
+                    editText.setTextColor(Color.RED);
+                }else {
+
+                    editText.setTextColor(Color.WHITE);
+                }
+                editText.setText(measureDataInSQLite.getISMeterSize());
+                final String beforeChanged = editText.getText().toString();
+
+
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                       if (s.toString().equals(beforeChanged)||TextUtils.isEmpty(beforeChanged)){
+                           measureDataInSQLite.setBupdated(false);
+                           editText.setTextColor(Color.WHITE);
+                       }else{
+                           measureDataInSQLite.setBupdated(true);
+                           editText.setTextColor(Color.RED);
+                       }
+
+
+                    }
+                });
                 final int finalEvenNo = evenNo;
                 editText.setOnEditFocusListener(new OnEditFocusListener() {
                     @Override
@@ -936,12 +996,12 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         //最小值限制
                         if (finalMinLength > 0 && number < finalMinLength) {
                             ((EditText) v).setText("");
-                            OthersUtil.ToastMsg(MeasureCustomActivity.this, "你输入的尺寸已经低于该测量项的最小值" + finalMinLength + ",请确认");
+                            OthersUtil.ToastMsg(MeasureCustomActivity.this, "尺寸已经小于该测量项的最小值" + finalMinLength + ",请确认");
                         }
                         //最大值限制
                         if (finalMaxLength > 0 && number > finalMaxLength) {
                             ((EditText) v).setText("");
-                            OthersUtil.ToastMsg(MeasureCustomActivity.this, "你输入的尺寸已经低于该测量项的最小值" + finalMaxLength + ",请确认");
+                            OthersUtil.ToastMsg(MeasureCustomActivity.this, "尺寸已经大于该测量项的最大值" + finalMaxLength + ",请确认");
                         }
 
 //                        ((EditText) v).setText(String.valueOf(finalIsCanPoint?number:(int)number));
@@ -1000,7 +1060,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     }
                 });
 
-                editText.setText(measureDataInSQLite.getISMeterSize());
+
                 linearLayout.addView(convertView);
 //            }
 
@@ -1054,7 +1114,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         "iIndex=0"
                                                 + ",iOrderType=" + orderType +
                                                 ",iSdOrderMeterMstId=" + orderId +
-                                                ",sPerson=" + person,
+                                                ",sPerson=" + mAreaname + "@" + mCityname + "@" + mCountyname + "@" + mCustomername + "@" + mDepartmentname + "@" + person,
                                         MeasureCustomBean.class.getName(),
                                         true, "待量体款式信息未获取到，请重试！");
                                 Map<String, Object> map = new HashMap<>();
@@ -1073,7 +1133,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         "iIndex=1" +
                                                 ",iOrderType=" + orderType +
                                                 ",iSdOrderMeterMstId=" + orderId +
-                                                ",sPerson=" + person,
+                                                ",sPerson=" + mAreaname + "@" + mCityname + "@" + mCountyname + "@" + mCustomername + "@" + mDepartmentname + "@" + person,
                                         MeasureDateBean.class.getName(),
                                         true, "已量体款式信息未获取到，请重试！");
                                 map.put("measureStyleData", !hsInfo.success ? new ArrayList<WsEntity>() : hsInfo.wsData.LISTWSDATA);
@@ -1091,7 +1151,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         "iIndex=3" +
                                                 ",iOrderType=" + orderType +
                                                 ",iSdOrderMeterMstId=" + orderId +
-                                                ",sPerson=" + person,
+                                                ",sPerson=" + mAreaname + "@" + mCityname + "@" + mCountyname + "@" + mCustomername + "@" + mDepartmentname + "@" + person,
                                         MeasureBaseBean.class.getName(),
                                         true, "已量体款式信息未获取到，请重试！");
                                 map.put("measureBase", !hsInfo.success ? new ArrayList<WsEntity>() : hsInfo.wsData.LISTWSDATA);
@@ -1109,10 +1169,10 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         sortMeasureType(measureStyleList);
                         //获取量体款式的数据
                         List<WsEntity> measureDateList = (List<WsEntity>) map.get("measureStyleData");
-                        //获取量体计算的基础数据
+                        //取量体计算的基础数据
                         List<WsEntity> measureBaseList = (List<WsEntity>) map.get("measureBase");
                         //整理基础量体的数据
-                            MeasureBaseBean measureBaseBean = (MeasureBaseBean) measureBaseList.get(0);
+                        MeasureBaseBean measureBaseBean = (MeasureBaseBean) measureBaseList.get(0);
                         mActivityMeasureCustomBinding.etHeight.setText(measureBaseBean.IHEIGHT);
                         mActivityMeasureCustomBinding.etWeight.setText(measureBaseBean.IWEIGHT);
                         mActivityMeasureCustomBinding.etChest.setText(measureBaseBean.IPURECHEST);
@@ -1129,6 +1189,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         Map<String, MeasureDateBean> measureDataMap = new HashMap<>();
                         for (int i = 0; i < measureDateList.size(); i++) {
                             MeasureDateBean measureDateBean = (MeasureDateBean) measureDateList.get(i);
+
                             String key = measureDateBean.ISDSTYLETYPEMSTID + "_" + measureDateBean.ISDSTYLETYPEITEMDTLID;
                             measureDataMap.put(key, measureDateBean);
                         }
@@ -1140,10 +1201,11 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 MeasureDataInSQLite measureDataInSQLite = measureDataInSQLiteList.get(j);
                                 String key = measureDataInSQLite.getISdStyleTypeMstId()
                                         + "_" + measureDataInSQLite.getSdStyleTypeItemDtlId();
-
                                 MeasureDateBean measureDateBean = measureDataMap.get(key);
 
                                 measureDataInSQLite.setISMeterSize(measureDateBean == null ? "" : measureDateBean.ISMETERSIZE);
+
+
                                 measureDataInSQLiteList.set(j, measureDataInSQLite);
                             }
                             mMeasureCustomLists.set(i, measureDataInSQLiteList);
@@ -1176,7 +1238,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         "iIndex=2" + ",iOrderType=" + orderType +
                                                 ",iSdOrderMeterMstId=" + orderId +
                                                 ",iSdOrderMeterDtlId=" + measureDataInSQLite.getISdOrderMeterDtlId() +
-                                                ",sPerson=" + person +
+                                                ",sPerson=" + mAreaname + "@" + mCityname + "@" + mCountyname + "@" + mCustomername + "@" + mDepartmentname + "@" + person +
                                                 ",isdStyleTypeMstId=" + measureDataInSQLite.getISdStyleTypeMstId(),
                                         RemarkSavedBean.class.getName(),
                                         true,
