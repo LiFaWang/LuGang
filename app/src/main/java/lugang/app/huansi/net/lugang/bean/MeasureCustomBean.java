@@ -44,6 +44,7 @@ public class MeasureCustomBean extends WsData {
     public String ISEQ="0";
     public String ISTYLESEQ="0";
     public String ISMETERSIZE="0";//测量的数据
+    public String BUPDATED=""; //订单款式明细中数据是否有修改
 
     /************************输入框的校验**开始**********************************/
     public String SFEMALEMINLENTH; //女最小值 空就不判断

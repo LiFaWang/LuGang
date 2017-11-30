@@ -46,7 +46,7 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
         public final static Property SMaleMaxLenth = new Property(19, String.class, "sMaleMaxLenth", false, "S_MALE_MAX_LENTH");
         public final static Property BEvenNo = new Property(20, String.class, "bEvenNo", false, "B_EVEN_NO");
         public final static Property BPoint = new Property(21, String.class, "bPoint", false, "B_POINT");
-        public final static Property Bupdated = new Property(22, boolean.class, "bupdated", false, "BUPDATED");
+        public final static Property Bupdated = new Property(22, String.class, "bupdated", false, "BUPDATED");
         public final static Property Sex = new Property(23, String.class, "sex", false, "SEX");
         public final static Property Count = new Property(24, int.class, "count", false, "COUNT");
         public final static Property IsAdd = new Property(25, boolean.class, "isAdd", false, "IS_ADD");
@@ -87,7 +87,7 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
                 "\"S_MALE_MAX_LENTH\" TEXT," + // 19: sMaleMaxLenth
                 "\"B_EVEN_NO\" TEXT," + // 20: bEvenNo
                 "\"B_POINT\" TEXT," + // 21: bPoint
-                "\"BUPDATED\" INTEGER NOT NULL ," + // 22: bupdated
+                "\"BUPDATED\" TEXT," + // 22: bupdated
                 "\"SEX\" TEXT," + // 23: sex
                 "\"COUNT\" INTEGER NOT NULL ," + // 24: count
                 "\"IS_ADD\" INTEGER NOT NULL );"); // 25: isAdd
@@ -208,7 +208,11 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
         if (bPoint != null) {
             stmt.bindString(22, bPoint);
         }
-        stmt.bindLong(23, entity.getBupdated() ? 1L: 0L);
+ 
+        String bupdated = entity.getBupdated();
+        if (bupdated != null) {
+            stmt.bindString(23, bupdated);
+        }
  
         String sex = entity.getSex();
         if (sex != null) {
@@ -327,7 +331,11 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
         if (bPoint != null) {
             stmt.bindString(22, bPoint);
         }
-        stmt.bindLong(23, entity.getBupdated() ? 1L: 0L);
+ 
+        String bupdated = entity.getBupdated();
+        if (bupdated != null) {
+            stmt.bindString(23, bupdated);
+        }
  
         String sex = entity.getSex();
         if (sex != null) {
@@ -367,7 +375,7 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
             cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // sMaleMaxLenth
             cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // bEvenNo
             cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // bPoint
-            cursor.getShort(offset + 22) != 0, // bupdated
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // bupdated
             cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // sex
             cursor.getInt(offset + 24), // count
             cursor.getShort(offset + 25) != 0 // isAdd
@@ -399,7 +407,7 @@ public class MeasureDataInSQLiteDao extends AbstractDao<MeasureDataInSQLite, Lon
         entity.setSMaleMaxLenth(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
         entity.setBEvenNo(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
         entity.setBPoint(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setBupdated(cursor.getShort(offset + 22) != 0);
+        entity.setBupdated(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
         entity.setSex(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
         entity.setCount(cursor.getInt(offset + 24));
         entity.setIsAdd(cursor.getShort(offset + 25) != 0);

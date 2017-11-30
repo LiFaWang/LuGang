@@ -23,5 +23,5 @@ public class MeasureDateBean extends WsData {
     public String ISMETERSIZE="";//尺寸
     public String ISDSTYLETYPEITEMDTLID="";//款式明细ID
     public String ISDORDERMETERDTLDETAILID=""; //订单款式明细中的ID
-    public boolean BUPDATED=false; //订单款式明细中数据是否有修改
+    public String BUPDATED=""; //订单款式明细中数据是否有修改
 }

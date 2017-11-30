@@ -226,18 +226,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     String etHips = mActivityMeasureCustomBinding.etHips.getText().toString();
                     //获得春秋装衣长的值
                     String etClothLength = mActivityMeasureCustomBinding.etClothLength.getText().toString();
-                    int clothLength = Integer.valueOf(etClothLength);
-                    if (sex.equals("男")) {
 
-                        if (clothLength % 2 == 0) {
-                            clothLength = clothLength + 1;
-                        }
-
-                    } else if (sex.equals("女")) {
-                        if (clothLength % 2 != 0) {
-                            clothLength = clothLength + 1;
-                        }
-                    }
                     //获得春秋装肩宽的值
                     String etShoulder = mActivityMeasureCustomBinding.etShoulder.getText().toString();
                     //获得袖长的值
@@ -252,9 +241,21 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     String etStyle = mActivityMeasureCustomBinding.etStyle.getText().toString();
                     if (TextUtils.isEmpty(etChest) || TextUtils.isEmpty(etHips) || TextUtils.isEmpty(etClothLength) ||
                             TextUtils.isEmpty(etShoulder) || TextUtils.isEmpty(etSleeve) || TextUtils.isEmpty(etKuchang) ||
-                            TextUtils.isEmpty(etYaowei)) {
+                            TextUtils.isEmpty(etYaowei)||TextUtils.isEmpty(etNO)||TextUtils.isEmpty(etStyle)) {
                         OthersUtil.ToastMsg(MeasureCustomActivity.this, "请将输入信息填写完整");
                         return;
+                    }
+                    int clothLength = Integer.valueOf(etClothLength);
+                    if (sex.equals("男")) {
+
+                        if (clothLength % 2 == 0) {
+                            clothLength = clothLength + 1;
+                        }
+
+                    } else if (sex.equals("女")) {
+                        if (clothLength % 2 != 0) {
+                            clothLength = clothLength + 1;
+                        }
                     }
                     for (int i = 0; i < mMeasureCustomLists.size(); i++) {
                         List<MeasureDataInSQLite> measureDataInSQLiteList = mMeasureCustomLists.get(i);
@@ -837,8 +838,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             View view = layoutInflater.inflate(R.layout.activity_measure_detial, null);
             TextView tvClothStyle = (TextView) view.findViewById(R.id.tvClothStyle);
             tvClothStyle.setText(mMeasureCustomLists.get(i).get(0).getSValueGroup());
+
             List<MeasureDataInSQLite> measureDataInSQLiteList = mMeasureCustomLists.get(i);
-            //添加咩咯款式每条量体信息
+            //添加当前款式每条量体信息
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.llClothTypeList);
 //            LinearLayout llClothTypeDetail= (LinearLayout) view.findViewById(R.id.llClothTypeDetail);
 //            CardView cvMeasureDetail= (CardView) view.findViewById(R.id.cvMeasureDetail);
@@ -877,9 +879,25 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //            });
 
             for (final MeasureDataInSQLite measureDataInSQLite : measureDataInSQLiteList) {
+
                 View convertView = layoutInflater.inflate(R.layout.ll_parameter, null);
                 TextView tvParameter = (TextView) convertView.findViewById(R.id.tvParameter);
-                tvParameter.setText(measureDataInSQLite.getSMeterName());
+                if (sex.equals("男")){
+                    if (mMeasureCustomLists.get(i).get(0).getSValueGroup().equals("长袖衬衫")
+                            ||mMeasureCustomLists.get(i).get(0).getSValueGroup().equals("短袖衬衫")){
+                       if(measureDataInSQLite.getSMeterName().equals("领围")||measureDataInSQLite.getSMeterName().equals("号")||measureDataInSQLite.getSMeterName().equals("型")){
+                           tvParameter.setText(measureDataInSQLite.getSMeterName());
+                       }else{
+                           convertView.setVisibility(View.GONE);
+                       }
+                    }else {
+                        tvParameter.setText(measureDataInSQLite.getSMeterName());
+                    }
+                }else {
+                    tvParameter.setText(measureDataInSQLite.getSMeterName());
+                }
+//                tvParameter.setText(measureDataInSQLite.getSMeterName());
+
 //                MeasureDateBean measureDateBean=measureDataMap.get(measureCustom.SDSTYLETYPEITEMDTLID+"_"+measureCustom.ISDORDERMETERDTLID);
 //                measureCustom.ISMETERSIZE=measureDateBean==null?"":measureDateBean.ISMETERSIZE;
                 final CustomKeyboardEditText editText = (CustomKeyboardEditText) convertView.findViewById(R.id.etParameter);
@@ -942,20 +960,24 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 final float finalMaxLength = maxLength;
                 final float finalMinLength = minLength;
                 final boolean finalIsCanPoint = isCanPoint;
-//                editText.setOnKeyListener(new View.OnKeyListener() {
-//                    @Override
-//                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                        editText.setTextColor(Color.RED);
-//                        return false;
-//                    }
-//                });
-                if (measureDataInSQLite.getBupdated()){
+                if (measureDataInSQLite.getBupdated().equalsIgnoreCase("True")){
                     editText.setTextColor(Color.RED);
                 }else {
 
                     editText.setTextColor(Color.WHITE);
                 }
-                editText.setText(measureDataInSQLite.getISMeterSize());
+                if (sex.equals("男")){
+                    if (mMeasureCustomLists.get(i).get(0).getSValueGroup().equals("长袖衬衫")
+                            ||mMeasureCustomLists.get(i).get(0).getSValueGroup().equals("短袖衬衫")){
+                        if(measureDataInSQLite.getSMeterName().equals("领围")||measureDataInSQLite.getSMeterName().equals("号")||measureDataInSQLite.getSMeterName().equals("型")){
+                            editText.setText(measureDataInSQLite.getISMeterSize());
+                        }
+                    }else {
+                        editText.setText(measureDataInSQLite.getISMeterSize());
+                    }
+                }else {
+                    editText.setText(measureDataInSQLite.getISMeterSize());
+                }
                 final String beforeChanged = editText.getText().toString();
 
 
@@ -972,11 +994,13 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     @Override
                     public void afterTextChanged(Editable s) {
                        if (s.toString().equals(beforeChanged)||TextUtils.isEmpty(beforeChanged)){
-                           measureDataInSQLite.setBupdated(false);
+
                            editText.setTextColor(Color.WHITE);
+                           measureDataInSQLite.setBupdated("False");
                        }else{
-                           measureDataInSQLite.setBupdated(true);
+
                            editText.setTextColor(Color.RED);
+                           measureDataInSQLite.setBupdated("True");
                        }
 
 
@@ -1202,10 +1226,8 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 String key = measureDataInSQLite.getISdStyleTypeMstId()
                                         + "_" + measureDataInSQLite.getSdStyleTypeItemDtlId();
                                 MeasureDateBean measureDateBean = measureDataMap.get(key);
-
                                 measureDataInSQLite.setISMeterSize(measureDateBean == null ? "" : measureDateBean.ISMETERSIZE);
-
-
+                                measureDataInSQLite.setBupdated(measureDateBean == null ? "False" : measureDateBean.BUPDATED);
                                 measureDataInSQLiteList.set(j, measureDataInSQLite);
                             }
                             mMeasureCustomLists.set(i, measureDataInSQLiteList);
@@ -1306,13 +1328,13 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             measureDataInSQLite.setSValueGroup(bean.SVALUEGROUP);
             measureDataInSQLite.setType(orderType);
             measureDataInSQLite.setUserGUID(userGUID);
-
             measureDataInSQLite.setSFemaleMaxLenth(bean.SFEMALEMAXLENTH);
             measureDataInSQLite.setSFemaleMinLenth(bean.SFEMALEMINLENTH);
             measureDataInSQLite.setSMaleMaxLenth(bean.SMALEMAXLENTH);
             measureDataInSQLite.setSMaleMinLenth(bean.SMALEMINLENTH);
             measureDataInSQLite.setBEvenNo(bean.BEVENNO);
             measureDataInSQLite.setBPoint(bean.BPOINT);
+//            measureDataInSQLite.setBupdated(bean.BUPDATED);
 
 
             List<MeasureDataInSQLite> measureDataInSQLiteList = map.get(measureDataInSQLite.getISdStyleTypeMstId());

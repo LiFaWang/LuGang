@@ -764,7 +764,7 @@ public class MainActivity  extends NotWebBaseActivity  {
                     MeasureDateBean measureDateBean = measureDataMap.get(measureDataInSQLite.getISdStyleTypeMstId()
                             + "_" + measureDataInSQLite.getSdStyleTypeItemDtlId());
                     measureDataInSQLite.setISMeterSize(measureDateBean == null ? "" : measureDateBean.ISMETERSIZE);
-                    measureDataInSQLite.setBupdated(measureDateBean == null ? false :measureDateBean.BUPDATED);
+                    measureDataInSQLite.setBupdated(measureDateBean == null ? "" :measureDateBean.BUPDATED);
                     measureDataInSQLiteList.set(i, measureDataInSQLite);
                 }
             }
