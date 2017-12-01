@@ -7,23 +7,25 @@ import huansi.net.qianjingapp.entity.WsData;
  * 10:37
 
  {
- "ISDORDERMETERDTLID": "1106",
+ "ISDORDERMETERDTLID": "271",
  "ISDSTYLETYPEMSTID": "1006",
- "SBILLNO": "001",
+ "SBILLNO": "1",
  "SVALUECODE": "",
  "SVALUEGROUP": "春秋上衣",
  "SDSTYLETYPEITEMDTLID": "1001",
  "SMETERCODE": "00101",
  "SMETERNAME": "衣长",
- "ISEQ": "3",
+ "ISEQ": "1",
  "SFEMALEMINLENTH": "50.0",
  "SFEMALEMAXLENTH": "80.0",
  "SMALEMINLENTH": "65.0",
  "SMALEMAXLENTH": "90.0",
- "BEVENNO": "True",
- "BPOINT": ""
- },
+ "BEVENNO": "False",
+ "BPOINT": "",
+ "ISTYLESEQ": "1"
+ }
  */
+
 
 /*B.sFemaleMinLenth,--女最小值 空就不判断
 		B.sFemaleMaxLenth,--女最大值 空就不判断

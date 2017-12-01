@@ -1213,7 +1213,6 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         Map<String, MeasureDateBean> measureDataMap = new HashMap<>();
                         for (int i = 0; i < measureDateList.size(); i++) {
                             MeasureDateBean measureDateBean = (MeasureDateBean) measureDateList.get(i);
-
                             String key = measureDateBean.ISDSTYLETYPEMSTID + "_" + measureDateBean.ISDSTYLETYPEITEMDTLID;
                             measureDataMap.put(key, measureDateBean);
                         }
@@ -1368,6 +1367,17 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             });
             mMeasureCustomLists.add(subList);
         }
+        Collections.sort(mMeasureCustomLists, new Comparator<List<MeasureDataInSQLite>>() {
+            @Override
+            public int compare(List<MeasureDataInSQLite> o1, List<MeasureDataInSQLite> o2) {
+                try {
+                    return Integer.parseInt(o1.get(0).getIStyleseq()) - Integer.parseInt(o2.get(0).getIStyleseq());
+                } catch (Exception e) {
+                    return 0;
+                }
+            }
+        });
+
     }
 
     /**
