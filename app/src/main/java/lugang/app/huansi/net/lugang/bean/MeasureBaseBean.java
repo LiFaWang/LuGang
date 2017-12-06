@@ -4,18 +4,19 @@ import huansi.net.qianjingapp.entity.WsData;
 
 /**
  * Created by Tony on 2017/11/23.
- *  {
- "IHEIGHT": "",
- "IWEIGHT": "",
- "IPURECHEST": "",
- "IPUREWAIST": "",
- "IPUREHIPS": "",
- "ICLOTHLENTH": "",
- "SSHOUDERWIDTH": "",
- "SSLEEVELENTH": "",
- "ITROUSERSLENTH": "",
- "IHAONO": "",
- "IXINGNO": ""
+ {
+ "IHEIGHT": "175",
+ "IWEIGHT": "75",
+ "IPURECHEST": "94",
+ "IPUREWAIST": "90",
+ "IPUREHIPS": "92",
+ "ICLOTHLENTH": "77",
+ "SSHOUDERWIDTH": "47.0",
+ "SSLEEVELENTH": "62.0",
+ "ITROUSERSLENTH": "105",
+ "IWAISTLENTH": "85",
+ "IXINGNO": "92",
+ "IHAONO": "175"
  }
  */
 
@@ -29,6 +30,7 @@ public class MeasureBaseBean extends WsData {
     public String SSHOUDERWIDTH="";//春秋装的肩宽
     public String SSLEEVELENTH="";//春秋装的袖长长
     public String ITROUSERSLENTH="";//春秋装的裤长
+    public String IWAISTLENTH="";//春秋装的腰围
     public String IHAONO="";//号
     public String IXINGNO="";//型
 }

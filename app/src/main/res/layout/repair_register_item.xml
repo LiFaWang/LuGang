@@ -1,51 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <TextView
-            android:id="@+id/customerName"
-            style="@style/measure_item_style"
-            android:text="**银行"
-            />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorMainBackground"
+              android:orientation="horizontal"
+    >
 
-        <TextView
-            android:id="@+id/areaName"
-            style="@style/measure_item_style"
-            android:text="江苏省"
-            />
+    <TextView
+        android:id="@+id/customerName"
+        style="@style/measure_item_style"
+        android:text="**银行"
+        />
 
-        <TextView
-            android:id="@+id/cityName"
-            style="@style/measure_item_style"
-            android:text="苏州市"
-            />
-        <TextView
-            android:id="@+id/countyName"
-            style="@style/measure_item_style"
-            android:text="张家界市"
-            />
-        <TextView
-            android:id="@+id/departmentName"
-            android:text="业务部"
-            style="@style/measure_item_style"
-            />
-        <TextView
-            android:id="@+id/person"
-            style="@style/measure_item_style"
-            android:text="张三"
-            />
-        <Button
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:id="@+id/btnMeasure"
-            android:background="@null"
-            android:textColor="#33e22d"
-            android:text="修改"
-            android:textSize="18sp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+    <!--<TextView-->
+    <!--android:id="@+id/areaName"-->
+    <!--style="@style/measure_item_style"-->
+    <!--android:text="江苏省"-->
+    <!--/>-->
+
+    <TextView
+        android:id="@+id/cityName"
+        style="@style/measure_item_style"
+        android:text="苏州市"
+        />
+
+    <TextView
+        android:id="@+id/countyName"
+        style="@style/measure_item_style"
+        android:text="张家界市"
+        />
+
+    <TextView
+        android:id="@+id/departmentName"
+        style="@style/measure_item_style"
+        android:text="业务部"
+        />
+
+    <TextView
+        android:id="@+id/person"
+        style="@style/measure_item_style"
+        android:text="张三"
+        />
+
+    <TextView
+        android:id="@+id/sex"
+        style="@style/measure_item_style"
+        android:text="nan"/>
+
+    <Button
+        android:id="@+id/btnMeasure"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:gravity="center"
+        android:text="修改"
+        android:textColor="#33e22d"
+        android:textSize="18sp"/>
+</LinearLayout>

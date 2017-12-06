@@ -159,16 +159,20 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
-        <android.support.v4.widget.SwipeRefreshLayout
+        <!--<android.support.v4.widget.SwipeRefreshLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:id="@+id/srlFinish"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="0dp">-->
+            <!--<ListView-->
+                <!--android:id="@+id/lvCustomer"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"/>-->
+        <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+        <ListView
+            android:id="@+id/lvCustomer"
             android:layout_width="match_parent"
-            android:id="@+id/srlFinish"
-            android:layout_weight="1"
-            android:layout_height="0dp">
-            <ListView
-                android:id="@+id/lvCustomer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 </layout>

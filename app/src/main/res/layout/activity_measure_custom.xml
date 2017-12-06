@@ -73,6 +73,7 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvHeight"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
@@ -94,6 +95,7 @@
                             app:xml="@xml/custom_keyboard"/>
 
                         <TextView
+                            android:id="@+id/tvWeight"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
@@ -209,6 +211,7 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/llBaseCloth"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">

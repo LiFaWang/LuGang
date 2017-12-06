@@ -32,36 +32,38 @@
 
             <Spinner
                 android:id="@+id/spMeasureNo"
-                android:layout_gravity="center"
                 android:layout_width="140dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
             </Spinner>
+
             <TextView
                 android:id="@+id/tvCustomerName"
-                android:text="单位名称"
-                android:background="@color/colorMainBackground"
-                android:textColor="#fff"
-                android:padding="3dp"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorMainBackground"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="单位名称"
+                android:textColor="#fff"
+                android:textSize="18sp">
 
             </TextView>
+
             <TextView
                 android:id="@+id/tvCustomerCode"
-                android:text="单位编号"
-                android:background="@color/colorMainBackground"
-                android:textColor="#fff"
-                android:padding="3dp"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:layout_marginRight="50dp"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="50dp"
+                android:background="@color/colorMainBackground"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="单位编号"
+                android:textColor="#fff"
+                android:textSize="18sp">
 
             </TextView>
 
@@ -73,23 +75,23 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:textSize="18sp"
                 android:background="@drawable/btn_buy_selector"
                 android:text="新  增"
-                android:textColor="#fff"/>
+                android:textColor="#fff"
+                android:textSize="18sp"/>
 
             <Button
                 android:id="@+id/btnSaveMeasure"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:textSize="18sp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/btn_buy_selector"
                 android:text="保存"
-                android:textColor="#fff"/>
+                android:textColor="#fff"
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -195,11 +197,19 @@
 
         <LinearLayout
             android:id="@+id/llNewCustom"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
 
     </LinearLayout>
 </layout>

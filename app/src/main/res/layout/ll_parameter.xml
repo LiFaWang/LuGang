@@ -23,6 +23,19 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tvParameterMeasured"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@color/colorMainBackground"
+            android:textSize="20sp"
+            android:text=""
+            android:textColor="#fff"
+            android:padding="5dp"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"/>
+
+
         <lugang.app.huansi.net.widget.CustomKeyboardEditText
             android:id="@+id/etParameter"
             android:layout_width="0dp"

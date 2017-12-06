@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/LuGang.iml" filepath="$PROJECT_DIR$/LuGang.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/libshot/libshot.iml" filepath="$PROJECT_DIR$/libshot/libshot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xnumberkeyboard/xnumberkeyboard.iml" filepath="$PROJECT_DIR$/xnumberkeyboard/xnumberkeyboard.iml" />
     </modules>
   </component>
 </project>

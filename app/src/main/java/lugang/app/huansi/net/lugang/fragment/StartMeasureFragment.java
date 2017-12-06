@@ -3,7 +3,6 @@ package lugang.app.huansi.net.lugang.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -176,18 +175,18 @@ public class StartMeasureFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
-        mStartMeasureFragmentBinding.srlStart.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mStartMeasureFragmentBinding.tvCustomerSearch.setText("单位");
-                mStartMeasureFragmentBinding.tvCitySearch.setText("地市");
-                mStartMeasureFragmentBinding.tvCountySearch.setText("县市");
-                mStartMeasureFragmentBinding.tvDepartmentSearch.setText("部门");
-                mStartAdapter.setList(measureOrderInSQLiteList);
-                initSearchData();
-                loadMeasureData();
-            }
-        });
+//        mStartMeasureFragmentBinding.srlStart.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                mStartMeasureFragmentBinding.tvCustomerSearch.setText("单位");
+//                mStartMeasureFragmentBinding.tvCitySearch.setText("地市");
+//                mStartMeasureFragmentBinding.tvCountySearch.setText("县市");
+//                mStartMeasureFragmentBinding.tvDepartmentSearch.setText("部门");
+//                mStartAdapter.setList(measureOrderInSQLiteList);
+//                initSearchData();
+//                loadMeasureData();
+//            }
+//        });
         mStartMeasureFragmentBinding.tvCustomerSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -373,15 +372,17 @@ public class StartMeasureFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(!mStartMeasureFragmentBinding.srlStart.isRefreshing())
-            mStartMeasureFragmentBinding.srlStart.post(new Runnable() {
-                @Override
-                public void run() {
-                    mStartMeasureFragmentBinding.srlStart.setRefreshing(true);
-                    initSearchData();
-                    loadMeasureData();
-                }
-            });
+//        if(!mStartMeasureFragmentBinding.srlStart.isRefreshing())
+//            mStartMeasureFragmentBinding.srlStart.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mStartMeasureFragmentBinding.srlStart.setRefreshing(true);
+//                    initSearchData();
+//                    loadMeasureData();
+//                }
+//            });
+        initSearchData();
+        loadMeasureData();
 
     }
 
@@ -392,8 +393,8 @@ public class StartMeasureFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void netChanged(NetConnectionEvent event){
         try {
-            if (!mStartMeasureFragmentBinding.srlStart.isRefreshing())
-                mStartMeasureFragmentBinding.srlStart.setRefreshing(true);
+//            if (!mStartMeasureFragmentBinding.srlStart.isRefreshing())
+//                mStartMeasureFragmentBinding.srlStart.setRefreshing(true);
             initSearchData();
             loadMeasureData();
         }catch (Exception e){}
@@ -630,7 +631,7 @@ public class StartMeasureFragment extends BaseFragment {
                         List<MeasureOrderInSQLite> orderInSQLiteList= (List<MeasureOrderInSQLite>) hsWebInfo.object;
                         measureOrderInSQLiteList.addAll(orderInSQLiteList);
                         mStartAdapter.notifyDataSetChanged();
-                        mStartMeasureFragmentBinding.srlStart.setRefreshing(false);
+//                        mStartMeasureFragmentBinding.srlStart.setRefreshing(false);
                         List<String> mSCustomerString = new ArrayList<>();
                         mSCustomerString.add("单位");
                         for (int i = 0; i < measureOrderInSQLiteList.size(); i++) {
@@ -644,7 +645,7 @@ public class StartMeasureFragment extends BaseFragment {
                     public void error(HsWebInfo hsWebInfo, Context context) {
                         measureOrderInSQLiteList.clear();
                         mStartAdapter.notifyDataSetChanged();
-                        mStartMeasureFragmentBinding.srlStart.setRefreshing(false);
+//                        mStartMeasureFragmentBinding.srlStart.setRefreshing(false);
                     }
                 });
     }

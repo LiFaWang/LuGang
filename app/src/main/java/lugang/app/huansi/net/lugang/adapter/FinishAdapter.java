@@ -57,8 +57,7 @@ public class FinishAdapter extends HsBaseAdapter<MeasureOrderInSQLite> {
                 intent.putExtra(Constant.COUNTYNAME,measureOrderInSQLite.getSCountyName());
                 intent.putExtra(Constant.CUSTOMERNAME,measureOrderInSQLite.getSCustomerName());
                 intent.putExtra(Constant.DEPARTMENTNAME,measureOrderInSQLite.getSDepartmentName());
-
-//                intent.putExtra(Constant.SVALUENAME,measureOrderInSQLite.get.SVALUENAME);
+//              intent.putExtra(Constant.SVALUENAME,measureOrderInSQLite.get.SVALUENAME);
                 intent.putExtra(Constant.IORDERTYPE,measureOrderInSQLite.getOrderType());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                mContext.startActivity(intent);

@@ -43,12 +43,14 @@ public class MeasureDataInSQLite {
 
 
     private String bupdated ;//是不是修改过
+    private String brepair ;//是不是返修过
+    private String irepair ;//返修的值
     private String sex;//性别
     private int count;//数量
 
     private boolean isAdd=false;
 
-    @Generated(hash = 1831189824)
+    @Generated(hash = 90677972)
     public MeasureDataInSQLite(Long id, int type, String person, String orderId,
             String userGUID, String iSdOrderMeterDtlId, String iSdStyleTypeMstId,
             String sBillNo, String sValueCode, String sValueGroup,
@@ -56,7 +58,7 @@ public class MeasureDataInSQLite {
             String iSeq, String iStyleseq, String iSMeterSize,
             String sFemaleMinLenth, String sFemaleMaxLenth, String sMaleMinLenth,
             String sMaleMaxLenth, String bEvenNo, String bPoint, String bupdated,
-            String sex, int count, boolean isAdd) {
+            String brepair, String irepair, String sex, int count, boolean isAdd) {
         this.id = id;
         this.type = type;
         this.person = person;
@@ -80,6 +82,8 @@ public class MeasureDataInSQLite {
         this.bEvenNo = bEvenNo;
         this.bPoint = bPoint;
         this.bupdated = bupdated;
+        this.brepair = brepair;
+        this.irepair = irepair;
         this.sex = sex;
         this.count = count;
         this.isAdd = isAdd;
@@ -296,6 +300,22 @@ public class MeasureDataInSQLite {
 
     public String getBupdated() {
         return this.bupdated;
+    }
+
+    public String getIrepair() {
+        return this.irepair;
+    }
+
+    public void setIrepair(String irepair) {
+        this.irepair = irepair;
+    }
+
+    public String getBrepair() {
+        return this.brepair;
+    }
+
+    public void setBrepair(String brepair) {
+        this.brepair = brepair;
     }
 
    

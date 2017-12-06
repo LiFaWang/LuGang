@@ -2,7 +2,6 @@ package lugang.app.huansi.net.lugang.fragment;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -167,18 +166,18 @@ public class FinishMeasureFragment extends BaseFragment {
             }
         });
 
-        mFinishMeasureFragmentBinding.srlFinish.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mFinishMeasureFragmentBinding.tvCustomerSearch.setText("单位");
-                mFinishMeasureFragmentBinding.tvCitySearch.setText("地市");
-                mFinishMeasureFragmentBinding.tvCountySearch.setText("县市");
-                mFinishMeasureFragmentBinding.tvDepartmentSearch.setText("部门");
-                mFinishAdapter.setList(measureOrderInSQLiteList);
-                initSearchData();
-                loadFinishMeasureData();
-            }
-        });
+//        mFinishMeasureFragmentBinding.srlFinish.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                mFinishMeasureFragmentBinding.tvCustomerSearch.setText("单位");
+//                mFinishMeasureFragmentBinding.tvCitySearch.setText("地市");
+//                mFinishMeasureFragmentBinding.tvCountySearch.setText("县市");
+//                mFinishMeasureFragmentBinding.tvDepartmentSearch.setText("部门");
+//                mFinishAdapter.setList(measureOrderInSQLiteList);
+//                initSearchData();
+//                loadFinishMeasureData();
+//            }
+//        });
 
         mFinishMeasureFragmentBinding.tvCustomerSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -364,15 +363,17 @@ public class FinishMeasureFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!mFinishMeasureFragmentBinding.srlFinish.isRefreshing())
-            mFinishMeasureFragmentBinding.srlFinish.post(new Runnable() {
-                @Override
-                public void run() {
-                    mFinishMeasureFragmentBinding.srlFinish.setRefreshing(true);
-                    initSearchData();
-                    loadFinishMeasureData();
-                }
-            });
+//        if (!mFinishMeasureFragmentBinding.srlFinish.isRefreshing())
+//            mFinishMeasureFragmentBinding.srlFinish.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mFinishMeasureFragmentBinding.srlFinish.setRefreshing(true);
+//                    initSearchData();
+//                    loadFinishMeasureData();
+//                }
+//            });
+        initSearchData();
+        loadFinishMeasureData();
     }
 
     /**
@@ -383,8 +384,8 @@ public class FinishMeasureFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void netChanged(NetConnectionEvent event) {
         try {
-            if (!mFinishMeasureFragmentBinding.srlFinish.isRefreshing())
-                mFinishMeasureFragmentBinding.srlFinish.setRefreshing(true);
+//            if (!mFinishMeasureFragmentBinding.srlFinish.isRefreshing())
+//                mFinishMeasureFragmentBinding.srlFinish.setRefreshing(true);
             initSearchData();
             loadFinishMeasureData();
         } catch (Exception e) {
@@ -681,7 +682,7 @@ public class FinishMeasureFragment extends BaseFragment {
                         List<MeasureOrderInSQLite> orderInSQLiteList = (List<MeasureOrderInSQLite>) hsWebInfo.object;
                         measureOrderInSQLiteList.addAll(orderInSQLiteList);
                         mFinishAdapter.notifyDataSetChanged();
-                        mFinishMeasureFragmentBinding.srlFinish.setRefreshing(false);
+                      //  mFinishMeasureFragmentBinding.srlFinish.setRefreshing(false);
                         List<String> mSCustomerString = new ArrayList<>();
                         mSCustomerString.add("单位");
                         for (int i = 0; i < measureOrderInSQLiteList.size(); i++) {
@@ -696,7 +697,7 @@ public class FinishMeasureFragment extends BaseFragment {
                     public void error(HsWebInfo hsWebInfo, Context context) {
                         measureOrderInSQLiteList.clear();
                         mFinishAdapter.notifyDataSetChanged();
-                        mFinishMeasureFragmentBinding.srlFinish.setRefreshing(false);
+//                        mFinishMeasureFragmentBinding.srlFinish.setRefreshing(false);
                     }
                 });
     }

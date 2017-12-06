@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$/Hslibrary" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/libshot" />
-            <option value="$PROJECT_DIR$/xnumberkeyboard" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

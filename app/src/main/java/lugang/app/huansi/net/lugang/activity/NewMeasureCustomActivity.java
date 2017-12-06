@@ -1,6 +1,8 @@
 package lugang.app.huansi.net.lugang.activity;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -39,6 +41,7 @@ import lugang.app.huansi.net.greendao.MeasureOrderDtlStyleBaseDataInSQLiteDao;
 import lugang.app.huansi.net.greendao.MeasureOrderInSQLiteDao;
 import lugang.app.huansi.net.lugang.R;
 import lugang.app.huansi.net.lugang.adapter.HsArrayAdapter;
+import lugang.app.huansi.net.lugang.adapter.NewMeasureCustomAdapter;
 import lugang.app.huansi.net.lugang.bean.NewMeasureBean;
 import lugang.app.huansi.net.lugang.bean.ObtainNewMeasureOrderNoBean;
 import lugang.app.huansi.net.lugang.databinding.ActivityNewMeasureCustomBinding;
@@ -82,7 +85,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
 //    private List<String> countryList=new ArrayList<>();//县城的筛选数据
 //    private List<String> jobList=new ArrayList<>();//职位的筛选数据
     private String [] sexArr={"男","女"};
-
+    private RecyclerView mRecyclerView;
 
 
     @Override
@@ -97,7 +100,10 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
 //        mClothStyleidStringList = new ArrayList<>();
         mObtainNewMeasureOrderNoBeanList = new ArrayList<>();
 //        mClothStyleMap = new HashMap<>();
-
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        NewMeasureCustomAdapter adapter=new NewMeasureCustomAdapter();
+        mRecyclerView.setAdapter(adapter);
         clothStyleList=new ArrayList<>();
         //获取量体清单编号
         initBaseData();
@@ -781,10 +787,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
         jobData( view,jobStrList);//岗位数据
 
 
-
-
-        mActivityNewMeasureCustomBinding.llNewCustom.addView(view);
-
+       mActivityNewMeasureCustomBinding.llNewCustom.addView(view);
     }
 
     private void clothStyleData(View view) {
