@@ -126,7 +126,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         String departmentName = intent.getStringExtra(Constant.SDEPARTMENTNAME);
         orderId = intent.getStringExtra(Constant.ISDORDERMETERMSTID);//订单头表id
         orderType = intent.getIntExtra(Constant.IORDERTYPE, 0);
-        if (orderType==2){
+        if (orderType == 2) {
             mActivityMeasureCustomBinding.tvHeight.setVisibility(View.INVISIBLE);
             mActivityMeasureCustomBinding.tvWeight.setVisibility(View.INVISIBLE);
             mActivityMeasureCustomBinding.etWeight.setVisibility(View.INVISIBLE);
@@ -355,7 +355,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                 measureDataInSQLite.setISMeterSize(String.valueOf(Integer.parseInt(String.valueOf(etHips)) + 3));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1001")) {//春秋上衣长
-                                 measureDataInSQLite.setISMeterSize(String.valueOf(clothLength));
+                                measureDataInSQLite.setISMeterSize(String.valueOf(clothLength));
                             }
                             if (measureDataInSQLite.getSdStyleTypeItemDtlId().equals("1052")) {//夏装衣长
                                 measureDataInSQLite.setISMeterSize(String.valueOf(clothLength - 2));
@@ -677,15 +677,19 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 TextView tvParameterMeasured = (TextView) subItem.findViewById(R.id.tvParameterMeasured);
                 String size = editText.getText().toString().trim();
                 String trim = tvParameterMeasured.getText().toString().trim();
-                if (orderType!=2){
+                if (orderType != 2) {
                     if (size.isEmpty()) size = "0";
                     measureDataInSQLite.setISMeterSize(size);
-                }else {
-                    measureDataInSQLite.setISMeterSize(trim);
+                } else if (orderType == 2 ){
+//                    measureDataInSQLite.setISMeterSize(trim);
+                    if (TextUtils.isEmpty(size)){
+                        measureDataInSQLite.setISMeterSize(trim);
+                    }else {
+                        measureDataInSQLite.setISMeterSize(size);
+                    }
+                    measureDataInSQLite.setIrepair(size);
+
                 }
-
-                if (orderType==2&&measureDataInSQLite.getBrepair().equals("True")) measureDataInSQLite.setIrepair(size);
-
                 subList.set(j, measureDataInSQLite);
             }
             mMeasureCustomLists.set(i, subList);
@@ -704,8 +708,12 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         sbStr.append("EXEC spappMeasureSaveMeasureData ")
                                                 .append("@uHrEmployeeGUID='").append(userGUID).append("'")
                                                 .append(",@isdOrderMeterDtlid=").append(measureDataInSQLite.getISdOrderMeterDtlId())
-                                                .append(",@isMeterSize=").append(brepair.equals("True")&&orderType==2?measureDataInSQLite.getIrepair():measureDataInSQLite.getISMeterSize())
-                                                .append(",@isdStyleTypeItemDtlid=").append(measureDataInSQLite.getSdStyleTypeItemDtlId())
+                                                .append(",@isMeterSize=").append(measureDataInSQLite.getISMeterSize());
+                                        if (!TextUtils.isEmpty(measureDataInSQLite.getIrepair())) {
+                                            sbStr.append(",@iRepairSize=").append(measureDataInSQLite.getIrepair());
+                                        }
+
+                                        sbStr.append(",@isdStyleTypeItemDtlid=").append(measureDataInSQLite.getSdStyleTypeItemDtlId())
                                                 .append(",@bUpdated=").append(measureDataInSQLite.getBupdated())
                                                 .append(";");
                                         sbStr.append("EXEC spappMeasureSaveBWHData ")
@@ -902,9 +910,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 View convertView = layoutInflater.inflate(R.layout.ll_parameter, null);
                 TextView tvParameter = (TextView) convertView.findViewById(R.id.tvParameter);
                 TextView tvParameterMeasured = (TextView) convertView.findViewById(R.id.tvParameterMeasured);
-                if (orderType==2){
+                if (orderType == 2) {
                     tvParameterMeasured.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tvParameterMeasured.setVisibility(View.GONE);
                 }
                 if (sex.equals("男")) {
@@ -997,27 +1005,27 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     if (mMeasureCustomLists.get(i).get(0).getSValueGroup().equals("长袖衬衫")
                             || mMeasureCustomLists.get(i).get(0).getSValueGroup().equals("短袖衬衫")) {
                         if (measureDataInSQLite.getSMeterName().equals("领围") || measureDataInSQLite.getSMeterName().equals("号") || measureDataInSQLite.getSMeterName().equals("型")) {
-                            editText.setText(orderType==2&&measureDataInSQLite.getBupdated().equals("True")?measureDataInSQLite.getIrepair():measureDataInSQLite.getISMeterSize());
+                            editText.setText(orderType == 2 ? measureDataInSQLite.getIrepair() : measureDataInSQLite.getISMeterSize());
                             tvParameterMeasured.setText(measureDataInSQLite.getISMeterSize());
                         }
                     } else {
-                        editText.setText(orderType==2&&measureDataInSQLite.getBupdated().equals("True")?measureDataInSQLite.getIrepair():measureDataInSQLite.getISMeterSize());
+                        editText.setText(orderType == 2 ? measureDataInSQLite.getIrepair() : measureDataInSQLite.getISMeterSize());
                         tvParameterMeasured.setText(measureDataInSQLite.getISMeterSize());
                     }
                 } else {
 
-                    editText.setText(orderType==2&&measureDataInSQLite.getBupdated().equals("True")?measureDataInSQLite.getIrepair():measureDataInSQLite.getISMeterSize());
+                    editText.setText(orderType == 2 ? measureDataInSQLite.getIrepair() : measureDataInSQLite.getISMeterSize());
                     tvParameterMeasured.setText(measureDataInSQLite.getISMeterSize());
 
                 }
                 //将服务器返回的带小数的字符数转化成int展示
                 if (measureDataInSQLite.getSMeterName().equals("肩宽") || measureDataInSQLite.getSMeterName().equals("袖长")) {
-                    editText.setText(orderType==2&&measureDataInSQLite.getBupdated().equals("True")?measureDataInSQLite.getIrepair():measureDataInSQLite.getISMeterSize());
+                    editText.setText(orderType == 2 ? measureDataInSQLite.getIrepair() : measureDataInSQLite.getISMeterSize());
                     tvParameterMeasured.setText(measureDataInSQLite.getISMeterSize());
 
                 } else {
                     if (!TextUtils.isEmpty(measureDataInSQLite.getISMeterSize())) {
-                        editText.setText(orderType==2&&measureDataInSQLite.getBupdated().equals("True")?measureDataInSQLite.getIrepair():String.valueOf((int) Double.parseDouble(measureDataInSQLite.getISMeterSize())));
+                        editText.setText(orderType == 2 ? measureDataInSQLite.getIrepair() : String.valueOf((int) Double.parseDouble(measureDataInSQLite.getISMeterSize())));
                         tvParameterMeasured.setText(String.valueOf((int) Double.parseDouble(measureDataInSQLite.getISMeterSize())));
                     }
 
@@ -1047,9 +1055,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                             measureDataInSQLite.setBupdated("True");
 
                         }
-                        if (orderType==2){
-                            measureDataInSQLite.setBrepair("True");
-                        }
+//                        if (orderType == 2) {
+//                            measureDataInSQLite.setBrepair("True");
+//                        }
 
 
                     }

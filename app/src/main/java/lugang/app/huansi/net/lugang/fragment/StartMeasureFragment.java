@@ -171,6 +171,7 @@ public class StartMeasureFragment extends BaseFragment {
         mStartMeasureFragmentBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(), NewMeasureCustomActivity.class);
                 startActivity(intent);
             }

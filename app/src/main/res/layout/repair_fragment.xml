@@ -20,6 +20,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/btn_buy_selector"
                 android:gravity="center"
+                android:visibility="invisible"
                 android:text="新 增"
                 android:textColor="#fff"
                 android:textSize="18dp"/>
