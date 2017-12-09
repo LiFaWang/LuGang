@@ -226,9 +226,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
                     //获得净胸围的值
                     String etChest = mActivityMeasureCustomBinding.etChest.getText().toString();
-                    if (Integer.parseInt(etChest) % 2 != 0) {
-                        etChest = String.valueOf(Integer.parseInt(etChest) + 1);
-                    }
+
                     //获得净腰围的值
                     String etWaistline = mActivityMeasureCustomBinding.etWaistline.getText().toString();
                     //获得净臀围的值
@@ -248,13 +246,26 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     String etNO = mActivityMeasureCustomBinding.etNO.getText().toString();
                     //获得型的值
                     String etStyle = mActivityMeasureCustomBinding.etStyle.getText().toString();
-                    if (TextUtils.isEmpty(etChest) || TextUtils.isEmpty(etHips) || TextUtils.isEmpty(etClothLength) ||
-                            TextUtils.isEmpty(etShoulder) || TextUtils.isEmpty(etSleeve) || TextUtils.isEmpty(etKuchang) ||
-                            TextUtils.isEmpty(etYaowei) || TextUtils.isEmpty(etNO) || TextUtils.isEmpty(etStyle)) {
-                        OthersUtil.ToastMsg(MeasureCustomActivity.this, "请将输入信息填写完整");
-                        return;
-                    }
+//                    if (TextUtils.isEmpty(etChest) || TextUtils.isEmpty(etHips) || TextUtils.isEmpty(etClothLength) ||
+//                            TextUtils.isEmpty(etShoulder) || TextUtils.isEmpty(etSleeve) || TextUtils.isEmpty(etKuchang) ||
+//                            TextUtils.isEmpty(etYaowei) || TextUtils.isEmpty(etNO) || TextUtils.isEmpty(etStyle)) {
+//                        OthersUtil.ToastMsg(MeasureCustomActivity.this, "请将输入信息填写完整");
+//                        return;
+//                    }
+                    if (etChest.isEmpty())etChest="0";
+                    if (etWaistline.isEmpty())etWaistline="0";
+                    if (etHips.isEmpty())etHips="0";
+                    if (etClothLength.isEmpty())etClothLength="0";
+                    if (etShoulder.isEmpty())etShoulder="0";
+                    if (etSleeve.isEmpty())etSleeve="0";
+                    if (etKuchang.isEmpty())etKuchang="0";
+                    if (etYaowei.isEmpty())etYaowei="0";
+                    if (etNO.isEmpty())etNO="0";
+                    if (etStyle.isEmpty())etStyle="0";
                     int clothLength = Integer.valueOf(etClothLength);
+                    if (Integer.parseInt(etChest) % 2 != 0) {
+                        etChest = String.valueOf(Integer.parseInt(etChest) + 1);
+                    }
                     if (sex.equals("男")) {
 
                         if (clothLength % 2 == 0) {
@@ -523,6 +534,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 });
                 String size = editText.getText().toString().trim();
                 if (size.isEmpty()) size = "0";
+
                 measureDataInSQLite.setISMeterSize(size);
                 subList.set(j, measureDataInSQLite);
             }
@@ -664,6 +676,15 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         final String etNO = mActivityMeasureCustomBinding.etNO.getText().toString();
         //获得型的值
         final String etStyle = mActivityMeasureCustomBinding.etStyle.getText().toString();
+        //获得尺寸来源
+         String s="";
+        if (mActivityMeasureCustomBinding.cbMeasure.isChecked()){
+            s = mActivityMeasureCustomBinding.cbMeasure.getText().toString();
+        }
+       if (mActivityMeasureCustomBinding.cbSay.isChecked()){
+           s = mActivityMeasureCustomBinding.cbSay.getText().toString();
+       }
+       final String source=s;
         OthersUtil.showLoadDialog(mDialog);
         //查询输入框的数据，并保存到数组中
         for (int i = 0; i < mMeasureCustomLists.size(); i++) {
@@ -680,14 +701,13 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 if (orderType != 2) {
                     if (size.isEmpty()) size = "0";
                     measureDataInSQLite.setISMeterSize(size);
-                } else if (orderType == 2 ){
-//                    measureDataInSQLite.setISMeterSize(trim);
-                    if (TextUtils.isEmpty(size)){
+                } else if (orderType == 2) {
+                    if (TextUtils.isEmpty(size)) {
                         measureDataInSQLite.setISMeterSize(trim);
-                    }else {
+                    } else {
                         measureDataInSQLite.setISMeterSize(size);
                     }
-                    measureDataInSQLite.setIrepair(size);
+                    measureDataInSQLite.setIrepair(trim);
 
                 }
                 subList.set(j, measureDataInSQLite);
@@ -704,11 +724,12 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                     List<MeasureDataInSQLite> subList = mMeasureCustomLists.get(i);
                                     for (int j = 0; j < subList.size(); j++) {
                                         MeasureDataInSQLite measureDataInSQLite = subList.get(j);
-                                        String brepair = measureDataInSQLite.getBrepair();
                                         sbStr.append("EXEC spappMeasureSaveMeasureData ")
                                                 .append("@uHrEmployeeGUID='").append(userGUID).append("'")
                                                 .append(",@isdOrderMeterDtlid=").append(measureDataInSQLite.getISdOrderMeterDtlId())
                                                 .append(",@isMeterSize=").append(measureDataInSQLite.getISMeterSize());
+
+
                                         if (!TextUtils.isEmpty(measureDataInSQLite.getIrepair())) {
                                             sbStr.append(",@iRepairSize=").append(measureDataInSQLite.getIrepair());
                                         }
@@ -730,6 +751,7 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                                 .append(",@iWaistLenth=").append(etYaowei)
                                                 .append(",@iHaoNo=").append(etNO)
                                                 .append(",@iXingNo=").append(etStyle)
+                                                .append(",@sSource=").append(source)
                                                 .append("; ");
                                     }
                                 }
@@ -865,7 +887,6 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
             View view = layoutInflater.inflate(R.layout.activity_measure_detial, null);
             TextView tvClothStyle = (TextView) view.findViewById(R.id.tvClothStyle);
             tvClothStyle.setText(mMeasureCustomLists.get(i).get(0).getSValueGroup());
-
             List<MeasureDataInSQLite> measureDataInSQLiteList = mMeasureCustomLists.get(i);
             //添加当前款式每条量体信息
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.llClothTypeList);
@@ -993,7 +1014,11 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 final float finalMaxLength = maxLength;
                 final float finalMinLength = minLength;
                 final boolean finalIsCanPoint = isCanPoint;
-                if (measureDataInSQLite.getBupdated().equalsIgnoreCase("True")) {
+                if (orderType==2){
+                    editText.setTextColor(Color.YELLOW);
+                    tvParameterMeasured.setTextColor(Color.WHITE);
+
+            }else if (measureDataInSQLite.getBupdated().equalsIgnoreCase("True")) {
                     editText.setTextColor(Color.RED);
                     tvParameterMeasured.setTextColor(Color.RED);
                 } else {
@@ -1025,7 +1050,13 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
                 } else {
                     if (!TextUtils.isEmpty(measureDataInSQLite.getISMeterSize())) {
-                        editText.setText(orderType == 2 ? measureDataInSQLite.getIrepair() : String.valueOf((int) Double.parseDouble(measureDataInSQLite.getISMeterSize())));
+                        if (!TextUtils.isEmpty(measureDataInSQLite.getIrepair())) {
+                            editText.setText(orderType == 2 ? String.valueOf((int) Double.parseDouble(measureDataInSQLite.getIrepair())) : String.valueOf((int) Double.parseDouble(measureDataInSQLite.getISMeterSize())));
+                        } else {
+                            editText.setText(orderType == 2 ? measureDataInSQLite.getIrepair() : String.valueOf((int) Double.parseDouble(measureDataInSQLite.getISMeterSize())));
+
+                        }
+
                         tvParameterMeasured.setText(String.valueOf((int) Double.parseDouble(measureDataInSQLite.getISMeterSize())));
                     }
 
@@ -1046,18 +1077,19 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                     @Override
                     public void afterTextChanged(Editable s) {
                         if (s.toString().equals(beforeChanged) || TextUtils.isEmpty(beforeChanged)) {
+                            if (orderType==2){
+                                editText.setTextColor(Color.YELLOW);
+                            }else {
+                                editText.setTextColor(Color.WHITE);
+                                measureDataInSQLite.setBupdated("False");//区分输入框中的数据是否修改过
+                            }
 
-                            editText.setTextColor(Color.WHITE);
-                            measureDataInSQLite.setBupdated("False");
                         } else {
 
                             editText.setTextColor(Color.RED);
                             measureDataInSQLite.setBupdated("True");
 
                         }
-//                        if (orderType == 2) {
-//                            measureDataInSQLite.setBrepair("True");
-//                        }
 
 
                     }
@@ -1106,6 +1138,9 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                                         } else {
 
                                             if ((int) number % 2 == 0) number = number + 1;
+                                            if (number == 1) {
+                                                number = 0;
+                                            }
                                         }
                                     } else {
 
@@ -1265,6 +1300,17 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         mActivityMeasureCustomBinding.etYaowei.setText(measureBaseBean.IWAISTLENTH);
                         mActivityMeasureCustomBinding.etNO.setText(measureBaseBean.IHAONO);
                         mActivityMeasureCustomBinding.etStyle.setText(measureBaseBean.IXINGNO);
+
+                       if( mActivityMeasureCustomBinding.cbMeasure.getText().equals(measureBaseBean.SSOURCE)){
+                           mActivityMeasureCustomBinding.cbMeasure.setChecked(true);
+                        }else{
+                           mActivityMeasureCustomBinding.cbMeasure.setChecked(false);
+                       }
+                       if (mActivityMeasureCustomBinding.cbSay.getText().equals(measureBaseBean.SSOURCE)){
+                           mActivityMeasureCustomBinding.cbSay.setChecked(true);
+                       }else {
+                           mActivityMeasureCustomBinding.cbSay.setChecked(false);
+                       }
                         //整理填充的量体数字
                         Map<String, MeasureDateBean> measureDataMap = new HashMap<>();
                         for (int i = 0; i < measureDateList.size(); i++) {

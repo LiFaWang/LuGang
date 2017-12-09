@@ -54,8 +54,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_buy_selector"
-                    android:text="保存"
-                    android:textColor="#D1BEB0"
+                    android:text="保 存"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorAccent"
                     android:textSize="20sp"/>
             </LinearLayout>
             <LinearLayout
@@ -69,7 +71,7 @@
                     android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:gravity="center">
 
                         <TextView
@@ -84,7 +86,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etHeight"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
@@ -106,7 +108,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etWeight"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:background="@color/gridview_item_line"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
@@ -127,7 +129,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etChest"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
@@ -149,7 +151,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etWaistline"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
@@ -170,7 +172,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etHips"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:background="@color/gridview_item_line"
@@ -214,7 +216,7 @@
                         android:id="@+id/llBaseCloth"
                         android:gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="35dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -226,7 +228,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etClothLength"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:background="@color/gridview_item_line"
@@ -245,7 +247,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etShoulder"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
@@ -264,7 +266,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etSleeve"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
@@ -283,7 +285,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etKuchang"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
@@ -302,7 +304,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etYaowei"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
@@ -321,7 +323,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etNO"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
@@ -340,7 +342,7 @@
 
                         <lugang.app.huansi.net.widget.CustomKeyboardEditText
                             android:id="@+id/etStyle"
-                            android:layout_width="50dp"
+                            android:layout_width="55dp"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:gravity="center"

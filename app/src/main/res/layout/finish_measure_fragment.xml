@@ -71,6 +71,15 @@
             android:layout_gravity="center"
             android:layout_toLeftOf="@id/orderSearch"
             />
+            <TextView
+                android:id="@+id/tvCount"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"
+                android:layout_toLeftOf="@id/orderSearch"
+                android:layout_width="160dp"
+                android:layout_height="40dp"/>
 
 
 

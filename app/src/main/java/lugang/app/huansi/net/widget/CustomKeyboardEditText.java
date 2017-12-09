@@ -17,7 +17,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,6 +47,7 @@ import lugang.app.huansi.net.lugang.R;
 
 @SuppressLint("AppCompatCustomView")
 public class CustomKeyboardEditText extends EditText implements KeyboardView.OnKeyboardActionListener {
+
 
     public interface OnEditFocusListener{
         void onFocus(View view,boolean isFocus);
@@ -385,7 +385,6 @@ public class CustomKeyboardEditText extends EditText implements KeyboardView.OnK
         super.onTouchEvent(event);
         requestFocus();
         requestFocusFromTouch();
-
         if (isNeedCustomKeyboard) {
             hideSysInput();
             showKeyboard();
@@ -442,7 +441,8 @@ public class CustomKeyboardEditText extends EditText implements KeyboardView.OnK
                 }
 
                 mKeyboardView.setKeyboard(mKeyboard);
-                mKeyboardWindow.showAsDropDown(this);
+
+                mKeyboardWindow.showAsDropDown(this,50,0);
                 mKeyboardWindow.update();
 
                 if (null != mDecorView && null != mContentView) {
@@ -467,6 +467,7 @@ public class CustomKeyboardEditText extends EditText implements KeyboardView.OnK
             }
         }
     }
+
 
     private void hideKeyboard() {
         if (null != mKeyboardWindow) {

@@ -17,7 +17,9 @@ import huansi.net.qianjingapp.entity.WsData;
  "IWAISTLENTH": "85",
  "IXINGNO": "92",
  "IHAONO": "175"
+" SSOURCE":""
  }
+
  */
 
 public class MeasureBaseBean extends WsData {
@@ -33,4 +35,5 @@ public class MeasureBaseBean extends WsData {
     public String IWAISTLENTH="";//春秋装的腰围
     public String IHAONO="";//号
     public String IXINGNO="";//型
+    public String SSOURCE="";//量体来源
 }

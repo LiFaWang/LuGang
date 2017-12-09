@@ -150,7 +150,7 @@ public class FinishMeasureFragment extends BaseFragment {
                     OthersUtil.ToastMsg(getContext(),"请先选择要查询的人员所在单位");
                 }else {
                     for (int i = 0; i < mCityList.size(); i++) {
-                        if( mCityList.get(i).getSPerson().equals(sSearch)){
+                        if( mCityList.get(i).getSPerson().contains(sSearch)){
                             personList.add(mCityList.get(i));
                         }
                     }
@@ -374,6 +374,37 @@ public class FinishMeasureFragment extends BaseFragment {
 //            });
         initSearchData();
         loadFinishMeasureData();
+        showQuantity();
+    }
+
+    /**
+     * 查询数量（已量体）
+     */
+    private void showQuantity() {
+        OthersUtil.showLoadDialog(mDialog);
+        final String userGUID = LGSPUtils.getLocalData(getContext(), USER_GUID, String.class.getName(), "").toString();
+
+        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
+                .map(new Func1<String, HsWebInfo>() {
+                    @Override
+                    public HsWebInfo call(String s) {
+                        return NewRxjavaWebUtils.getJsonData(getContext(),CUS_SERVICE,"spappMeasureQueryQty",
+                                "uUserGUID="+userGUID,
+
+
+                                MeasureOrderCustomerBean.class.getName(),
+                                true,
+                                "");
+                    }
+                }), getContext(), mDialog, new SimpleHsWeb() {
+            @Override
+            public void success(HsWebInfo hsWebInfo) {
+                List<WsEntity> listwsdata = hsWebInfo.wsData.LISTWSDATA;
+                MeasureOrderCustomerBean bean = (MeasureOrderCustomerBean) listwsdata.get(0);
+                mFinishMeasureFragmentBinding.tvCount.setText("已量体人数:"+bean.IMEASUREDQTY);
+            }
+        });
+
     }
 
     /**
@@ -400,6 +431,7 @@ public class FinishMeasureFragment extends BaseFragment {
     private void initSearchData() {
         mCustomerStringList.clear();
         mDepartmentStringList.clear();
+        OthersUtil.showLoadDialog(mDialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this, "")
                 //单位信息
                 .map(new Func1<String, HsWebInfo>() {
@@ -496,7 +528,7 @@ public class FinishMeasureFragment extends BaseFragment {
                 }), getActivity(), mDialog, new SimpleHsWeb() {
             @Override
             public void success(HsWebInfo hsWebInfo) {
-
+                OthersUtil.dismissLoadDialog(mDialog);
                 HashMap<String, Object> map = (HashMap<String, Object>) hsWebInfo.object;
                 //获得单位名称
                 List<String> customerList = (List<String>) map.get("depart");

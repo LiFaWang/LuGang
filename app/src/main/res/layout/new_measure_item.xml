@@ -1,53 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="40dp"
+              android:layout_height="50dp"
               android:layout_marginTop="0.5dp"
+              android:id="@+id/llNewMeasureItem"
               android:background="@color/colorMainBackground"
               android:focusable="true"
               android:focusableInTouchMode="true"
               android:orientation="horizontal"
     >
 
+
+
     <TextView
+        android:text="苏润集团"
         android:id="@+id/tvCustomerName"
         style="@style/new_measure_style"
         android:layout_marginLeft="10dp"/>
 
-    <AutoCompleteTextView
-        android:id="@+id/actAreaName"
-        style="@style/new_measure_style"
-        android:completionThreshold="1"
-        android:focusable="false"
-        android:focusableInTouchMode="false"/>
+    <!--<AutoCompleteTextView-->
+        <!--android:id="@+id/actAreaName"-->
+        <!--style="@style/new_measure_style"-->
+        <!--android:completionThreshold="1"-->
+        <!--android:focusable="false"-->
+        <!--android:focusableInTouchMode="false"/>-->
 
-    <AutoCompleteTextView
+    <TextView
         android:id="@+id/actCityName"
         style="@style/new_measure_style"
         android:completionThreshold="1"
         android:focusable="false"
         android:focusableInTouchMode="false"/>
 
-    <AutoCompleteTextView
+    <TextView
         android:id="@+id/actCountyName"
         style="@style/new_measure_style"
         android:completionThreshold="1"
         android:focusable="false"
         android:focusableInTouchMode="false"/>
 
-    <AutoCompleteTextView
+    <TextView
         android:id="@+id/actDepartmentName"
         style="@style/new_measure_style"
         android:completionThreshold="1"
         android:focusable="false"
         android:focusableInTouchMode="false"/>
 
-    <AutoCompleteTextView
-        android:id="@+id/actJobName"
+    <!--<AutoCompleteTextView-->
+        <!--android:id="@+id/actJobName"-->
+        <!--style="@style/new_measure_style"-->
+        <!--android:completionThreshold="1"-->
+        <!--android:focusable="false"-->
+        <!--android:focusableInTouchMode="false"/>-->
+    <EditText
+        android:id="@+id/etJobName"
         style="@style/new_measure_style"
-        android:completionThreshold="1"
-        android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:text=""/>
+
 
     <EditText
         android:id="@+id/etPerson"
@@ -61,14 +70,21 @@
         android:layout_weight="1"
         android:background="@color/colorMainBackground"
         android:gravity="center"/>
-
-    <Spinner
-        android:id="@+id/spClothStyle"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/actClothStyle"
+        style="@style/new_measure_style"
+        android:completionThreshold="1"
         android:layout_weight="1.5"
-        android:background="@color/colorMainBackground"
-        android:gravity="center"/>
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+    <!--<Spinner-->
+        <!--android:id="@+id/spClothStyle"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1.5"-->
+        <!--android:background="@color/colorMainBackground"-->
+        <!--android:gravity="center"/>-->
 
     <EditText
         android:id="@+id/etCount"

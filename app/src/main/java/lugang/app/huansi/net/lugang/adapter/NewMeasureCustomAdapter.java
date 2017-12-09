@@ -37,13 +37,13 @@ public class NewMeasureCustomAdapter extends RecyclerView.Adapter<NewMeasureCust
         public MyViewHolder(View itemView) {
             super(itemView);
             TextView tvCustomerName = (TextView) itemView.findViewById(R.id.tvCustomerName);
-            AutoCompleteTextView actAreaName = (AutoCompleteTextView) itemView.findViewById(R.id.actAreaName);
+//            AutoCompleteTextView actAreaName = (AutoCompleteTextView) itemView.findViewById(R.id.actAreaName);
             AutoCompleteTextView actCityName = (AutoCompleteTextView) itemView.findViewById(R.id.actCityName);
             AutoCompleteTextView actCountyName = (AutoCompleteTextView) itemView.findViewById(R.id.actCountyName);
             AutoCompleteTextView actDepartmentName = (AutoCompleteTextView) itemView.findViewById(R.id.actDepartmentName);
-            AutoCompleteTextView actJobName = (AutoCompleteTextView) itemView.findViewById(R.id.actJobName);
+//            AutoCompleteTextView actJobName = (AutoCompleteTextView) itemView.findViewById(R.id.actJobName);
             AutoCompleteTextView spSex = (AutoCompleteTextView) itemView.findViewById(R.id.spSex);
-            AutoCompleteTextView spClothStyle = (AutoCompleteTextView) itemView.findViewById(R.id.spClothStyle);
+//            AutoCompleteTextView spClothStyle = (AutoCompleteTextView) itemView.findViewById(R.id.spClothStyle);
             AutoCompleteTextView etCount = (AutoCompleteTextView) itemView.findViewById(R.id.etCount);
         }
     }

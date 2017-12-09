@@ -47,4 +47,13 @@ public final class Constant {
         public static final String REMARK_RETURN_DATA="remark_return_data";//备注界面返回的数据
         public static final String STYLE_ID_KEY="ISDSTYLETYPEMSTID";
     }
+    /**
+     * 开启newMeasureCustomActivityConstant的常量
+     */
+    public static class NewMeasureCustomActivityConstant{
+        public static final String TVCUSTOMERSEARCH="tvCustomerSearch";
+        public static final String TVCITYSEARCH="tvCitySearch";
+        public static final String TVCOUNTYSEARCH="tvCountySearch";
+        public static final String TVDEPARTMENTSEARCH="tvDepartmentSearch";
+    }
 }
