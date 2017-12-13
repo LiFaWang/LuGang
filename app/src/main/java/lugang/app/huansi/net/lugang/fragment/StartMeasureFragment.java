@@ -168,6 +168,7 @@ public class StartMeasureFragment extends BaseFragment {
                     mStartAdapter.setList(personList);
                     mStartAdapter.notifyDataSetChanged();
                 }
+                mStartMeasureFragmentBinding.orderSearch.setText("");
 
             }
         });

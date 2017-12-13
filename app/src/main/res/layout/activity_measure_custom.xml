@@ -2,397 +2,431 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+       >
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:id="@+id/measureCustomTopLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorMainBackground"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/palang"
-                    android:scaleType="centerCrop"/>
-
-                <TextView
-                    android:id="@+id/dateRecord"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="量体数据录入"
-                    android:textColor="#D1BEB0"
-                    android:textSize="24sp"/>
-
-                <TextView
-                    android:id="@+id/customName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/dateRecord"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="银行事业部张三"
-                    android:textColor="#D1BEB0"
-                    android:textSize="18sp"/>
-
-                <Button
-                    android:id="@+id/btnSaveMeasure"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_buy_selector"
-                    android:text="保 存"
-                    android:padding="5dp"
-                    android:gravity="center"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/tvHeight"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="身高:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etHeight"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:background="@color/gridview_item_line"
-                            android:inputType="numberDecimal"
-                            android:textColor="#000"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-
-                        <TextView
-                            android:id="@+id/tvWeight"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="体重:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etWeight"
-                            android:layout_width="55dp"
-                            android:background="@color/gridview_item_line"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:inputType="numberDecimal"
-                            android:textColor="#000"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="净胸围:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etChest"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:background="@color/gridview_item_line"
-                            android:inputType="numberDecimal"
-                            android:textColor="#000"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="净腰围:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etWaistline"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:inputType="numberDecimal"
-                            android:background="@color/gridview_item_line"
-                            android:textColor="#000"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="净臀围:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etHips"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:background="@color/gridview_item_line"
-                            android:gravity="center"
-                            android:textColor="#000"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="尺寸来源:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <CheckBox
-                            android:id="@+id/cbMeasure"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:checked="true"
-                            android:gravity="center"
-                            android:text="量体"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <CheckBox
-                            android:id="@+id/cbSay"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="自报"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/llBaseCloth"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="衣长:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etClothLength"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:background="@color/gridview_item_line"
-                            android:gravity="center"
-                            android:textColor="#000"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="肩宽:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etShoulder"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:textColor="#000"
-                            android:textSize="18sp"
-                            android:background="@color/gridview_item_line"
-                            app:xml="@xml/custom_keyboard"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="袖长:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etSleeve"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:textColor="#000"
-                            android:textSize="18sp"
-                            android:background="@color/gridview_item_line"
-                            app:xml="@xml/custom_keyboard"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="裤长:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etKuchang"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:textColor="#000"
-                            android:background="@color/gridview_item_line"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="腰围:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etYaowei"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:textColor="#000"
-                            android:background="@color/gridview_item_line"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="号:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etNO"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:textColor="#000"
-                            android:background="@color/gridview_item_line"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="型:"
-                            android:textColor="#000"
-                            android:textSize="18sp"/>
-
-                        <lugang.app.huansi.net.widget.CustomKeyboardEditText
-                            android:id="@+id/etStyle"
-                            android:layout_width="55dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:textColor="#000"
-                            android:background="@color/gridview_item_line"
-                            android:textSize="18sp"
-                            app:xml="@xml/custom_keyboard"/>
-                        <TextView
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:textSize="16sp"
-                            android:text="(以春秋装为基准)"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"/>
-
-
-                    </LinearLayout>
-                </LinearLayout>
-                <Button
-                    android:id="@+id/btnSure"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/measureCustomTopLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:background="@drawable/btn_buy_selector"
-                    android:text="计算"
-                    android:textColor="#D1BEB0"
-                    android:textSize="18sp"/>/>
+                    android:background="@color/colorMainBackground"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/langpa"
+                        android:scaleType="centerCrop"/>
+
+                    <TextView
+                        android:id="@+id/dateRecord"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="量体数据录入"
+                        android:textColor="#D1BEB0"
+                        android:textSize="24sp"/>
+
+                    <TextView
+                        android:id="@+id/customName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/dateRecord"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="银行事业部张三"
+                        android:textColor="#D1BEB0"
+                        android:textSize="18sp"/>
+
+                    <Button
+                        android:id="@+id/btnSaveMeasure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/btn_buy_selector"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="保 存"
+                        android:textColor="@color/red"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tvHeight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="身高:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etHeight"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:inputType="numberDecimal"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:id="@+id/tvWeight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="体重:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etWeight"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:inputType="numberDecimal"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="净胸围:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etChest"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:inputType="numberDecimal"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="净腰围:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etWaistline"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:inputType="numberDecimal"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="净臀围:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etHips"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="尺寸来源:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <CheckBox
+                                android:id="@+id/cbMeasure"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:checked="true"
+                                android:gravity="center"
+                                android:text="量体"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <CheckBox
+                                android:id="@+id/cbSay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="自报"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llBaseCloth"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="衣长:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etClothLength"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="肩宽:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etShoulder"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="袖长:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etSleeve"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="裤长:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etKuchang"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="腰围:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etYaowei"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="号:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etNO"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="型:"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <lugang.app.huansi.net.widget.CustomKeyboardEditText
+                                android:id="@+id/etStyle"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/gridview_item_line"
+                                android:gravity="center"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                app:xml="@xml/custom_keyboard"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="(以春秋装为准)"
+                                android:textSize="16sp"/>
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnSure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/btn_buy_selector"
+                        android:gravity="center"
+                        android:text="计算"
+                        android:textColor="#D1BEB0"
+                        android:textSize="18sp"/>/>
+                </LinearLayout>
+
+
             </LinearLayout>
 
 
+            <HorizontalScrollView
+                android:id="@+id/hsCloth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llCloth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"/>
+            </HorizontalScrollView>
 
         </LinearLayout>
 
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:text="签字"
+                android:layout_margin="10dp"
+                />
 
-        <HorizontalScrollView
-            android:id="@+id/hsCloth"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal">
+        </android.support.design.widget.CoordinatorLayout>
 
-            <LinearLayout
-                android:id="@+id/llCloth"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"/>
-        </HorizontalScrollView>
 
-    </LinearLayout>
+
 </layout>

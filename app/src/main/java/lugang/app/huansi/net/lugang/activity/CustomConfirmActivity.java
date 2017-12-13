@@ -160,8 +160,26 @@ public class CustomConfirmActivity extends NotWebBaseActivity {
             public void onClick(View v) {
 //                mCustomConfirmActivityBinding.btnSavePng.setVisibility(View.INVISIBLE);
 //                mCustomConfirmActivityBinding.llEcho.setVisibility(View.GONE);
-                //截屏
-                screenShot(orderId, scustomername);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CustomConfirmActivity.this);
+                builder.setTitle("提示");
+                builder.setMessage("确认函信息已经确认无误，截图上传服务器存档");
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //截屏
+                        screenShot(orderId, scustomername);
+                        mCustomConfirmActivityBinding.btnSavePng.setVisibility(View.VISIBLE);
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
     }

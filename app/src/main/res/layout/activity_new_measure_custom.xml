@@ -26,12 +26,12 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="待量体清单人员增加界面"
+                android:text="新增待量人员"
                 android:textColor="@color/colorMainBackgroundText"
                 android:textSize="20sp"/>
 
             <Spinner
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:id="@+id/spMeasureNo"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             </Spinner>
 
             <TextView
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:id="@+id/tvCustomerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
 
             <TextView
                 android:id="@+id/tvCustomerCode"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -69,6 +69,68 @@
                 android:textSize="18sp">
 
             </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorMainBackground"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="岗位:"
+                android:textColor="#fff"
+                android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/etJob"
+                android:layout_width="70dp"
+                android:layout_gravity="center"
+                android:background="@color/colorMainBackground"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:padding="3dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorMainBackground"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="姓名:"
+                android:textColor="#fff"
+                android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="70dp"
+                android:layout_gravity="center"
+                android:background="@color/colorMainBackground"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:padding="3dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorMainBackground"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="性别:"
+                android:textColor="#fff"
+                android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/etSex"
+                android:text="男"
+                android:layout_gravity="center"
+                android:background="@color/colorMainBackground"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:padding="3dp"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"/>
+
 
             <Button
                 android:id="@+id/btnNewMeasure"

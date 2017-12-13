@@ -161,7 +161,7 @@ public class FinishMeasureFragment extends BaseFragment {
                     mFinishAdapter.notifyDataSetChanged();
                 }
 
-
+                mFinishMeasureFragmentBinding.orderSearch.setText("");
 
             }
         });

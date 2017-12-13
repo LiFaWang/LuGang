@@ -94,6 +94,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
     private String[] sexArr = {"男", "女"};
     private RecyclerView mRecyclerView;
     private List<String> mClothList;
+    private Map<String, String> mNewMeasureClothTypeMap;
 
 
     @Override
@@ -108,49 +109,18 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
 //        mClothStyleidStringList = new ArrayList<>();
         mObtainNewMeasureOrderNoBeanList = new ArrayList<>();
 //        mClothStyleMap = new HashMap<>();
+        mNewMeasureClothTypeMap = new HashMap<>();
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         NewMeasureCustomAdapter adapter = new NewMeasureCustomAdapter();
         mRecyclerView.setAdapter(adapter);
         clothStyleList = new ArrayList<>();
+        mClothList = new ArrayList<>();
         //获取量体清单编号
         initBaseData();
-        mClothList = new ArrayList<>();
-        //新增待量体名单
-        mActivityNewMeasureCustomBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mClothList.clear();
-                mActivityNewMeasureCustomBinding.llNewCustom.removeAllViews();
-                final String[] clothTypeArray = {"春秋上衣", "春秋裤子",  "冬装上衣", "冬装裤子",
-                        "夏装上衣", "夏装裤子", "大衣", "冬装裤子", "马甲",
-                        "女裙", "长袖衬衫", "短袖衬衫", "毛衣", "背心", "T恤", "夹克","工装上衣",
-                        "工装裤子", "防寒棉衣"};
-                new AlertDialog.Builder(NewMeasureCustomActivity.this)
-                        .setTitle("请选择衣服款式")
-                        .setMultiChoiceItems(clothTypeArray, null, new DialogInterface.OnMultiChoiceClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
-                                if (isChecked) {
-                                    mClothList.add(clothTypeArray[which]);
-                                }
 
-                            }
-                        })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                addNewItem();
-                            }
-                        })
-                        .setNegativeButton("取消", null)
-                        .show();
-
-            }
-        });
         //上传服务器
         mActivityNewMeasureCustomBinding.btnSaveMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,6 +194,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                             ObtainNewMeasureOrderNoBean obtainNewMeasureOrderNoBean = (ObtainNewMeasureOrderNoBean) orderAndCustomerList.get(i);
                             mObtainNewMeasureOrderNoBeanList.add(obtainNewMeasureOrderNoBean);
                         }
+                        initClothStyle();
                         //选取清单编号
                         selectorNewMeasureOrderNo();
                     }
@@ -258,6 +229,8 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                     mActivityNewMeasureCustomBinding.tvCustomerName.setText(mObtainNewMeasureOrderNoBeanList.get(position - 1).SCUSTOMERNAME);
                     mActivityNewMeasureCustomBinding.tvCustomerCode.setText(mObtainNewMeasureOrderNoBeanList.get(position - 1).SCUSTOMERCODE);
                 }
+
+
 //                //新增待量体清单人员条目界面
 //                mActivityNewMeasureCustomBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -300,10 +273,13 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
             EditText etJobName = (EditText) view.findViewById(R.id.etJobName);
             TextView actClothStyle = (TextView) view.findViewById(R.id.actClothStyle);
             EditText etPerson = (EditText) view.findViewById(R.id.etPerson);
-            Spinner spSex = (Spinner) view.findViewById(R.id.spSex);
+            EditText etNewSex = (EditText) view.findViewById(R.id.etNewSex);
+//            Spinner spSex = (Spinner) view.findViewById(R.id.spSex);
 //            Spinner spClothStyle= (Spinner) view.findViewById(R.id.spClothStyle);
             EditText etCount = (EditText) view.findViewById(R.id.etCount);
+            String clothId = mNewMeasureClothTypeMap.get(actClothStyle.getText().toString());
             JSONObject item = new JSONObject();
+
             try {
                 item.put("customer", tvCustomerName.getText().toString());
                 item.put("area","");
@@ -313,9 +289,10 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                 item.put("job",actJobName.getText().toString());
 //                item.put("job", etJobName.getText().toString());
                 item.put("person", etPerson.getText().toString());
-                item.put("sex", sexArr[spSex.getSelectedItemPosition()]);
+//                item.put("sex", sexArr[spSex.getSelectedItemPosition()]);
+                item.put("sex", etNewSex.getText().toString());
 //                item.put("clothStyleID",clothStyleList.get(spClothStyle.getSelectedItemPosition()).ISDSTYLETYPEMSTID);
-                item.put("clothStyleID", actClothStyle.getText().toString());
+                item.put("clothStyleID", clothId);
                 item.put("count", etCount.getText().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -355,10 +332,10 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                                             ObtainNewMeasureOrderNoBean bean = map.get(customer);
 
                                             sbStr.append("EXEC spappAddOneMeasureDtl ")
-                                                    .append("@isdOrderMeterMstid=").append(bean.ISDORDERMETERMSTID)
-                                                    .append(",@sAreaName='").append(area).append("'")
-                                                    .append(",@sCustomerName='").append(customer).append("'")
-                                                    .append(",@sCityName='").append(city).append("'")
+                                                  .append("@isdOrderMeterMstid=").append(bean.ISDORDERMETERMSTID)
+                                                  .append(",@sAreaName='").append(area).append("'")
+                                                  .append(",@sCustomerName='").append(customer).append("'")
+                                                  .append(",@sCityName='").append(city).append("'")
                                                     .append(",@sCountyName='").append(country).append("'")
                                                     .append(",@sDepartmentName='").append(department).append("'")
                                                     .append(",@sJobName='").append(job).append("'")
@@ -500,6 +477,117 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
         );
     }
 
+
+    /**
+     * 初始化量体款式
+     */
+    private void initClothStyle(){
+        OthersUtil.showLoadDialog(mDialog);
+        final String billNo = "1";
+        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this,"")
+                .map(new Func1<String, HsWebInfo>() {
+            @Override
+            public HsWebInfo call(String s) {
+                Map<String, Object> map = new HashMap<>();
+                HsWebInfo hsWebInfo = null;
+                if (NetUtil.isNetworkAvailable(getApplicationContext())) {
+                    hsWebInfo = NewRxjavaWebUtils.getJsonData(getApplicationContext(), CUS_SERVICE,
+                            "spappMeasureAddBaseData",
+                            "iIndex=1" +
+                                    ",sOrderBillNo=" + billNo,
+                            NewMeasureBean.class.getName(),
+                            true, "服装类型有错误");
+                    if (!hsWebInfo.success) return hsWebInfo;
+                    map.put("clothStyle", hsWebInfo.wsData.LISTWSDATA);
+                } else {
+                    MeasureOrderDtlStyleBaseDataInSQLiteDao measureStyleBaseDataInSQLiteDao = GreenDaoUtil
+                            .getGreenDaoSession(getApplicationContext()).getMeasureOrderDtlStyleBaseDataInSQLiteDao();
+                    List<MeasureOrderDtlStyleBaseDataInSQLite> orderDtlStyleBaseDataInSQLiteList = measureStyleBaseDataInSQLiteDao.queryBuilder()
+                            .list();
+                    List<WsEntity> beanList = new ArrayList<>();
+//                                    Map<String,MeasureStyleBaseDataInSQLite> measureStyleBaseDataInSQLiteMap=new HashMap<>();
+                    Set<String> styleIdAdded = new HashSet<>();
+                    for (MeasureOrderDtlStyleBaseDataInSQLite orderDtlStyleBaseDataInSQLite : orderDtlStyleBaseDataInSQLiteList) {
+                        if (styleIdAdded.contains(orderDtlStyleBaseDataInSQLite.getISdStyleTypeMstId()))
+                            continue;
+                        NewMeasureBean bean = new NewMeasureBean();
+                        bean.SVALUEGROUP = orderDtlStyleBaseDataInSQLite.getSValueGroup();
+                        bean.ISDSTYLETYPEMSTID = orderDtlStyleBaseDataInSQLite.getISdStyleTypeMstId();
+                        beanList.add(bean);
+                        styleIdAdded.add(bean.ISDSTYLETYPEMSTID);
+                    }
+                    map.put("clothStyle", beanList);
+                }
+                if (hsWebInfo == null) hsWebInfo = new HsWebInfo();
+                hsWebInfo.object = map;
+                return hsWebInfo;
+            }
+        }), this, mDialog, new SimpleHsWeb() {
+            @Override
+            public void success(HsWebInfo hsWebInfo) {
+
+                //新增一行表单
+                Map<String, Object> map = (Map<String, Object>) hsWebInfo.object;
+
+                List<WsEntity> clothStyleLists = (List<WsEntity>) map.get("clothStyle");
+                for (int i = 0; i < clothStyleLists.size(); i++) {
+                    NewMeasureBean clothStyleBean = (NewMeasureBean) clothStyleLists.get(i);
+                    clothStyleList.add(clothStyleBean);
+                }
+                //新增待量体名单
+                mActivityNewMeasureCustomBinding.btnNewMeasure.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mClothList.clear();
+                        mActivityNewMeasureCustomBinding.llNewCustom.removeAllViews();
+
+                        List<String> totalClothTypeList=new ArrayList<>();
+                        for (int i = 0; i <clothStyleList.size() ; i++) {
+                            String svaluegroup = clothStyleList.get(i).SVALUEGROUP;
+                            totalClothTypeList.add(svaluegroup);
+                            String isdstyletypemstid = clothStyleList.get(i).ISDSTYLETYPEMSTID;
+                            mNewMeasureClothTypeMap.put(svaluegroup,isdstyletypemstid);
+                        }
+                        final String[] clothTypeArray =  totalClothTypeList.toArray(new String[totalClothTypeList.size()]);
+
+//                final String[] clothTypeArray = {"春秋上衣", "春秋裤子",  "冬装上衣", "冬装裤子",
+//                        "夏装上衣", "夏装裤子", "大衣", "冬装裤子", "马甲",
+//                        "女裙", "长袖衬衫", "短袖衬衫", "毛衣", "背心", "T恤", "夹克","工装上衣",
+//                        "工装裤子", "防寒棉衣"};
+                       new AlertDialog.Builder(NewMeasureCustomActivity.this)
+                                .setTitle("请选择衣服款式")
+                                .setMultiChoiceItems(clothTypeArray, null, new DialogInterface.OnMultiChoiceClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                                        if (isChecked) {
+                                            mClothList.add(clothTypeArray[which]);
+                                        }
+
+                                    }
+                                })
+
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        addNewItem();
+                                    }
+                                })
+                                .setNegativeButton("取消", null)
+                                .show();
+
+
+                    }
+                });
+
+            }
+        });
+
+    }
+
     /**
      * 添加新的量体订单
      */
@@ -529,7 +617,6 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                                     List<MeasureOrderDtlStyleBaseDataInSQLite> orderDtlStyleBaseDataInSQLiteList = measureStyleBaseDataInSQLiteDao.queryBuilder()
                                             .list();
                                     List<WsEntity> beanList = new ArrayList<>();
-//                                    Map<String,MeasureStyleBaseDataInSQLite> measureStyleBaseDataInSQLiteMap=new HashMap<>();
                                     Set<String> styleIdAdded = new HashSet<>();
                                     for (MeasureOrderDtlStyleBaseDataInSQLite orderDtlStyleBaseDataInSQLite : orderDtlStyleBaseDataInSQLiteList) {
                                         if (styleIdAdded.contains(orderDtlStyleBaseDataInSQLite.getISdStyleTypeMstId()))
@@ -813,6 +900,9 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
         String tvCitySearch = intent.getStringExtra(TVCITYSEARCH);
         String tvCountySearch = intent.getStringExtra(TVCOUNTYSEARCH);
         String tvDepartmentSearch = intent.getStringExtra(TVDEPARTMENTSEARCH);
+        String etJob = mActivityNewMeasureCustomBinding.etJob.getText().toString();
+        String etName = mActivityNewMeasureCustomBinding.etName.getText().toString();
+        String etSex = mActivityNewMeasureCustomBinding.etSex.getText().toString();
 
 
         for (int i = 0; i < mClothList.size(); i++) {
@@ -850,6 +940,11 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
             TextView actDepartmentName = (TextView) view.findViewById(R.id.actDepartmentName);
             TextView actClothStyle = (TextView) view.findViewById(R.id.actClothStyle);
             TextView etJobName = (TextView) view.findViewById(R.id.etJobName);
+            TextView etPerson = (TextView) view.findViewById(R.id.etPerson);
+            TextView etNewSex = (TextView) view.findViewById(R.id.etNewSex);
+            etJobName.setText(etJob);
+            etPerson.setText(etName);
+            etNewSex.setText(etSex);
             Spinner spSex = (Spinner) view.findViewById(R.id.spSex);
             ArrayAdapter<String> sexAdapter = new ArrayAdapter<>(this, R.layout.element_string_item, R.id.tvElementString, sexArr);
             spSex.setAdapter(sexAdapter);

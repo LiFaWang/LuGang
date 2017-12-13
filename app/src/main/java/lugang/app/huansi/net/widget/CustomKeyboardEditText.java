@@ -442,7 +442,7 @@ public class CustomKeyboardEditText extends EditText implements KeyboardView.OnK
 
                 mKeyboardView.setKeyboard(mKeyboard);
 
-                mKeyboardWindow.showAsDropDown(this,50,0);
+                mKeyboardWindow.showAsDropDown(this,getMeasuredWidth(),0);
                 mKeyboardWindow.update();
 
                 if (null != mDecorView && null != mContentView) {

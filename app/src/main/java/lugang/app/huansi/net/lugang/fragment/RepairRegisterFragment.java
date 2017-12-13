@@ -112,7 +112,7 @@ public class RepairRegisterFragment extends BaseFragment {
                     mRepairAdapter.notifyDataSetChanged();
                 }
 
-
+                mRepairFragmentBinding.orderSearch.setText("");
 
             }
         });
