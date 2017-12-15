@@ -2,61 +2,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:orientation="horizontal"
               android:layout_gravity="center_vertical"
+              android:orientation="horizontal"
     >
-    <TextView
-        android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:textSize="20sp"
-        android:padding="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:text="客户确认"/>
 
-    <ImageView
-        android:id="@+id/ivSign"
-        android:visibility="invisible"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="客户确认"
+        android:textSize="20sp"/>
+
+    <FrameLayout
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/ivSign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/ivOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:src="@drawable/confirmed"
+            android:visibility="invisible"/>
+    </FrameLayout>
+
+
     <com.github.gcacace.signaturepad.views.SignaturePad
+        android:id="@+id/signature_pad"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/signature_pad"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:background="@color/white"
-        android:layout_gravity="center_vertical"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         app:penColor="@android:color/black"
         />
-    <TextView
-        android:id="@+id/tvReset"
-        android:layout_gravity="end|bottom"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:text="重写"/>
+
+
+
     <TextView
         android:id="@+id/tvSave"
-        android:layout_gravity="end|bottom"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:textSize="20sp"
-        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:text="完成"/>
+        android:layout_gravity="end|bottom"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="完成"
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/tvReset"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="重写"
+        android:textSize="20sp"/>
 </LinearLayout>
 

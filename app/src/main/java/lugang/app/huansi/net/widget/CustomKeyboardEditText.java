@@ -60,12 +60,18 @@ public class CustomKeyboardEditText extends EditText implements KeyboardView.OnK
     }
 
     private static final String TAG = "myLog";
+
+
     private Keyboard mKeyboard;
     private KeyboardView mKeyboardView;
 
     private Window mWindow;
     private View mDecorView;
     private View mContentView;
+
+    public PopupWindow getKeyboardWindow() {
+        return mKeyboardWindow;
+    }
 
     private PopupWindow mKeyboardWindow;
 
@@ -442,12 +448,21 @@ public class CustomKeyboardEditText extends EditText implements KeyboardView.OnK
 
                 mKeyboardView.setKeyboard(mKeyboard);
 
-                mKeyboardWindow.showAsDropDown(this,getMeasuredWidth(),0);
+//                    mKeyboardWindow.showAsDropDown(this,getMeasuredWidth(),0);
+
                 mKeyboardWindow.update();
 
                 if (null != mDecorView && null != mContentView) {
+
                     int[] pos = new int[2];
                     getLocationOnScreen(pos);
+                    int x = pos[0];
+                    int y = pos[1];
+                    if (x>screenWidth/2){
+                        mKeyboardWindow.showAsDropDown(this,-400,0);
+                    }else {
+                        mKeyboardWindow.showAsDropDown(this,getMeasuredWidth(),0);
+                    }
                     float height = dpToPx(getContext(), 240);
 
                     int[] hsmlpos = new int[2];

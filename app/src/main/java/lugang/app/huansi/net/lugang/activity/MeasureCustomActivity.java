@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -27,6 +29,10 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -236,10 +242,20 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                 TextView tvReset = (TextView) addView.findViewById(R.id.tvReset);
                 TextView tvSave = (TextView) addView.findViewById(R.id.tvSave);
                 final ImageView ivSign = (ImageView) addView.findViewById(R.id.ivSign);
+                final ImageView ivOk = (ImageView) addView.findViewById(R.id.ivOk);
                 final SignaturePad signaturePad = (SignaturePad) addView.findViewById(R.id.signature_pad);
                 LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 150);
                 p.gravity = Gravity.CENTER_VERTICAL;
                 snackbarLayout.addView(addView, 0, p);
+                //展示已经确认的签名
+                String rootPath = getExternalFilesDir("confirmName").getAbsoluteFile()
+                        + "/" + mCustomername + mDepartmentname + person + sex + "_" + orderId + ".png";
+                Bitmap diskBitmap = getDiskBitmap(rootPath);
+                if (diskBitmap != null) {
+                    ivSign.setVisibility(View.VISIBLE);
+                    ivSign.setImageBitmap(diskBitmap);
+                    ivOk.setVisibility(View.VISIBLE);
+                }
                 tvReset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -247,16 +263,48 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
                     }
                 });
-                tvSave.setOnClickListener(new View.OnClickListener() {
+                tvSave.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onLongClick(View v) {
                         Bitmap bitmap = signaturePad.getSignatureBitmap();
 //                        SDCardHelper.saveBitmapToSDCardPrivateCacheDir(bitmap,mCustomername+mDepartmentname
 //                        +person+sex,MeasureCustomActivity.this);
                         ivSign.setImageBitmap(bitmap);
+                        FileOutputStream fos = null;
+                        String rootPath = getExternalFilesDir("confirmName")
+                                + "/" + mCustomername + mDepartmentname
+                                + person + sex + "_" + orderId + ".png";
+                        File file = new File(rootPath);
+
+                        try {
+                            fos = new FileOutputStream(file);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        //把bitmap压缩成png格式，并通过fos写入到目标文件
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        try {
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         ivSign.setVisibility(View.VISIBLE);
+                        ivOk.setVisibility(View.VISIBLE);
+                        return true;
                     }
                 });
+//                tvSave.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Bitmap bitmap = signaturePad.getSignatureBitmap();
+////                        SDCardHelper.saveBitmapToSDCardPrivateCacheDir(bitmap,mCustomername+mDepartmentname
+////                        +person+sex,MeasureCustomActivity.this);
+//                        ivSign.setImageBitmap(bitmap);
+//                        ivSign.setVisibility(View.VISIBLE);
+//                        ivOk.setVisibility(View.VISIBLE);
+//                    }
+//                });
 
                 mSnackbar.show();
                 mActivityMeasureCustomBinding.floatingActionButton.hide();
@@ -278,7 +326,19 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         });
 
 
+    }
 
+    private Bitmap getDiskBitmap(String pathString) {
+        Bitmap bitmap = null;
+        try {
+            File file = new File(pathString);
+            if (file.exists()) {
+                bitmap = BitmapFactory.decodeFile(pathString);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return bitmap;
     }
 
     /**
@@ -346,8 +406,8 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
                         if (clothLength % 2 == 0) {
                             clothLength = clothLength + 1;
                         }
-                        if (hips%2!=0){
-                            hips=hips+1;
+                        if (hips % 2 != 0) {
+                            hips = hips + 1;
                         }
 
                     } else if (sex.equals("女")) {
@@ -731,10 +791,10 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
     //保存录入信息
     private void submitMeasureData() {
         //获得身高
-       String etHeight = mActivityMeasureCustomBinding.etHeight.getText().toString();
+        String etHeight = mActivityMeasureCustomBinding.etHeight.getText().toString();
         if (etHeight.isEmpty()) etHeight = "0";
         //获得体重
-       String etWeight = mActivityMeasureCustomBinding.etWeight.getText().toString();
+        String etWeight = mActivityMeasureCustomBinding.etWeight.getText().toString();
         if (etWeight.isEmpty()) etWeight = "0";
         //获得净胸围的值
         final String etChest = mActivityMeasureCustomBinding.etChest.getText().toString();
@@ -755,13 +815,13 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
         String etKuchang = mActivityMeasureCustomBinding.etKuchang.getText().toString();
         if (etKuchang.isEmpty()) etKuchang = "0";
         //获得春秋腰围的值
-         String etYaowei = mActivityMeasureCustomBinding.etYaowei.getText().toString();
+        String etYaowei = mActivityMeasureCustomBinding.etYaowei.getText().toString();
         if (etYaowei.isEmpty()) etYaowei = "0";
         //获得号的值
-         String etNO = mActivityMeasureCustomBinding.etNO.getText().toString();
+        String etNO = mActivityMeasureCustomBinding.etNO.getText().toString();
         if (etNO.isEmpty()) etNO = "0";
         //获得型的值
-         String etStyle = mActivityMeasureCustomBinding.etStyle.getText().toString();
+        String etStyle = mActivityMeasureCustomBinding.etStyle.getText().toString();
         if (etStyle.isEmpty()) etStyle = "0";
         //获得尺寸来源
         String s = "";
@@ -1158,7 +1218,18 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 
                 }
                 final String beforeChanged = editText.getText().toString();
-
+//                int[] location = new int[2];
+//                editText.getLocationOnScreen(location);
+//                int x = location[0];
+//                int y = location[1];
+//                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+//                int widthWindow = wm.getDefaultDisplay().getWidth();
+//                int heightWindow = wm.getDefaultDisplay().getHeight();
+//                if (x>widthWindow/2){
+//                    editText.getKeyboardWindow().showAsDropDown(editText,-editText.getMeasuredWidth(),0);
+//                }else {
+//                    editText.getKeyboardWindow().showAsDropDown(editText,editText.getMeasuredWidth(),0);
+//                }
 
                 editText.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -1663,5 +1734,42 @@ public class MeasureCustomActivity extends NotWebBaseActivity {
 //        view.requestFocus();
 //        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 //        if(imm!=null) imm.hideSoftInputFromWindow(mActivityMeasureCustomBinding.btnSaveMeasure.getWindowToken(), 0);
+//    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+//        PopupWindow keyboardWindow = mEditText.getKeyboardWindow();
+//        switch (event.getAction()){
+//            case MotionEvent.ACTION_DOWN:
+//                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+//                int widthWindow = wm.getDefaultDisplay().getWidth();
+//                int heightWindow = wm.getDefaultDisplay().getHeight();
+//                if (event.getX()>widthWindow/2){
+//                    keyboardWindow.showAsDropDown(mEditText,-mEditText.getMeasuredWidth(),0);
+//                }else {
+//                    keyboardWindow.showAsDropDown(mEditText,mEditText.getMeasuredWidth(),0);
+//                }
+//               break;
+//        }
+
+        return super.onTouchEvent(event);
+    }
+
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        PopupWindow keyboardWindow = mEditText.getKeyboardWindow();
+//        switch (ev.getAction()){
+//            case MotionEvent.ACTION_DOWN:
+//                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+//                int widthWindow = wm.getDefaultDisplay().getWidth();
+//                int heightWindow = wm.getDefaultDisplay().getHeight();
+//                if (ev.getX()>widthWindow/2){
+//                    keyboardWindow.showAsDropDown(mEditText,-mEditText.getMeasuredWidth(),0);
+//                }else {
+//                    keyboardWindow.showAsDropDown(mEditText,mEditText.getMeasuredWidth(),0);
+//                }
+//                return true;
+//        }
+//        return super.dispatchTouchEvent(ev);
 //    }
 }

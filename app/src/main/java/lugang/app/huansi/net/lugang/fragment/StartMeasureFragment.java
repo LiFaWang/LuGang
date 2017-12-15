@@ -85,6 +85,7 @@ public class StartMeasureFragment extends BaseFragment {
     private List<MeasureOrderInSQLite> mCountyList;//根据地市选择的县市集合
     private List<MeasureOrderInSQLite> mDepartmentList;//根据县市选择的部门集合
     private List<MeasureOrderInSQLite> mPersonList;//根据部门选择的姓名的集合
+    private List<MeasureOrderInSQLite> mShortlisted;//筛选后的所有数据集合
 
     @Override
     public int getLayout() {
@@ -104,6 +105,7 @@ public class StartMeasureFragment extends BaseFragment {
         mSCityNameLists = new ArrayList<>();
         mSCountyNameLists = new ArrayList<>();
         mSDepartmentNameLists = new ArrayList<>();
+        mShortlisted = new ArrayList<>();
 
         mStartAdapter = new StartAdapter(measureOrderInSQLiteList, getContext());
         mStartMeasureFragmentBinding.lvCustomer.setAdapter(mStartAdapter);
@@ -145,30 +147,35 @@ public class StartMeasureFragment extends BaseFragment {
             }
         });
         /**
-         * 筛选查询
+         * 模糊查询
          */
         mStartMeasureFragmentBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                loadMeasureData();
-                List<MeasureOrderInSQLite> personList = new ArrayList<>();
-                String sSearch = mStartMeasureFragmentBinding.orderSearch.getText().toString();
                 String s = mStartMeasureFragmentBinding.tvCustomerSearch.getText().toString();
                 if (s.equals("单位")) {
                     OthersUtil.ToastMsg(getContext(), "请先选择要查询的人员所在单位");
-                } else {
+                    return;
+                }
+                List<MeasureOrderInSQLite> personList = new ArrayList<>();
+                String sSearch = mStartMeasureFragmentBinding.orderSearch.getText().toString();
+                if (!sSearch.isEmpty()){
+
                     for (int i = 0; i < mCityList.size(); i++) {
                         if (mCityList.get(i).getSPerson().contains(sSearch)) {
                             personList.add(mCityList.get(i));
                         }
                     }
+
                     if (personList.isEmpty() || personList.size() == 0) {
                         OthersUtil.ToastMsg(getContext(), "该单位没有您要查找到" + sSearch);
                     }
                     mStartAdapter.setList(personList);
                     mStartAdapter.notifyDataSetChanged();
+
+                    mStartMeasureFragmentBinding.orderSearch.setText("");
                 }
-                mStartMeasureFragmentBinding.orderSearch.setText("");
 
             }
         });
@@ -243,6 +250,7 @@ public class StartMeasureFragment extends BaseFragment {
 
     }
 
+
     /**
      * popWindow
      *
@@ -294,8 +302,11 @@ public class StartMeasureFragment extends BaseFragment {
                                 MeasureOrderInSQLite measureOrderInSQLite = measureOrderInSQLiteList.get(i);
                                 if (itemCountry.equals(measureOrderInSQLite.getSCustomerName())) {
                                     mCityList.add(measureOrderInSQLite);
+
                                 }
+
                             }
+                            mShortlisted.addAll(mCityList);
                             for (int j = 0; j < mCityList.size(); j++) {
                                 String sCityName = mCityList.get(j).getSCityName();
                                 sCityString.add(sCityName);
@@ -324,6 +335,8 @@ public class StartMeasureFragment extends BaseFragment {
                                     mCountyList.add(measureOrderInSQLite);
                                 }
                             }
+                            mShortlisted.clear();
+                            mShortlisted.addAll(mCountyList);
                             for (int i = 0; i < mCountyList.size(); i++) {
                                 String sCountyName = mCountyList.get(i).getSCountyName();
                                 sCountyString.add(sCountyName);
@@ -347,6 +360,8 @@ public class StartMeasureFragment extends BaseFragment {
                                 mDepartmentList.add(measureOrderInSQLite);
                             }
                         }
+                        mShortlisted.clear();
+                        mShortlisted.addAll(mDepartmentList);
                         for (int i = 0; i < mDepartmentList.size(); i++) {
                             String sDepartmentName = mDepartmentList.get(i).getSDepartmentName();
                             sDepartmentString.add(sDepartmentName);
@@ -366,6 +381,8 @@ public class StartMeasureFragment extends BaseFragment {
                                 mPersonList.add(measureOrderInSQLite);
                             }
                         }
+                        mShortlisted.clear();
+                        mShortlisted.addAll(mDepartmentList);
                         mStartAdapter.setList(mPersonList);
                         mStartAdapter.notifyDataSetChanged();
                         break;
@@ -403,11 +420,64 @@ public class StartMeasureFragment extends BaseFragment {
 //                    loadMeasureData();
 //                }
 //            });
-        initSearchData();
+
         loadMeasureData();
+//        initSearchData();
         showQuantity();
+        redisplay(); //重新获得上次筛选的数据集合
+
 
     }
+
+    /**
+     * 重新获得上次筛选的数据集合
+     */
+    private void redisplay() {
+//        String tvCustomerSearch = mStartMeasureFragmentBinding.tvCustomerSearch.getText().toString();
+//        String tvCitySearch = mStartMeasureFragmentBinding.tvCitySearch.getText().toString();
+//        String tvCountySearch = mStartMeasureFragmentBinding.tvCountySearch.getText().toString();
+//        String tvDepartmentSearch = mStartMeasureFragmentBinding.tvDepartmentSearch.getText().toString();
+//        if(tvCustomerSearch.equals("单位")){
+//            mCityList.addAll(measureOrderInSQLiteList);
+//            mStartAdapter.setList(mCityList);
+//        }else if(tvCitySearch.equals("地市")){
+//            for (int i = 0; i < mCityList.size(); i++) {
+//                MeasureOrderInSQLite measureOrderInSQLite = mCityList.get(i);
+//                if (tvCitySearch.equals(measureOrderInSQLite.getSCityName())) {
+//                    mCountyList.add(measureOrderInSQLite);
+//                }
+//            }
+//            mStartAdapter.setList(mCountyList);
+//
+//        }else if (tvCountySearch.equals("县市")){
+//            for (int i = 0; i < mCountyList.size(); i++) {
+//                MeasureOrderInSQLite measureOrderInSQLite = mCountyList.get(i);
+//                if (tvCountySearch.equals(measureOrderInSQLite.getSCountyName())) {
+//                    mDepartmentList.add(measureOrderInSQLite);
+//                }
+//            }
+//            mStartAdapter.setList(mDepartmentList);
+//
+//
+//
+//        } else if (tvDepartmentSearch.equals("部门")){
+//            for (int i = 0; i < mDepartmentList.size(); i++) {
+//                MeasureOrderInSQLite measureOrderInSQLite = mDepartmentList.get(i);
+//                if (tvDepartmentSearch.equals(measureOrderInSQLite.getSDepartmentName())) {
+//                    mPersonList.add(measureOrderInSQLite);
+//                }
+//            }
+//            mStartAdapter.setList(mPersonList);
+//
+//
+//        }
+        if (mShortlisted.size()>0&&mShortlisted!=null){
+            mStartAdapter.setList(mShortlisted);
+            mStartAdapter.notifyDataSetChanged();
+        }
+
+    }
+
     /**
      * 查询数量（未量体）
      */
@@ -451,6 +521,7 @@ public class StartMeasureFragment extends BaseFragment {
             initSearchData();
             loadMeasureData();
         } catch (Exception e) {
+
         }
     }
 

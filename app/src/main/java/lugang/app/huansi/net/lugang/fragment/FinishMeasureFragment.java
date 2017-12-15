@@ -372,8 +372,9 @@ public class FinishMeasureFragment extends BaseFragment {
 //                    loadFinishMeasureData();
 //                }
 //            });
-        initSearchData();
+
         loadFinishMeasureData();
+        initSearchData();
         showQuantity();
     }
 

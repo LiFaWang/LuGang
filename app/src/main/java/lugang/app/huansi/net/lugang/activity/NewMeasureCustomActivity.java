@@ -529,7 +529,7 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
                 //新增一行表单
                 Map<String, Object> map = (Map<String, Object>) hsWebInfo.object;
 
-                List<WsEntity> clothStyleLists = (List<WsEntity>) map.get("clothStyle");
+                final List<WsEntity> clothStyleLists = (List<WsEntity>) map.get("clothStyle");
                 for (int i = 0; i < clothStyleLists.size(); i++) {
                     NewMeasureBean clothStyleBean = (NewMeasureBean) clothStyleLists.get(i);
                     clothStyleList.add(clothStyleBean);
@@ -564,6 +564,8 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
 
                                         if (isChecked) {
                                             mClothList.add(clothTypeArray[which]);
+                                        }else {
+                                            mClothList.remove(clothTypeArray[which]);
                                         }
 
                                     }
@@ -903,6 +905,10 @@ public class NewMeasureCustomActivity extends NotWebBaseActivity {
         String etJob = mActivityNewMeasureCustomBinding.etJob.getText().toString();
         String etName = mActivityNewMeasureCustomBinding.etName.getText().toString();
         String etSex = mActivityNewMeasureCustomBinding.etSex.getText().toString();
+        if (etJob.isEmpty()||etName.isEmpty()||etSex.isEmpty()){
+            OthersUtil.ToastMsg(NewMeasureCustomActivity.this,"请先将岗位，姓名，性别填写完整");
+            return;
+        }
 
 
         for (int i = 0; i < mClothList.size(); i++) {

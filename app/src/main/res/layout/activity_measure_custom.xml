@@ -421,7 +421,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
-                android:text="签字"
+                android:src="@drawable/pensieve"
                 android:layout_margin="10dp"
                 />
 
